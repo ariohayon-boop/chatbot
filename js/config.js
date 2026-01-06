@@ -6,8 +6,8 @@
 const CONFIG = {
     // Supabase Configuration
     // שנה את הערכים האלה לערכים שלך
-    SUPABASE_URL: 'https://https://fqfdetxvfdgaxbtwrulj.supabase.co,
-    SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxZmRldHh2ZmRnYXhidHdydWxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTcxNTEsImV4cCI6MjA4MzI5MzE1MX0.foTliw-WXvPhtlhYqA_yXe0TDoU4LWfvxDhOSSMLMHA,
+    SUPABASE_URL: 'https://https://fqfdetxvfdgaxbtwrulj.supabase.co',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxZmRldHh2ZmRnYXhidHdydWxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTcxNTEsImV4cCI6MjA4MzI5MzE1MX0.foTliw-WXvPhtlhYqA_yXe0TDoU4LWfvxDhOSSMLMHA',
     
     // App Settings
     APP_NAME: 'ChatBot Pro',
