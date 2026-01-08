@@ -3,646 +3,1676 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBot Pro - דשבורד</title>
+    <title>HELP | המזכירה שעובדת בזמן שאתה חי</title>
+    <meta name="description" content="HELP - מזכירה אוטומטית לוואטסאפ שעונה על כל הודעה, קובעת פגישות, ולעולם לא ישנה. להפסיק לאבד לקוחות.">
     
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    
-    <!-- Supabase Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Global Config -->
-    <script src="js/config.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#00D4AA',
-                        'primary-dark': '#00A080',
-                        secondary: '#0066FF',
-                        dark: '#1A1A2E',
-                        success: '#00E676',
-                    },
-                    fontFamily: {
-                        heebo: ['Heebo', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- React & Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     
     <style>
-        * { font-family: 'Heebo', sans-serif; }
-        
-        /* Glass Morphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        :root {
+            --primary: #06D6A0;
+            --secondary: #118AB2;
+            --accent: #06FFA5;
+            --bg: #FFFFFF;
+            --text: #073B4C;
+            --navy: #073B4C;
+            --gray: #6B7280;
+            --light-gray: #F3F4F6;
+            
+            --gradient-primary: linear-gradient(135deg, #06D6A0 0%, #06FFA5 100%);
+            --gradient-dark: linear-gradient(135deg, #073B4C 0%, #0A4F6A 100%);
+            --gradient-glow: linear-gradient(135deg, rgba(6, 214, 160, 0.3) 0%, rgba(6, 255, 165, 0.3) 100%);
+            
+            --shadow-soft: 0 4px 20px rgba(7, 59, 76, 0.08);
+            --shadow-medium: 0 8px 40px rgba(7, 59, 76, 0.12);
+            --shadow-glow: 0 0 40px rgba(6, 214, 160, 0.4);
+            
+            --font-display: 'Rubik', sans-serif;
+            --font-body: 'Heebo', sans-serif;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
         }
-        
-        /* Gradients */
-        .gradient-bg { background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); }
-        .gradient-primary { background: linear-gradient(135deg, #00D4AA 0%, #00A080 100%); }
-        .gradient-secondary { background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%); }
-        
-        /* Card hover */
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+
+        html {
+            scroll-behavior: smooth;
         }
-        
-        /* Skeleton loader */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        
-        /* Sidebar */
-        .sidebar-item { transition: all 0.2s ease; }
-        .sidebar-item:hover { background: rgba(0, 212, 170, 0.1); }
-        .sidebar-item.active { background: rgba(0, 212, 170, 0.15); border-right: 3px solid #00D4AA; }
-        
-        /* Toast animation */
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
         }
-        .toast { animation: slideIn 0.3s ease; }
-        
-        /* Pulse animation */
-        .pulse-dot { animation: pulse 2s infinite; }
-        @keyframes pulse {
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Global Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(6, 214, 160, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(6, 214, 160, 0.6); }
+        }
+
+        @keyframes typing {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0; }
         }
-        
-        /* Ripple effect */
-        .ripple { position: relative; overflow: hidden; }
-        .ripple::after {
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes notification-pile {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes coin-fly {
+            0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateX(50px) translateY(-50px) rotate(180deg); opacity: 0; }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 9999;
+            transition: width 0.1s linear;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-dark {
+            background: var(--gradient-dark);
+            color: white;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 40px;
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
             content: '';
             position: absolute;
-            top: 50%; left: 50%;
-            width: 0; height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
-        .ripple:active::after { width: 300px; height: 300px; }
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 3px; }
-        
-        /* Badges */
-        .badge-success { background: rgba(0, 230, 118, 0.15); color: #00C853; }
-        .badge-warning { background: rgba(255, 193, 7, 0.15); color: #FF9800; }
-        .badge-error { background: rgba(244, 67, 54, 0.15); color: #F44336; }
-        .badge-info { background: rgba(0, 102, 255, 0.15); color: #0066FF; }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(6, 214, 160, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #EF4444;
+            animation: shake 0.3s;
+        }
+
+        .form-input.success {
+            border-color: var(--primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(7, 59, 76, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+
+            .btn-primary {
+                width: 100%;
+                padding: 16px 32px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+        }
+
+        /* Hero Specific */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8fffe 0%, #e8f9f5 50%, #f0fdf9 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(6, 214, 160, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(17, 138, 178, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* WhatsApp Phone Mockup */
+        .phone-mockup {
+            width: 280px;
+            height: 560px;
+            background: #1A1A1A;
+            border-radius: 36px;
+            padding: 12px;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #0B141A;
+            border-radius: 28px;
+            overflow: hidden;
+        }
+
+        .whatsapp-header {
+            background: #1F2C34;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .whatsapp-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .whatsapp-name {
+            color: white;
+            font-weight: 500;
+        }
+
+        .whatsapp-status {
+            color: #8696A0;
+            font-size: 12px;
+        }
+
+        .whatsapp-chat {
+            padding: 16px;
+            height: calc(100% - 64px);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .chat-bubble.received {
+            background: #1F2C34;
+            color: #E9EDEF;
+            align-self: flex-start;
+            border-top-right-radius: 0;
+        }
+
+        .chat-bubble.sent {
+            background: #005C4B;
+            color: #E9EDEF;
+            align-self: flex-end;
+            border-top-left-radius: 0;
+        }
+
+        .chat-time {
+            font-size: 11px;
+            color: #8696A0;
+            margin-top: 4px;
+            text-align: left;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #8696A0;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        /* Feature Cards */
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: var(--gradient-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        /* Testimonial */
+        .testimonial-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin: 0 auto 16px;
+            overflow: hidden;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .testimonial-quote {
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .testimonial-role {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .testimonial-metric {
+            display: inline-block;
+            background: var(--gradient-glow);
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        /* Price Table */
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price-row.crossed {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .price-row.highlight {
+            background: rgba(6, 214, 160, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid var(--primary);
+        }
+
+        /* Scarcity Banner */
+        .scarcity-banner {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .spots-counter {
+            font-size: 48px;
+            font-weight: 800;
+            font-family: var(--font-display);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin-slow 0.8s linear infinite;
+        }
+
+        /* Success Checkmark */
+        .success-check {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            color: white;
+            animation: bounce-in 0.5s var(--ease-out-expo);
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            animation: confetti 3s ease-out forwards;
+            z-index: 9999;
+        }
+
+        /* Sticky CTA Mobile */
+        @media (max-width: 768px) {
+            .sticky-cta {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 16px;
+                background: white;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+                z-index: 100;
+            }
+        }
+
+        /* Problem Cards Animation */
+        .problem-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .problem-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        /* Interactive Demo */
+        .demo-container {
+            background: #0B141A;
+            border-radius: 24px;
+            overflow: hidden;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .demo-input-container {
+            padding: 12px;
+            background: #1F2C34;
+            display: flex;
+            gap: 8px;
+        }
+
+        .demo-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 20px;
+            background: #2A3942;
+            color: white;
+            font-family: var(--font-body);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .demo-input::placeholder {
+            color: #8696A0;
+        }
+
+        .demo-send {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .demo-send:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* Error Message */
+        .error-message {
+            background: #FEE2E2;
+            color: #DC2626;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            text-align: center;
+        }
     </style>
 </head>
-<body class="gradient-bg min-h-screen">
-    
-    <!-- Toast Container -->
-    <div id="toast-container" class="fixed top-4 left-4 z-50 flex flex-col gap-2"></div>
-    
-    <div class="flex min-h-screen">
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence, useScroll, useTransform, useInView } = Motion;
+
+        // ==================== SUPABASE CONFIG ====================
+        // שנה את YOUR_ANON_KEY_HERE ל-anon key שלך מ-Supabase
+        const SUPABASE_URL = 'https://xrbzofqgyukkdjwumdft.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
         
-        <!-- Sidebar -->
-        <aside class="sidebar w-64 bg-white shadow-lg fixed h-full z-40">
-            <!-- Logo -->
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center">
-                        <i data-lucide="message-square" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-dark">ChatBot Pro</h1>
-                        <p class="text-xs text-gray-500">ניהול בוט וואטסאפ</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Navigation -->
-            <nav class="p-4">
-                <ul class="space-y-1">
-                    <li>
-                        <a href="index.html" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-lg text-dark">
-                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                            <span>דשבורד</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="conversations.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark">
-                            <i data-lucide="message-circle" class="w-5 h-5"></i>
-                            <span>שיחות</span>
-                            <span class="mr-auto bg-primary text-white text-xs px-2 py-0.5 rounded-full" id="unread-badge">0</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="knowledge.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark">
-                            <i data-lucide="book-open" class="w-5 h-5"></i>
-                            <span>מאגר מידע</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="appointments.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark">
-                            <i data-lucide="calendar" class="w-5 h-5"></i>
-                            <span>פגישות</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="settings.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark">
-                            <i data-lucide="settings" class="w-5 h-5"></i>
-                            <span>הגדרות</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <!-- WhatsApp Status -->
-            <div class="absolute bottom-0 w-full p-4 border-t border-gray-100">
-                <div class="glass rounded-xl p-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-3 h-3 bg-success rounded-full pulse-dot"></div>
-                        <div>
-                            <p class="text-sm font-medium text-dark">וואטסאפ מחובר</p>
-                            <p class="text-xs text-gray-500" id="whatsapp-number">טוען...</p>
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============== COMPONENTS ==============
+
+        // Progress Bar
+        const ProgressBar = () => {
+            const [progress, setProgress] = useState(0);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = (window.scrollY / totalHeight) * 100;
+                    setProgress(progress);
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return <div className="progress-bar" style={{ width: `${progress}%` }} />;
+        };
+
+        // Animated Text
+        const AnimatedText = ({ text, delay = 0 }) => {
+            const words = text.split(' ');
+            return (
+                <span>
+                    {words.map((word, i) => (
+                        <motion.span
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ 
+                                delay: delay + i * 0.1, 
+                                duration: 0.5,
+                                ease: [0.16, 1, 0.3, 1]
+                            }}
+                            style={{ display: 'inline-block', marginLeft: '8px' }}
+                        >
+                            {word}
+                        </motion.span>
+                    ))}
+                </span>
+            );
+        };
+
+        // WhatsApp Phone Mockup
+        const PhoneMockup = () => {
+            const [messages, setMessages] = useState([]);
+            const [currentTime, setCurrentTime] = useState('02:00');
+            const [showDisappointed, setShowDisappointed] = useState(false);
+
+            const messageSequence = [
+                { text: 'היי, מה המחיר לסידור זר ל-50 אורחים?', time: '02:00', type: 'received' },
+                { text: 'אני צריך תשובה עד מחר בבוקר', time: '02:01', type: 'received' },
+                { text: 'הלו?', time: '02:15', type: 'received' },
+                { text: 'תודה, מצאתי מישהו אחר 😔', time: '08:00', type: 'received' },
+            ];
+
+            useEffect(() => {
+                const addMessage = (index) => {
+                    if (index < messageSequence.length) {
+                        setTimeout(() => {
+                            setMessages(prev => [...prev, messageSequence[index]]);
+                            setCurrentTime(messageSequence[index].time);
+                            if (index === messageSequence.length - 1) {
+                                setTimeout(() => setShowDisappointed(true), 500);
+                            }
+                            addMessage(index + 1);
+                        }, index === 0 ? 1000 : 2000);
+                    }
+                };
+
+                const timer = setTimeout(() => addMessage(0), 1500);
+                return () => clearTimeout(timer);
+            }, []);
+
+            return (
+                <motion.div
+                    className="phone-mockup"
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    style={{ animation: 'float 3s ease-in-out infinite' }}
+                >
+                    <div className="phone-screen">
+                        <div className="whatsapp-header">
+                            <div className="whatsapp-avatar">🌸</div>
+                            <div>
+                                <div className="whatsapp-name">לקוח פוטנציאלי</div>
+                                <div className="whatsapp-status">אונליין</div>
+                            </div>
+                        </div>
+                        <div className="whatsapp-chat">
+                            <AnimatePresence>
+                                {messages.map((msg, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className={`chat-bubble ${msg.type}`}
+                                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        {msg.text}
+                                        <div className="chat-time">{msg.time}</div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                            {showDisappointed && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    style={{ 
+                                        fontSize: '60px', 
+                                        textAlign: 'center', 
+                                        marginTop: '20px' 
+                                    }}
+                                >
+                                    😢
+                                </motion.div>
+                            )}
                         </div>
                     </div>
-                </div>
-            </div>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="flex-1 mr-64 p-8">
-            
-            <!-- Header -->
-            <header class="flex items-center justify-between mb-8 opacity-0" id="header">
-                <div>
-                    <h2 class="text-2xl font-bold text-dark">שלום, <span id="owner-name">טוען...</span> 👋</h2>
-                    <p class="text-gray-500">הנה סיכום הפעילות של הבוט שלך</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <button class="relative p-2 rounded-xl hover:bg-white hover:shadow-md transition-all">
-                        <i data-lucide="bell" class="w-5 h-5 text-gray-600"></i>
-                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" id="notification-dot"></span>
-                    </button>
-                    <div class="flex items-center gap-3 glass px-4 py-2 rounded-xl">
-                        <div class="w-8 h-8 gradient-secondary rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-bold" id="user-initials">--</span>
+                </motion.div>
+            );
+        };
+
+        // Hero Section
+        const HeroSection = ({ onOpenModal }) => {
+            return (
+                <section className="hero">
+                    <div className="container">
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                            gap: '60px',
+                            alignItems: 'center'
+                        }}>
+                            <div>
+                                <motion.h1
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    style={{ marginBottom: '16px' }}
+                                >
+                                    <AnimatedText text="הלקוח כתב לך ב-02:00 בלילה." />
+                                </motion.h1>
+                                <motion.p
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.8 }}
+                                    style={{ 
+                                        fontSize: '20px', 
+                                        color: 'var(--gray)',
+                                        marginBottom: '40px'
+                                    }}
+                                >
+                                    בבוקר הוא כבר הלך למישהו אחר.
+                                </motion.p>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 1.2 }}
+                                >
+                                    <button 
+                                        className="btn-primary"
+                                        onClick={onOpenModal}
+                                        style={{ animation: 'pulse-glow 3s infinite' }}
+                                    >
+                                        להפסיק לאבד לקוחות
+                                        <span>←</span>
+                                    </button>
+                                </motion.div>
+                            </div>
+                            <PhoneMockup />
                         </div>
-                        <span class="text-sm font-medium text-dark" id="business-name">טוען...</span>
                     </div>
-                </div>
-            </header>
-            
-            <!-- Stats Cards -->
-            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="stats-section">
-                
-                <!-- Total Conversations -->
-                <div class="card-hover glass rounded-2xl p-6 opacity-0 stat-card">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-                            <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
+                </section>
+            );
+        };
+
+        // Problem Section
+        const ProblemSection = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            const problems = [
+                { icon: '🕐', text: 'עונה על הודעות גם ב-23:00' },
+                { icon: '📱', text: 'מפספס לידים כי לא מספיק מהיר' },
+                { icon: '💸', text: 'משלם על CRM שלא משתמש בו' }
+            ];
+
+            return (
+                <section className="section section-dark" ref={ref}>
+                    <div className="container">
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                            gap: '24px',
+                            marginBottom: '60px'
+                        }}>
+                            {problems.map((problem, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="problem-card"
+                                    initial={{ opacity: 0, y: 40 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ delay: i * 0.2, duration: 0.6 }}
+                                >
+                                    <div className="problem-icon">{problem.icon}</div>
+                                    <p style={{ fontSize: '18px' }}>{problem.text}</p>
+                                </motion.div>
+                            ))}
                         </div>
-                        <span class="badge-success text-xs px-2 py-1 rounded-full">+12%</span>
+                        <motion.h2
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.8 }}
+                            style={{ textAlign: 'center', color: 'var(--primary)' }}
+                        >
+                            זה לא אמור להיות ככה.
+                        </motion.h2>
                     </div>
-                    <p class="text-3xl font-bold text-dark" id="total-conversations">--</p>
-                    <p class="text-sm text-gray-500">סה"כ שיחות</p>
-                </div>
-                
-                <!-- Answered -->
-                <div class="card-hover glass rounded-2xl p-6 opacity-0 stat-card">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                            <i data-lucide="check-circle" class="w-6 h-6 text-white"></i>
+                </section>
+            );
+        };
+
+        // Shift Section
+        const ShiftSection = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const [currentLine, setCurrentLine] = useState(0);
+
+            const lines = [
+                'מה אם הייתה דרך...',
+                'שמישהו עונה על כל הודעה',
+                'קובע כל פגישה',
+                'ולעולם לא ישן?'
+            ];
+
+            useEffect(() => {
+                if (isInView && currentLine < lines.length - 1) {
+                    const timer = setTimeout(() => {
+                        setCurrentLine(prev => prev + 1);
+                    }, 1500);
+                    return () => clearTimeout(timer);
+                }
+            }, [isInView, currentLine]);
+
+            return (
+                <section className="section" ref={ref} style={{ minHeight: '60vh', display: 'flex', alignItems: 'center' }}>
+                    <div className="container" style={{ textAlign: 'center' }}>
+                        <AnimatePresence mode="wait">
+                            <motion.h2
+                                key={currentLine}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -30 }}
+                                transition={{ duration: 0.5 }}
+                                style={{ 
+                                    fontSize: currentLine === lines.length - 1 ? '48px' : '36px',
+                                    color: currentLine === lines.length - 1 ? 'var(--primary)' : 'var(--text)'
+                                }}
+                            >
+                                {lines[currentLine]}
+                            </motion.h2>
+                        </AnimatePresence>
+                    </div>
+                </section>
+            );
+        };
+
+        // Interactive Demo
+        const InteractiveDemo = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const [input, setInput] = useState('');
+            const [messages, setMessages] = useState([]);
+            const [isTyping, setIsTyping] = useState(false);
+
+            const botResponses = [
+                'היי! 👋 אני המזכירה הדיגיטלית של העסק. איך אפשר לעזור?',
+                'בדקתי את היומן - יש לנו פנוי ביום שלישי ב-14:00 או ביום רביעי ב-10:00. מה מתאים לך?',
+                'מעולה! 📅 קבעתי לך פגישה ליום שלישי ב-14:00. שלחתי לך אישור בוואטסאפ. נתראה! ✅'
+            ];
+
+            const handleSend = () => {
+                if (!input.trim()) return;
+
+                const newMessage = { text: input, type: 'sent' };
+                setMessages(prev => [...prev, newMessage]);
+                setInput('');
+                setIsTyping(true);
+
+                setTimeout(() => {
+                    setIsTyping(false);
+                    const responseIndex = Math.min(messages.filter(m => m.type === 'received').length, botResponses.length - 1);
+                    setMessages(prev => [...prev, { text: botResponses[responseIndex], type: 'received' }]);
+                }, 1500);
+            };
+
+            return (
+                <section className="section" ref={ref} style={{ background: 'var(--light-gray)' }}>
+                    <div className="container">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            style={{ textAlign: 'center', marginBottom: '16px' }}
+                        >
+                            HELP. מזכירה שלא צריכה משכורת.
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.2 }}
+                            style={{ textAlign: 'center', color: 'var(--gray)', marginBottom: '40px' }}
+                        >
+                            נסה לשלוח הודעה 👇
+                        </motion.p>
+                        <motion.div
+                            className="demo-container"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.3 }}
+                        >
+                            <div style={{ padding: '16px', height: '300px', overflowY: 'auto' }}>
+                                {messages.map((msg, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className={`chat-bubble ${msg.type}`}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        style={{ marginBottom: '8px' }}
+                                    >
+                                        {msg.text}
+                                    </motion.div>
+                                ))}
+                                {isTyping && (
+                                    <div className="typing-indicator">
+                                        <div className="typing-dot" />
+                                        <div className="typing-dot" />
+                                        <div className="typing-dot" />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="demo-input-container">
+                                <input
+                                    className="demo-input"
+                                    placeholder="כתוב הודעה..."
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                                />
+                                <button className="demo-send" onClick={handleSend}>
+                                    ➤
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Features Section
+        const FeaturesSection = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            const features = [
+                { icon: '⚡', title: 'עונה בתוך שניות' },
+                { icon: '📅', title: 'קובע פגישות אוטומטית' },
+                { icon: '📄', title: 'שולח הצעות מחיר' },
+                { icon: '🎯', title: 'עוקב אחרי לידים' },
+                { icon: '💳', title: 'גובה תשלומים' },
+                { icon: '🧠', title: 'לומד איך אתה עובד' }
+            ];
+
+            return (
+                <section className="section" ref={ref}>
+                    <div className="container">
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                            gap: '24px'
+                        }}>
+                            {features.map((feature, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="card"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ delay: i * 0.1 }}
+                                    whileHover={{ y: -10, boxShadow: 'var(--shadow-glow)' }}
+                                    style={{ textAlign: 'center' }}
+                                >
+                                    <div className="feature-icon" style={{ margin: '0 auto 16px' }}>
+                                        {feature.icon}
+                                    </div>
+                                    <h4>{feature.title}</h4>
+                                </motion.div>
+                            ))}
                         </div>
-                        <span class="badge-success text-xs px-2 py-1 rounded-full" id="answer-rate">--%</span>
                     </div>
-                    <p class="text-3xl font-bold text-dark" id="total-answered">--</p>
-                    <p class="text-sm text-gray-500">נענו אוטומטית</p>
-                </div>
-                
-                <!-- Pending Review -->
-                <div class="card-hover glass rounded-2xl p-6 opacity-0 stat-card">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
-                            <i data-lucide="alert-circle" class="w-6 h-6 text-white"></i>
+                </section>
+            );
+        };
+
+        // Testimonials Section
+        const TestimonialsSection = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+            const [currentIndex, setCurrentIndex] = useState(0);
+
+            const testimonials = [
+                {
+                    name: 'דני',
+                    role: 'יועץ עסקי',
+                    quote: 'חסכתי 4 שעות ביום. בוקר שלם פינה לי לעבודה אמיתית.',
+                    metric: '4 שעות חזרה ביום',
+                    avatar: '👨‍💼'
+                },
+                {
+                    name: 'מיכל',
+                    role: 'מאמנת אישית',
+                    quote: 'לקוח קבע פגישה ב-6 בבוקר. התעוררתי לתשלום.',
+                    metric: '0 לידים אבודים',
+                    avatar: '👩‍🏫'
+                },
+                {
+                    name: 'יוסי',
+                    role: 'צלם אירועים',
+                    quote: 'בזמן שצילמתי חתונה, הבוט סגר לי 3 חתונות נוספות.',
+                    metric: '+40% הכנסה',
+                    avatar: '📸'
+                }
+            ];
+
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+                }, 5000);
+                return () => clearInterval(timer);
+            }, []);
+
+            return (
+                <section className="section" ref={ref} style={{ background: 'var(--light-gray)' }}>
+                    <div className="container">
+                        <motion.h2
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            style={{ textAlign: 'center', marginBottom: '48px' }}
+                        >
+                            מה אומרים הלקוחות
+                        </motion.h2>
+                        <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={currentIndex}
+                                    className="testimonial-card"
+                                    initial={{ opacity: 0, x: 50 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -50 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    <div className="testimonial-avatar">
+                                        {testimonials[currentIndex].avatar}
+                                    </div>
+                                    <p className="testimonial-quote">
+                                        "{testimonials[currentIndex].quote}"
+                                    </p>
+                                    <p className="testimonial-name">{testimonials[currentIndex].name}</p>
+                                    <p className="testimonial-role">{testimonials[currentIndex].role}</p>
+                                    <div className="testimonial-metric">
+                                        {testimonials[currentIndex].metric}
+                                    </div>
+                                </motion.div>
+                            </AnimatePresence>
+                            <div style={{ 
+                                display: 'flex', 
+                                justifyContent: 'center', 
+                                gap: '8px',
+                                marginTop: '24px'
+                            }}>
+                                {testimonials.map((_, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setCurrentIndex(i)}
+                                        style={{
+                                            width: '12px',
+                                            height: '12px',
+                                            borderRadius: '50%',
+                                            border: 'none',
+                                            background: i === currentIndex ? 'var(--primary)' : '#ddd',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s'
+                                        }}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                        <span class="badge-warning text-xs px-2 py-1 rounded-full">ממתין</span>
                     </div>
-                    <p class="text-3xl font-bold text-dark" id="pending-review">--</p>
-                    <p class="text-sm text-gray-500">ממתינים למענה</p>
-                </div>
-                
-                <!-- Appointments -->
-                <div class="card-hover glass rounded-2xl p-6 opacity-0 stat-card">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 gradient-secondary rounded-xl flex items-center justify-center">
-                            <i data-lucide="calendar-check" class="w-6 h-6 text-white"></i>
+                </section>
+            );
+        };
+
+        // Pricing Section
+        const PricingSection = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <section className="section section-dark" ref={ref}>
+                    <div className="container" style={{ maxWidth: '600px' }}>
+                        <motion.h2
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            style={{ textAlign: 'center', marginBottom: '48px', color: 'white' }}
+                        >
+                            כמה זה עולה?
+                        </motion.h2>
+                        <motion.div
+                            className="price-row crossed"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={isInView ? { opacity: 0.5, x: 0 } : {}}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <span>מזכירה</span>
+                            <span>8,000 ש"ח/חודש ❌</span>
+                        </motion.div>
+                        <motion.div
+                            className="price-row crossed"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={isInView ? { opacity: 0.5, x: 0 } : {}}
+                            transition={{ delay: 0.4 }}
+                        >
+                            <span>CRM + כלים</span>
+                            <span>800 ש"ח/חודש ❌</span>
+                        </motion.div>
+                        <motion.div
+                            className="price-row highlight"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <span style={{ fontWeight: 700, fontSize: '20px' }}>HELP</span>
+                            <span style={{ fontWeight: 700, fontSize: '24px', color: 'var(--primary)' }}>
+                                497 ש"ח/חודש ✅
+                            </span>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.8 }}
+                            style={{ 
+                                textAlign: 'center', 
+                                marginTop: '40px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '16px'
+                            }}
+                        >
+                            <span style={{ fontSize: '40px' }}>☕🥐</span>
+                            <div>
+                                <p style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                                    פחות מ-17 ש"ח ליום
+                                </p>
+                                <p style={{ color: '#8696A0', fontSize: '14px' }}>
+                                    במחיר של ארוחת בוקר אחת
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Scarcity Section
+        const ScarcitySection = () => {
+            const [spots, setSpots] = useState(73);
+
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setSpots(prev => Math.max(prev - 1, 12));
+                }, 30000);
+                return () => clearInterval(timer);
+            }, []);
+
+            return (
+                <section className="scarcity-banner">
+                    <div className="container">
+                        <h3 style={{ marginBottom: '16px' }}>100 הנרשמים הראשונים מקבלים:</h3>
+                        <div style={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            gap: '32px',
+                            flexWrap: 'wrap',
+                            marginBottom: '24px'
+                        }}>
+                            <span>✨ חודש ראשון חינם</span>
+                            <span>🎯 Setup אישי</span>
+                            <span>👑 תמיכה VIP</span>
                         </div>
-                        <span class="badge-info text-xs px-2 py-1 rounded-full">היום</span>
+                        <motion.div
+                            key={spots}
+                            initial={{ scale: 1.2 }}
+                            animate={{ scale: 1 }}
+                            className="spots-counter"
+                        >
+                            נותרו {spots} מקומות
+                        </motion.div>
                     </div>
-                    <p class="text-3xl font-bold text-dark" id="today-appointments">--</p>
-                    <p class="text-sm text-gray-500">פגישות היום</p>
-                </div>
-                
-            </section>
-            
-            <!-- Charts & Quick Actions -->
-            <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                
-                <!-- Response Rate Chart -->
-                <div class="lg:col-span-2 glass rounded-2xl p-6 opacity-0" id="chart-card">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-bold text-dark">אחוז מענה אוטומטי</h3>
-                        <select class="text-sm bg-gray-50 border-0 rounded-lg px-3 py-2" id="chart-period">
-                            <option value="7">7 ימים אחרונים</option>
-                            <option value="30">30 ימים אחרונים</option>
-                            <option value="90">90 ימים אחרונים</option>
-                        </select>
+                </section>
+            );
+        };
+
+        // Final CTA Section
+        const FinalCTASection = ({ onOpenModal }) => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            return (
+                <section className="section" ref={ref} style={{ paddingBottom: '120px' }}>
+                    <div className="container" style={{ textAlign: 'center' }}>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            style={{ marginBottom: '32px' }}
+                        >
+                            זה הזמן לחזור לחיים שלך
+                        </motion.h2>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <button 
+                                className="btn-primary" 
+                                onClick={onOpenModal}
+                                style={{ 
+                                    fontSize: '20px', 
+                                    padding: '20px 48px',
+                                    animation: 'pulse-glow 3s infinite'
+                                }}
+                            >
+                                אני רוצה להפסיק לאבד לקוחות
+                                <span>←</span>
+                            </button>
+                        </motion.div>
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.4 }}
+                            style={{ 
+                                marginTop: '16px', 
+                                color: 'var(--gray)',
+                                fontSize: '14px'
+                            }}
+                        >
+                            ללא כרטיס אשראי | ביטול בכל עת
+                        </motion.p>
                     </div>
+                </section>
+            );
+        };
+
+        // Signup Modal - עם חיבור ל-Supabase
+        const SignupModal = ({ isOpen, onClose }) => {
+            const [formData, setFormData] = useState({
+                name: '',
+                phone: '',
+                business: '',
+                clientsPerDay: ''
+            });
+            const [isLoading, setIsLoading] = useState(false);
+            const [isSuccess, setIsSuccess] = useState(false);
+            const [errors, setErrors] = useState({});
+            const [submitError, setSubmitError] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setSubmitError('');
+                
+                // Validation
+                const newErrors = {};
+                if (!formData.name) newErrors.name = true;
+                if (!formData.phone) newErrors.phone = true;
+                if (!formData.business) newErrors.business = true;
+                
+                if (Object.keys(newErrors).length > 0) {
+                    setErrors(newErrors);
+                    return;
+                }
+
+                setIsLoading(true);
+
+                try {
+                    // שליחה ל-Supabase
+                    const { data, error } = await supabase
+                        .from('help_leads')
+                        .insert([{
+                            name: formData.name,
+                            phone: formData.phone,
+                            business_type: formData.business,
+                            clients_per_day: formData.clientsPerDay || null
+                        }]);
+
+                    if (error) {
+                        throw error;
+                    }
                     
-                    <!-- Simple Bar Chart -->
-                    <div class="h-48 flex items-end justify-between gap-2 px-4" id="chart-bars">
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-primary rounded-t-lg transition-all duration-500" style="height: 75%"></div>
-                            <span class="text-xs text-gray-500 mt-2">א</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-primary rounded-t-lg transition-all duration-500" style="height: 85%"></div>
-                            <span class="text-xs text-gray-500 mt-2">ב</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-primary rounded-t-lg transition-all duration-500" style="height: 60%"></div>
-                            <span class="text-xs text-gray-500 mt-2">ג</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-primary rounded-t-lg transition-all duration-500" style="height: 90%"></div>
-                            <span class="text-xs text-gray-500 mt-2">ד</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-primary rounded-t-lg transition-all duration-500" style="height: 70%"></div>
-                            <span class="text-xs text-gray-500 mt-2">ה</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-primary rounded-t-lg transition-all duration-500" style="height: 45%"></div>
-                            <span class="text-xs text-gray-500 mt-2">ו</span>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-gray-200 rounded-t-lg transition-all duration-500" style="height: 10%"></div>
-                            <span class="text-xs text-gray-500 mt-2">ש</span>
-                        </div>
-                    </div>
+                    setIsLoading(false);
+                    setIsSuccess(true);
                     
-                    <div class="flex items-center justify-center gap-6 mt-6">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 bg-primary rounded-full"></div>
-                            <span class="text-sm text-gray-600">נענו אוטומטית</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
-                            <span class="text-sm text-gray-600">ללא תשובה</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Quick Actions -->
-                <div class="glass rounded-2xl p-6 opacity-0" id="actions-card">
-                    <h3 class="text-lg font-bold text-dark mb-6">פעולות מהירות</h3>
+                    // איפוס הטופס
+                    setFormData({
+                        name: '',
+                        phone: '',
+                        business: '',
+                        clientsPerDay: ''
+                    });
                     
-                    <div class="space-y-3">
-                        <a href="knowledge.html" class="ripple block w-full gradient-primary text-white text-center py-3 rounded-xl font-medium hover:shadow-lg transition-shadow">
-                            <i data-lucide="plus" class="w-4 h-4 inline ml-2"></i>
-                            הוסף שאלה למאגר
-                        </a>
-                        
-                        <a href="conversations.html?filter=no_answer" class="ripple block w-full bg-orange-500 text-white text-center py-3 rounded-xl font-medium hover:shadow-lg transition-shadow">
-                            <i data-lucide="message-circle" class="w-4 h-4 inline ml-2"></i>
-                            צפה בשאלות ללא מענה
-                        </a>
-                        
-                        <a href="settings.html" class="ripple block w-full bg-gray-100 text-dark text-center py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors">
-                            <i data-lucide="settings" class="w-4 h-4 inline ml-2"></i>
-                            הגדרות הבוט
-                        </a>
-                    </div>
-                    
-                    <!-- Bot Status -->
-                    <div class="mt-6 p-4 bg-green-50 rounded-xl" id="bot-status">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                                <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                } catch (error) {
+                    console.error('Error submitting lead:', error);
+                    setIsLoading(false);
+                    setSubmitError('אירעה שגיאה, נסה שוב או צור קשר ישירות');
+                }
+            };
+
+            const handleChange = (field, value) => {
+                setFormData(prev => ({ ...prev, [field]: value }));
+                setErrors(prev => ({ ...prev, [field]: false }));
+                setSubmitError('');
+            };
+
+            // Reset success state when modal closes
+            useEffect(() => {
+                if (!isOpen) {
+                    setTimeout(() => {
+                        setIsSuccess(false);
+                        setSubmitError('');
+                    }, 300);
+                }
+            }, [isOpen]);
+
+            if (!isOpen) return null;
+
+            return (
+                <AnimatePresence>
+                    <motion.div
+                        className="modal-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                    >
+                        <motion.div
+                            className="modal-content"
+                            initial={{ opacity: 0, y: 100 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 100 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button className="modal-close" onClick={onClose}>✕</button>
+                            
+                            {isSuccess ? (
+                                <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                                    <div className="success-check">✓</div>
+                                    <h3 style={{ marginBottom: '8px' }}>ברוך הבא למשפחה! 🎉</h3>
+                                    <p style={{ color: 'var(--gray)' }}>
+                                        ניצור איתך קשר תוך 24 שעות להתחלת ההגדרה
+                                    </p>
+                                </div>
+                            ) : (
+                                <>
+                                    <h3 style={{ marginBottom: '8px' }}>בוא נתחיל! 🚀</h3>
+                                    <p style={{ color: 'var(--gray)', marginBottom: '32px' }}>
+                                        מלא את הפרטים ונחזור אליך תוך 24 שעות
+                                    </p>
+                                    
+                                    {submitError && (
+                                        <div className="error-message">
+                                            {submitError}
+                                        </div>
+                                    )}
+                                    
+                                    <form onSubmit={handleSubmit}>
+                                        <div style={{ marginBottom: '16px' }}>
+                                            <input
+                                                className={`form-input ${errors.name ? 'error' : formData.name ? 'success' : ''}`}
+                                                placeholder="שם מלא"
+                                                value={formData.name}
+                                                onChange={(e) => handleChange('name', e.target.value)}
+                                            />
+                                        </div>
+                                        <div style={{ marginBottom: '16px' }}>
+                                            <input
+                                                className={`form-input ${errors.phone ? 'error' : formData.phone ? 'success' : ''}`}
+                                                placeholder="טלפון"
+                                                type="tel"
+                                                value={formData.phone}
+                                                onChange={(e) => handleChange('phone', e.target.value)}
+                                            />
+                                        </div>
+                                        <div style={{ marginBottom: '16px' }}>
+                                            <input
+                                                className={`form-input ${errors.business ? 'error' : formData.business ? 'success' : ''}`}
+                                                placeholder="מה העסק שלך?"
+                                                value={formData.business}
+                                                onChange={(e) => handleChange('business', e.target.value)}
+                                            />
+                                        </div>
+                                        <div style={{ marginBottom: '24px' }}>
+                                            <input
+                                                className="form-input"
+                                                placeholder="כמה לקוחות ביום? (אופציונלי)"
+                                                value={formData.clientsPerDay}
+                                                onChange={(e) => handleChange('clientsPerDay', e.target.value)}
+                                            />
+                                        </div>
+                                        <button 
+                                            type="submit" 
+                                            className="btn-primary"
+                                            style={{ width: '100%' }}
+                                            disabled={isLoading}
+                                        >
+                                            {isLoading ? (
+                                                <div className="spinner" />
+                                            ) : (
+                                                <>להתחיל עכשיו</>
+                                            )}
+                                        </button>
+                                    </form>
+                                </>
+                            )}
+                        </motion.div>
+                    </motion.div>
+                </AnimatePresence>
+            );
+        };
+
+        // Footer
+        const Footer = () => {
+            return (
+                <footer className="section-dark" style={{ padding: '60px 0' }}>
+                    <div className="container">
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                            gap: '40px'
+                        }}>
+                            <div>
+                                <h3 style={{ 
+                                    color: 'var(--primary)', 
+                                    marginBottom: '16px',
+                                    fontFamily: 'var(--font-display)'
+                                }}>
+                                    HELP
+                                </h3>
+                                <p style={{ color: '#8696A0', marginBottom: '8px' }}>
+                                    המזכירה שעובדת בזמן שאתה חי
+                                </p>
+                                <p style={{ color: '#8696A0', fontSize: '14px' }}>
+                                    made with 💚 in Israel
+                                </p>
                             </div>
                             <div>
-                                <p class="font-medium text-green-800">הבוט פעיל</p>
-                                <p class="text-sm text-green-600">מגיב לכל הודעה חדשה</p>
+                                <h4 style={{ color: 'white', marginBottom: '16px' }}>קישורים</h4>
+                                <ul style={{ listStyle: 'none' }}>
+                                    <li style={{ marginBottom: '8px' }}>
+                                        <a href="#" style={{ color: '#8696A0', textDecoration: 'none' }}>תנאי שימוש</a>
+                                    </li>
+                                    <li style={{ marginBottom: '8px' }}>
+                                        <a href="#" style={{ color: '#8696A0', textDecoration: 'none' }}>מדיניות פרטיות</a>
+                                    </li>
+                                    <li style={{ marginBottom: '8px' }}>
+                                        <a href="#" style={{ color: '#8696A0', textDecoration: 'none' }}>צור קשר</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style={{ color: 'white', marginBottom: '16px' }}>אמון</h4>
+                                <p style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                                    מהימן ע״י 200+ solopreneurs
+                                </p>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-            </section>
-            
-            <!-- Recent Conversations -->
-            <section class="glass rounded-2xl p-6 opacity-0" id="recent-section">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold text-dark">שיחות אחרונות</h3>
-                    <a href="conversations.html" class="text-primary hover:text-primary-dark text-sm font-medium flex items-center gap-1">
-                        צפה בכל השיחות
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    </a>
-                </div>
-                
-                <!-- Conversations List -->
-                <div class="space-y-4" id="conversations-list">
-                    <!-- Loading Skeleton -->
-                    <div class="conversation-skeleton">
-                        <div class="flex items-center gap-4 p-4 border border-gray-100 rounded-xl">
-                            <div class="skeleton w-12 h-12 rounded-full"></div>
-                            <div class="flex-1">
-                                <div class="skeleton h-4 w-32 mb-2 rounded"></div>
-                                <div class="skeleton h-3 w-full rounded"></div>
-                            </div>
-                            <div class="skeleton h-6 w-20 rounded-full"></div>
+                        <div style={{ 
+                            marginTop: '40px', 
+                            paddingTop: '24px', 
+                            borderTop: '1px solid rgba(255,255,255,0.1)',
+                            textAlign: 'center',
+                            color: '#8696A0',
+                            fontSize: '14px'
+                        }}>
+                            © 2025 HELP. כל הזכויות שמורות.
                         </div>
                     </div>
-                    <div class="conversation-skeleton">
-                        <div class="flex items-center gap-4 p-4 border border-gray-100 rounded-xl">
-                            <div class="skeleton w-12 h-12 rounded-full"></div>
-                            <div class="flex-1">
-                                <div class="skeleton h-4 w-32 mb-2 rounded"></div>
-                                <div class="skeleton h-3 w-full rounded"></div>
-                            </div>
-                            <div class="skeleton h-6 w-20 rounded-full"></div>
-                        </div>
-                    </div>
-                    <div class="conversation-skeleton">
-                        <div class="flex items-center gap-4 p-4 border border-gray-100 rounded-xl">
-                            <div class="skeleton w-12 h-12 rounded-full"></div>
-                            <div class="flex-1">
-                                <div class="skeleton h-4 w-32 mb-2 rounded"></div>
-                                <div class="skeleton h-3 w-full rounded"></div>
-                            </div>
-                            <div class="skeleton h-6 w-20 rounded-full"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Empty State -->
-                <div class="hidden text-center py-12" id="empty-state">
-                    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                        <i data-lucide="message-square-off" class="w-10 h-10 text-gray-400"></i>
-                    </div>
-                    <h4 class="text-lg font-medium text-dark mb-2">עדיין אין שיחות</h4>
-                    <p class="text-gray-500">ברגע שלקוחות ישלחו הודעות, הן יופיעו כאן</p>
-                </div>
-                
-            </section>
-            
-        </main>
-    </div>
-    
-    <script>
-        // ============================================
-        // Initialize
-        // ============================================
-        const BUSINESS_ID = getBusinessId();
-        
-        // Initialize Lucide Icons
-        lucide.createIcons();
-        
-        // Set initial animation states
-        gsap.set('#header', { opacity: 0, y: -20 });
-        gsap.set('.stat-card', { opacity: 0, y: 20 });
-        gsap.set('#chart-card', { opacity: 0, y: 20 });
-        gsap.set('#actions-card', { opacity: 0, y: 20 });
-        gsap.set('#recent-section', { opacity: 0, y: 20 });
-        
-        // ============================================
-        // Animations
-        // ============================================
-        function initAnimations() {
-            gsap.to('#header', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
-            gsap.to('.stat-card', { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out', delay: 0.3 });
-            gsap.to('#chart-card', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.7 });
-            gsap.to('#actions-card', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.8 });
-            gsap.to('#recent-section', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.9 });
-        }
-        
-        // ============================================
-        // Data Loading
-        // ============================================
-        async function loadBusinessData() {
-            if (isDemoMode()) {
-                return DEMO_DATA.business;
-            }
-            
-            try {
-                const db = getSupabase();
-                const { data, error } = await db
-                    .from('businesses')
-                    .select('*')
-                    .eq('id', BUSINESS_ID)
-                    .single();
-                
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                console.error('Error loading business:', error);
-                showToast('שגיאה בטעינת נתוני העסק', 'error');
-                return DEMO_DATA.business;
-            }
-        }
-        
-        async function loadStats() {
-            if (isDemoMode()) {
-                return DEMO_DATA.stats;
-            }
-            
-            try {
-                const db = getSupabase();
-                
-                const { count: total } = await db
-                    .from('conversations')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('business_id', BUSINESS_ID);
-                
-                const { count: answered } = await db
-                    .from('conversations')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('business_id', BUSINESS_ID)
-                    .eq('response_type', 'answered');
-                
-                const { count: pending } = await db
-                    .from('conversations')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('business_id', BUSINESS_ID)
-                    .eq('needs_followup', true);
-                
-                const today = new Date().toISOString().split('T')[0];
-                const { count: appointments } = await db
-                    .from('appointments')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('business_id', BUSINESS_ID)
-                    .gte('scheduled_time', today)
-                    .lt('scheduled_time', today + 'T23:59:59');
-                
-                return { total: total || 0, answered: answered || 0, pending: pending || 0, appointments: appointments || 0 };
-            } catch (error) {
-                console.error('Error loading stats:', error);
-                return DEMO_DATA.stats;
-            }
-        }
-        
-        async function loadRecentConversations() {
-            if (isDemoMode()) {
-                return DEMO_DATA.conversations;
-            }
-            
-            try {
-                const db = getSupabase();
-                const { data, error } = await db
-                    .from('conversations')
-                    .select('*')
-                    .eq('business_id', BUSINESS_ID)
-                    .order('timestamp', { ascending: false })
-                    .limit(5);
-                
-                if (error) throw error;
-                return data || [];
-            } catch (error) {
-                console.error('Error loading conversations:', error);
-                return DEMO_DATA.conversations;
-            }
-        }
-        
-        // ============================================
-        // Render Functions
-        // ============================================
-        function renderConversations(conversations) {
-            const container = document.getElementById('conversations-list');
-            const emptyState = document.getElementById('empty-state');
-            
-            // Remove skeletons
-            container.querySelectorAll('.conversation-skeleton').forEach(el => el.remove());
-            
-            if (!conversations || conversations.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            
-            emptyState.classList.add('hidden');
-            
-            conversations.forEach((conv, index) => {
-                const displayName = conv.customer_name || formatPhone(conv.customer_phone);
-                const badge = RESPONSE_TYPE_LABELS[conv.response_type] || RESPONSE_TYPE_LABELS.answered;
-                
-                const card = document.createElement('div');
-                card.className = 'card-hover flex items-center gap-4 p-4 border border-gray-100 rounded-xl cursor-pointer';
-                card.style.opacity = '0';
-                card.innerHTML = `
-                    <div class="w-12 h-12 gradient-secondary rounded-full flex items-center justify-center flex-shrink-0">
-                        <span class="text-white font-bold">${getInitials(displayName)}</span>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
-                            <h4 class="font-medium text-dark">${displayName}</h4>
-                            <span class="text-xs text-gray-400">${getTimeAgo(conv.timestamp)}</span>
-                            ${!conv.is_read ? '<span class="w-2 h-2 bg-primary rounded-full"></span>' : ''}
-                        </div>
-                        <p class="text-sm text-gray-600 truncate">${conv.message}</p>
-                    </div>
-                    <span class="${badge.class} text-xs px-3 py-1 rounded-full flex-shrink-0">${badge.text}</span>
-                `;
-                
-                card.onclick = () => {
-                    window.location.href = `conversations.html?id=${conv.id}`;
+                </footer>
+            );
+        };
+
+        // Sticky Mobile CTA
+        const StickyCTA = ({ onOpenModal }) => {
+            const [isVisible, setIsVisible] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setIsVisible(window.scrollY > 500);
                 };
-                
-                container.appendChild(card);
-                
-                // Animate in
-                gsap.to(card, { opacity: 1, y: 0, duration: 0.3, delay: index * 0.1, ease: 'power2.out' });
-            });
-            
-            lucide.createIcons();
-        }
-        
-        // ============================================
-        // Initialize Dashboard
-        // ============================================
-        async function init() {
-            // Load business data
-            const business = await loadBusinessData();
-            if (business) {
-                document.getElementById('owner-name').textContent = business.owner_name || 'משתמש';
-                document.getElementById('business-name').textContent = business.business_name || 'העסק שלי';
-                document.getElementById('user-initials').textContent = getInitials(business.owner_name);
-                document.getElementById('whatsapp-number').textContent = formatPhone(business.whatsapp_number) || 'לא מחובר';
-            }
-            
-            // Load stats
-            const stats = await loadStats();
-            document.getElementById('total-conversations').textContent = stats.total.toLocaleString();
-            document.getElementById('total-answered').textContent = stats.answered.toLocaleString();
-            document.getElementById('pending-review').textContent = stats.pending.toLocaleString();
-            document.getElementById('today-appointments').textContent = stats.appointments.toLocaleString();
-            document.getElementById('unread-badge').textContent = stats.pending;
-            
-            // Calculate and display answer rate
-            const answerRate = stats.total > 0 ? Math.round((stats.answered / stats.total) * 100) : 0;
-            document.getElementById('answer-rate').textContent = `${answerRate}%`;
-            
-            // Hide notification dot if no pending
-            if (stats.pending === 0) {
-                document.getElementById('notification-dot').classList.add('hidden');
-            }
-            
-            // Load recent conversations
-            const conversations = await loadRecentConversations();
-            renderConversations(conversations);
-            
-            // Start animations
-            initAnimations();
-            
-            // Show welcome toast after a delay
-            setTimeout(() => {
-                if (isDemoMode()) {
-                    showToast('מצב דמו - הנתונים לדוגמה בלבד', 'info');
-                } else {
-                    showToast('ברוך הבא לדשבורד! 🎉', 'success');
-                }
-            }, 1500);
-        }
-        
-        // Start the app
-        document.addEventListener('DOMContentLoaded', init);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            if (window.innerWidth > 768 || !isVisible) return null;
+
+            return (
+                <motion.div
+                    className="sticky-cta"
+                    initial={{ y: 100 }}
+                    animate={{ y: 0 }}
+                >
+                    <button className="btn-primary" onClick={onOpenModal} style={{ width: '100%' }}>
+                        להתחיל עכשיו
+                    </button>
+                </motion.div>
+            );
+        };
+
+        // Main App
+        const App = () => {
+            const [isModalOpen, setIsModalOpen] = useState(false);
+
+            return (
+                <>
+                    <ProgressBar />
+                    <HeroSection onOpenModal={() => setIsModalOpen(true)} />
+                    <ProblemSection />
+                    <ShiftSection />
+                    <InteractiveDemo />
+                    <FeaturesSection />
+                    <TestimonialsSection />
+                    <PricingSection />
+                    <ScarcitySection />
+                    <FinalCTASection onOpenModal={() => setIsModalOpen(true)} />
+                    <Footer />
+                    <StickyCTA onOpenModal={() => setIsModalOpen(true)} />
+                    <SignupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                </>
+            );
+        };
+
+        // Render
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
-    
 </body>
 </html>
