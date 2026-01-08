@@ -28,9 +28,6 @@
                 extend: {
                     fontFamily: {
                         'assistant': ['Assistant', 'sans-serif'],
-                    },
-                    colors: {
-                        'whatsapp': '#25D366',
                     }
                 }
             }
@@ -56,27 +53,15 @@
             line-height: 1.6;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 3px; }
 
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #22c55e;
-            border-radius: 3px;
-        }
-
-        /* Selection */
         ::selection {
             background: #22c55e;
             color: #0f172a;
         }
 
-        /* Gradient Text */
         .gradient-text {
             background: linear-gradient(90deg, #25D366, #128C7E, #34B7F1);
             -webkit-background-clip: text;
@@ -84,14 +69,12 @@
             background-clip: text;
         }
 
-        /* Glass Effect */
         .glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Animations */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
@@ -100,11 +83,6 @@
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
             50% { box-shadow: 0 0 50px rgba(34, 197, 94, 0.6); }
-        }
-
-        @keyframes typing {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
         }
 
         @keyframes spin-slow {
@@ -124,71 +102,9 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 3s infinite; }
 
-        .animate-pulse-glow {
-            animation: pulse-glow 3s infinite;
-        }
-
-        /* Phone Mockup */
-        .phone-mockup {
-            background: #1e293b;
-            border-radius: 3rem;
-            padding: 12px;
-            box-shadow: 0 0 100px rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .phone-screen {
-            background: #0f172a;
-            border-radius: 2.5rem;
-            overflow: hidden;
-        }
-
-        .whatsapp-header {
-            background: #1e293b;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .chat-bubble {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 16px;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-
-        .chat-bubble.received {
-            background: #1e293b;
-            color: #e2e8f0;
-            align-self: flex-start;
-            border-top-right-radius: 4px;
-        }
-
-        .chat-bubble.sent {
-            background: #22c55e;
-            color: white;
-            align-self: flex-end;
-            border-top-left-radius: 4px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #64748b;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -215,7 +131,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Form Inputs */
         .form-input {
             width: 100%;
             padding: 16px 20px;
@@ -229,25 +144,17 @@
             transition: all 0.3s;
         }
 
-        .form-input::placeholder {
-            color: #64748b;
-        }
-
+        .form-input::placeholder { color: #64748b; }
         .form-input:focus {
             border-color: #22c55e;
             box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
         }
-
         .form-input.error {
             border-color: #ef4444;
             animation: shake 0.3s;
         }
+        .form-input.success { border-color: #22c55e; }
 
-        .form-input.success {
-            border-color: #22c55e;
-        }
-
-        /* Buttons */
         .btn-primary {
             display: inline-flex;
             align-items: center;
@@ -275,7 +182,6 @@
             transform: translateY(0) scale(0.98);
         }
 
-        /* Spinner */
         .spinner {
             width: 24px;
             height: 24px;
@@ -285,7 +191,6 @@
             animation: spin-slow 0.8s linear infinite;
         }
 
-        /* Success Check */
         .success-check {
             width: 80px;
             height: 80px;
@@ -300,7 +205,6 @@
             animation: bounce-in 0.5s ease-out;
         }
 
-        /* Error Message */
         .error-message {
             background: rgba(239, 68, 68, 0.1);
             color: #f87171;
@@ -312,13 +216,11 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .btn-primary {
                 width: 100%;
                 padding: 16px 32px;
             }
-
             .sticky-cta {
                 position: fixed;
                 bottom: 0;
@@ -348,7 +250,7 @@
         // ============== ICONS ==============
         const SparklesIcon = () => (
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+                <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/>
             </svg>
         );
 
@@ -370,23 +272,54 @@
             </svg>
         );
 
+        const TrendingDownIcon = () => (
+            <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
+            </svg>
+        );
+
         const ClockIcon = () => (
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
         );
 
+        const CalculatorIcon = () => (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+        );
+
+        const PlusIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+        );
+
+        const MinusIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+            </svg>
+        );
+
+        const RefreshIcon = () => (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+        );
+
+        const ArrowLeftIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        );
+
         // ============== BACKGROUND ==============
         const BackgroundAnimation = () => (
             <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-                {/* Aurora effects */}
                 <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-green-500/10 rounded-full blur-[120px] animate-pulse"></div>
                 <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" style={{animationDelay: '2s'}}></div>
-                
-                {/* Grid Pattern */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" style={{maskImage: 'radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%)'}}></div>
-                
-                {/* Floating particles */}
                 <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-500 rounded-full opacity-20 animate-ping"></div>
                 <div className="absolute top-3/4 right-1/4 w-2 h-2 bg-blue-500 rounded-full opacity-20 animate-ping" style={{animationDelay: '1.5s'}}></div>
             </div>
@@ -413,86 +346,13 @@
             </nav>
         );
 
-        // ============== PHONE MOCKUP ==============
-        const PhoneMockup = () => {
-            const [messages, setMessages] = useState([]);
-            const [showDisappointed, setShowDisappointed] = useState(false);
-
-            const messageSequence = [
-                { text: 'היי, מה המחיר לסידור זר ל-50 אורחים?', time: '02:00', type: 'received' },
-                { text: 'אני צריך תשובה עד מחר בבוקר', time: '02:01', type: 'received' },
-                { text: 'הלו?', time: '02:15', type: 'received' },
-                { text: 'תודה, מצאתי מישהו אחר 😔', time: '08:00', type: 'received' },
-            ];
-
-            useEffect(() => {
-                const addMessage = (index) => {
-                    if (index < messageSequence.length) {
-                        setTimeout(() => {
-                            setMessages(prev => [...prev, messageSequence[index]]);
-                            if (index === messageSequence.length - 1) {
-                                setTimeout(() => setShowDisappointed(true), 500);
-                            }
-                            addMessage(index + 1);
-                        }, index === 0 ? 1000 : 2000);
-                    }
-                };
-                const timer = setTimeout(() => addMessage(0), 1500);
-                return () => clearTimeout(timer);
-            }, []);
-
-            return (
-                <motion.div
-                    className="phone-mockup w-[280px] h-[500px] animate-float"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                >
-                    <div className="phone-screen h-full">
-                        <div className="whatsapp-header">
-                            <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-bold">🌸</div>
-                            <div>
-                                <div className="text-white font-medium text-sm">לקוח פוטנציאלי</div>
-                                <div className="text-slate-500 text-xs">אונליין</div>
-                            </div>
-                        </div>
-                        <div className="p-4 flex flex-col gap-2 h-[calc(100%-64px)] overflow-y-auto">
-                            <AnimatePresence>
-                                {messages.map((msg, i) => (
-                                    <motion.div
-                                        key={i}
-                                        className={`chat-bubble ${msg.type}`}
-                                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                    >
-                                        {msg.text}
-                                        <div className="text-[10px] text-slate-500 mt-1 text-left">{msg.time}</div>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                            {showDisappointed && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    className="text-5xl text-center mt-4"
-                                >
-                                    😢
-                                </motion.div>
-                            )}
-                        </div>
-                    </div>
-                </motion.div>
-            );
-        };
-
-        // ============== HERO ==============
+        // ============== HERO (כמו ב-ZIP) ==============
         const HeroSection = ({ onOpenModal }) => {
             return (
-                <section className="pt-32 pb-20 px-6 min-h-screen flex flex-col items-center justify-center text-center relative z-10">
+                <section className="pt-48 pb-32 px-6 max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
                     {/* Badge */}
                     <motion.div 
-                        className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass text-green-400 text-sm font-bold mb-10 shadow-[0_0_20px_rgba(34,197,94,0.1)]"
+                        className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-green-400 text-sm font-bold mb-10 shadow-[0_0_20px_rgba(34,197,94,0.1)]"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                     >
@@ -500,60 +360,50 @@
                         <span className="tracking-wide">המזכירה שעובדת בזמן שאתה חי</span>
                     </motion.div>
 
-                    <div className="flex flex-col lg:flex-row items-center gap-12 max-w-7xl mx-auto">
-                        <div className="flex-1 text-center lg:text-right">
-                            {/* Main Headline */}
-                            <motion.h1 
-                                className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-8 tracking-tighter"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.2 }}
-                            >
-                                הלקוח כתב לך ב-02:00
-                                <br />
-                                <span className="gradient-text">בבוקר הוא כבר הלך.</span>
-                            </motion.h1>
+                    {/* Main Headline */}
+                    <motion.h1 
+                        className="text-6xl md:text-9xl font-black leading-[0.9] mb-10 max-w-6xl tracking-tighter"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        אל תיתן ללקוחות שלך <span className="gradient-text">לחכות למענה.</span>
+                    </motion.h1>
 
-                            {/* Subtitle */}
-                            <motion.p 
-                                className="text-xl md:text-2xl text-slate-400 mb-12 font-light max-w-2xl mx-auto lg:mx-0"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.4 }}
-                            >
-                                המזכירה האוטומטית שעונה על כל הודעה, קובעת פגישות, ולעולם לא ישנה – <span className="text-white font-medium">כדי שאתה לא תפספס אף לקוח.</span>
-                            </motion.p>
+                    {/* Subtitle */}
+                    <motion.p 
+                        className="text-xl md:text-3xl text-slate-400 max-w-4xl mb-14 leading-relaxed font-light"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        הצ'אט-בוט החכם שלנו סוגר עסקאות, מתזמן פגישות ומסנן לידים <span className="text-white font-medium">בזמן אמת</span> – כדי שאתה תוכל להתמקד במה שחשוב באמת.
+                    </motion.p>
 
-                            {/* CTA Button */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.6 }}
-                            >
-                                <button 
-                                    className="btn-primary animate-pulse-glow"
-                                    onClick={onOpenModal}
-                                >
-                                    <MessageIcon />
-                                    להפסיק לאבד לקוחות
-                                </button>
-                            </motion.div>
-                        </div>
-
-                        {/* Phone Mockup */}
-                        <div className="flex-1 flex justify-center">
-                            <PhoneMockup />
-                        </div>
-                    </div>
+                    {/* CTA Button */}
+                    <motion.div
+                        className="flex flex-col sm:flex-row gap-6 relative mb-32"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                    >
+                        <button 
+                            className="px-12 py-6 bg-green-500 text-slate-950 rounded-2xl text-2xl font-black hover:bg-green-400 hover:scale-105 active:scale-95 transition-all shadow-[0_20px_50px_-10px_rgba(34,197,94,0.5)] flex items-center justify-center gap-3 group"
+                            onClick={onOpenModal}
+                        >
+                            <span className="group-hover:rotate-12 transition-transform"><MessageIcon /></span>
+                            אני רוצה בוט לעסק שלי
+                        </button>
+                    </motion.div>
 
                     {/* Feature Badges */}
                     <motion.div 
-                        className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl mt-20"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8 }}
                     >
-                        <div className="glass p-5 rounded-2xl flex items-center gap-4 border-white/10 hover:border-green-500/50 transition-colors">
+                        <div className="glass p-6 rounded-3xl flex items-center gap-4 border-white/10 hover:border-green-500/50 transition-colors">
                             <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
                                 <ZapIcon />
                             </div>
@@ -562,7 +412,7 @@
                                 <div className="text-xs text-slate-500">פחות מ-2 שניות לכל לקוח</div>
                             </div>
                         </div>
-                        <div className="glass p-5 rounded-2xl flex items-center gap-4 border-white/10 hover:border-blue-500/50 transition-colors">
+                        <div className="glass p-6 rounded-3xl flex items-center gap-4 border-white/10 hover:border-blue-500/50 transition-colors">
                             <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400">
                                 <TrendingUpIcon />
                             </div>
@@ -571,13 +421,13 @@
                                 <div className="text-xs text-slate-500">שיפור של 40% בסגירת לידים</div>
                             </div>
                         </div>
-                        <div className="glass p-5 rounded-2xl flex items-center gap-4 border-white/10 hover:border-purple-500/50 transition-colors">
+                        <div className="glass p-6 rounded-3xl flex items-center gap-4 border-white/10 hover:border-purple-500/50 transition-colors">
                             <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
                                 <ClockIcon />
                             </div>
                             <div className="text-right">
                                 <div className="font-bold">חיסכון בזמן</div>
-                                <div className="text-xs text-slate-500">10+ שעות שבועיות של מענה</div>
+                                <div className="text-xs text-slate-500">10+ שעות שבועיות של מענה ידני</div>
                             </div>
                         </div>
                     </motion.div>
@@ -585,42 +435,138 @@
             );
         };
 
-        // ============== PROBLEM SECTION ==============
-        const ProblemSection = () => {
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+        // ============== LOSS CALCULATOR ==============
+        const LossCalculator = () => {
+            const [step, setStep] = useState(0);
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                leadValue: '',
+                weeklyLeads: ''
+            });
 
-            const problems = [
-                { icon: '🕐', text: 'עונה על הודעות גם ב-23:00', color: 'green' },
-                { icon: '📱', text: 'מפספס לידים כי לא מספיק מהיר', color: 'blue' },
-                { icon: '💸', text: 'משלם על CRM שלא משתמש בו', color: 'purple' }
+            const nextStep = () => setStep(step + 1);
+            const prevStep = () => setStep(step - 1);
+
+            const calculateLoss = () => {
+                const value = parseFloat(formData.leadValue) || 0;
+                const missedPerWeek = parseFloat(formData.weeklyLeads) || 0;
+                const monthlyLoss = (missedPerWeek * 4) * value;
+                return monthlyLoss.toLocaleString();
+            };
+
+            const steps = [
+                {
+                    title: "בואו נתחיל, מה השם שלך?",
+                    content: (
+                        <input 
+                            type="text" 
+                            placeholder="השם המלא שלך" 
+                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
+                            value={formData.name}
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        />
+                    )
+                },
+                {
+                    title: "אימייל לעדכונים (אופציונלי)",
+                    content: (
+                        <input 
+                            type="email" 
+                            placeholder="you@example.com" 
+                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        />
+                    )
+                },
+                {
+                    title: "מה הערך הממוצע של כל ליד עבורך? (₪)",
+                    content: (
+                        <input 
+                            type="number" 
+                            placeholder="למשל: 500" 
+                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
+                            value={formData.leadValue}
+                            onChange={(e) => setFormData({...formData, leadValue: e.target.value})}
+                        />
+                    )
+                },
+                {
+                    title: "כמה לידים אתה מפספס / שוכח לבצע פולואפ בשבוע?",
+                    content: (
+                        <input 
+                            type="number" 
+                            placeholder="למשל: 15" 
+                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
+                            value={formData.weeklyLeads}
+                            onChange={(e) => setFormData({...formData, weeklyLeads: e.target.value})}
+                        />
+                    )
+                },
+                {
+                    title: "התוצאות מוכנות...",
+                    content: (
+                        <div className="text-center p-8 bg-red-500/10 border border-red-500/20 rounded-3xl">
+                            <div className="text-red-500 mx-auto mb-6"><TrendingDownIcon /></div>
+                            <h3 className="text-2xl text-slate-300 mb-2">{formData.name}, העסק שלך מפסיד כרגע בגלל חוסר מענה:</h3>
+                            <div className="text-6xl md:text-8xl font-black text-red-500 mb-6 tracking-tighter">
+                                ₪{calculateLoss()}
+                            </div>
+                            <p className="text-slate-400 text-lg mb-8">כל חודש מבוזבז בגלל לידים שפשוט נופלים בין הכיסאות.</p>
+                            <button 
+                                onClick={() => setStep(0)}
+                                className="flex items-center gap-2 mx-auto text-slate-500 hover:text-white transition-colors"
+                            >
+                                <RefreshIcon /> חישוב מחדש
+                            </button>
+                        </div>
+                    )
+                }
             ];
 
             return (
-                <section className="py-32 px-6 relative z-10" ref={ref}>
-                    <div className="max-w-7xl mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-                            {problems.map((problem, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="glass p-10 rounded-[2rem] text-center hover:bg-white/[0.04] hover:-translate-y-4 transition-all duration-700"
-                                    initial={{ opacity: 0, y: 40 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ delay: i * 0.2, duration: 0.6 }}
-                                >
-                                    <div className="text-5xl mb-6">{problem.icon}</div>
-                                    <p className="text-xl font-medium text-slate-300">{problem.text}</p>
-                                </motion.div>
-                            ))}
+                <section className="py-32 px-6 relative z-10">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="text-center mb-12">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-400 text-sm font-bold mb-6">
+                                <CalculatorIcon />
+                                מחשבון הפסד עסקי
+                            </div>
+                            <h2 className="text-4xl md:text-6xl font-black mb-6">כמה כסף אתם <span className="text-red-500">מפסידים?</span></h2>
+                            <p className="text-slate-400 text-xl">גלו תוך 30 שניות את הפוטנציאל הלא מנוצל של הוואטסאפ שלכם</p>
                         </div>
-                        <motion.h2
-                            initial={{ opacity: 0 }}
-                            animate={isInView ? { opacity: 1 } : {}}
-                            transition={{ delay: 0.8 }}
-                            className="text-4xl md:text-6xl font-black text-center"
-                        >
-                            זה לא אמור להיות <span className="text-green-500">ככה.</span>
-                        </motion.h2>
+
+                        <div className="glass p-1 rounded-[3rem] border-white/10 shadow-2xl relative overflow-hidden">
+                            <div className="absolute top-0 left-0 h-1 bg-green-500 transition-all duration-500" style={{ width: `${(step / (steps.length - 1)) * 100}%` }}></div>
+                            <div className="p-8 md:p-12 bg-slate-900 rounded-[calc(3rem-4px)]">
+                                <div className="min-h-[300px] flex flex-col justify-center">
+                                    <h4 className="text-2xl md:text-3xl font-bold mb-10 text-center">{steps[step].title}</h4>
+                                    {steps[step].content}
+                                </div>
+                                
+                                {step < steps.length - 1 && (
+                                    <div className="flex items-center justify-between mt-12 gap-6">
+                                        <button 
+                                            onClick={nextStep}
+                                            disabled={step === 0 && !formData.name}
+                                            className="flex-1 py-5 bg-white text-slate-950 rounded-2xl font-black text-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-30 flex items-center justify-center gap-3"
+                                        >
+                                            {step === steps.length - 2 ? 'ראה תוצאות' : 'המשך'}
+                                            <ArrowLeftIcon />
+                                        </button>
+                                        {step > 0 && (
+                                            <button 
+                                                onClick={prevStep}
+                                                className="px-8 py-5 border border-white/10 text-slate-400 rounded-2xl font-bold hover:text-white transition-all"
+                                            >
+                                                חזרה
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </section>
             );
@@ -632,12 +578,12 @@
             const isInView = useInView(ref, { once: true, margin: "-100px" });
 
             const features = [
-                { icon: '⚡', title: 'עונה בתוך שניות', color: 'green' },
-                { icon: '📅', title: 'קובע פגישות אוטומטית', color: 'blue' },
-                { icon: '📄', title: 'שולח הצעות מחיר', color: 'purple' },
-                { icon: '🎯', title: 'עוקב אחרי לידים', color: 'green' },
-                { icon: '💳', title: 'גובה תשלומים', color: 'blue' },
-                { icon: '🧠', title: 'לומד איך אתה עובד', color: 'purple' }
+                { icon: '⚡', title: 'עונה בתוך שניות' },
+                { icon: '📅', title: 'קובע פגישות אוטומטית' },
+                { icon: '📄', title: 'שולח הצעות מחיר' },
+                { icon: '🎯', title: 'עוקב אחרי לידים' },
+                { icon: '💳', title: 'גובה תשלומים' },
+                { icon: '🧠', title: 'לומד איך אתה עובד' }
             ];
 
             return (
@@ -673,7 +619,7 @@
             );
         };
 
-        // ============== TESTIMONIALS ==============
+        // ============== TESTIMONIALS (עם 5 עדויות) ==============
         const TestimonialsSection = () => {
             const ref = useRef(null);
             const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -700,6 +646,20 @@
                     quote: 'בזמן שצילמתי חתונה, הבוט סגר לי 3 חתונות נוספות.',
                     metric: '+40% הכנסה',
                     avatar: '📸'
+                },
+                {
+                    name: 'רונית',
+                    role: 'מעצבת גרפית',
+                    quote: 'לפני HELP הפסדתי לקוחות כי לא הספקתי לענות. עכשיו הכל אוטומטי.',
+                    metric: '3x יותר לקוחות',
+                    avatar: '🎨'
+                },
+                {
+                    name: 'אורי',
+                    role: 'מדריך כושר',
+                    quote: 'הבוט מתאם לי אימונים גם כשאני באמצע אימון. פשוט גאוני.',
+                    metric: '100% זמינות',
+                    avatar: '💪'
                 }
             ];
 
@@ -758,66 +718,61 @@
             );
         };
 
-        // ============== PRICING ==============
-        const PricingSection = () => {
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, margin: "-100px" });
+        // ============== FAQ ==============
+        const FAQItem = ({ question, answer }) => {
+            const [isOpen, setIsOpen] = useState(false);
 
             return (
-                <section className="py-32 px-6 relative z-10" ref={ref}>
-                    <div className="max-w-3xl mx-auto">
-                        <motion.h2
-                            initial={{ opacity: 0 }}
-                            animate={isInView ? { opacity: 1 } : {}}
-                            className="text-4xl md:text-6xl font-black text-center mb-16"
-                        >
-                            כמה זה <span className="text-green-500">עולה?</span>
-                        </motion.h2>
-
-                        <div className="glass rounded-[2rem] p-8 md:p-12">
-                            <motion.div
-                                className="flex justify-between items-center py-4 border-b border-white/10 opacity-50 line-through"
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={isInView ? { opacity: 0.5, x: 0 } : {}}
-                                transition={{ delay: 0.2 }}
-                            >
-                                <span className="text-lg">מזכירה</span>
-                                <span className="text-lg">8,000 ש"ח/חודש ❌</span>
-                            </motion.div>
-                            
-                            <motion.div
-                                className="flex justify-between items-center py-4 border-b border-white/10 opacity-50 line-through"
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={isInView ? { opacity: 0.5, x: 0 } : {}}
-                                transition={{ delay: 0.4 }}
-                            >
-                                <span className="text-lg">CRM + כלים</span>
-                                <span className="text-lg">800 ש"ח/חודש ❌</span>
-                            </motion.div>
-                            
-                            <motion.div
-                                className="flex justify-between items-center py-6 mt-4 bg-green-500/10 rounded-2xl px-6 border-2 border-green-500"
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ delay: 0.6 }}
-                            >
-                                <span className="text-2xl font-black">HELP</span>
-                                <span className="text-2xl font-black text-green-500">497 ש"ח/חודש ✅</span>
-                            </motion.div>
-                            
-                            <motion.div
-                                className="text-center mt-10 flex items-center justify-center gap-4"
-                                initial={{ opacity: 0 }}
-                                animate={isInView ? { opacity: 1 } : {}}
-                                transition={{ delay: 0.8 }}
-                            >
-                                <span className="text-4xl">☕🥐</span>
-                                <div className="text-right">
-                                    <p className="text-green-400 font-bold text-lg">פחות מ-17 ש"ח ליום</p>
-                                    <p className="text-slate-500 text-sm">במחיר של ארוחת בוקר אחת</p>
-                                </div>
-                            </motion.div>
+                <div className="mb-4">
+                    <button 
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={`w-full p-6 rounded-2xl glass border flex items-center justify-between gap-4 text-right transition-all duration-300 ${isOpen ? 'border-green-500/50 bg-white/5' : 'border-white/5'}`}
+                    >
+                        <span className="text-xl font-bold">{question}</span>
+                        <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-green-500' : 'text-slate-500'}`}>
+                            {isOpen ? <MinusIcon /> : <PlusIcon />}
                         </div>
+                    </button>
+                    <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                        <div className="p-6 text-slate-400 text-lg leading-relaxed border-x border-b border-white/5 rounded-b-2xl -mt-4 bg-white/[0.02]">
+                            {answer}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FAQSection = () => {
+            const faqs = [
+                {
+                    question: "האם הבוט יודע לדבר בעברית טבעית?",
+                    answer: "בוודאי. אנחנו משתמשים בטכנולוגיית AI מתקדמת שמותאמת במיוחד לשפה העברית, כולל סלנג, קיצורים והבנת הקשרים מורכבים בשיחה."
+                },
+                {
+                    question: "האם זה דורש מספר וואטסאפ חדש?",
+                    answer: "ממש לא. ניתן לחבר את המערכת למספר הקיים של העסק שלכם (וואטסאפ עסקי) בצורה חלקה ומאובטחת."
+                },
+                {
+                    question: "האם ניתן לחבר את הבוט למערכת ה-CRM שלי?",
+                    answer: "כן, אנחנו תומכים באינטגרציות לכל המערכות המובילות בשוק (Monday, Pipedrive, HubSpot) וגם למערכות ישראליות מקומיות."
+                },
+                {
+                    question: "כמה זמן לוקח להקים בוט כזה?",
+                    answer: "תהליך האפיון וההקמה שלנו מהיר במיוחד. בדרך כלל הבוט שלכם יהיה באוויר ויתחיל לענות ללקוחות תוך פחות מ-48 שעות."
+                }
+            ];
+
+            return (
+                <section className="py-32 px-6 max-w-4xl mx-auto relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-6xl font-black mb-6">שאלות <span className="text-green-500">נפוצות</span></h2>
+                        <p className="text-xl text-slate-400">כל מה שרציתם לדעת על הצ'אט-בוט החדש שלכם</p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                        {faqs.map((faq, idx) => (
+                            <FAQItem key={idx} {...faq} />
+                        ))}
                     </div>
                 </section>
             );
@@ -1138,10 +1093,10 @@
                     <BackgroundAnimation />
                     <Navbar onOpenModal={() => setIsModalOpen(true)} />
                     <HeroSection onOpenModal={() => setIsModalOpen(true)} />
-                    <ProblemSection />
+                    <LossCalculator />
                     <FeaturesSection />
                     <TestimonialsSection />
-                    <PricingSection />
+                    <FAQSection />
                     <ScarcitySection />
                     <FinalCTASection onOpenModal={() => setIsModalOpen(true)} />
                     <Footer />
@@ -1151,7 +1106,6 @@
             );
         };
 
-        // Render
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
