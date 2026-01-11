@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בלוג | Easychat - טיפים ומדריכים לשירות לקוחות חכם</title>
+    <meta name="description" content="בלוג Easychat - מדריכים, טיפים וסיפורי הצלחה על שירות לקוחות אוטומטי, בוט וואטסאפ, ואוטומציה לעסקים קטנים בישראל.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React & Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'assistant': ['Assistant', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Assistant', sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 3px; }
+        ::selection { background: #22c55e; color: #0f172a; }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #25D366, #128C7E, #34B7F1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blog-content h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+
+        .blog-content h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #22c55e;
+        }
+
+        .blog-content p {
+            margin-bottom: 1.25rem;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 1.25rem;
+            padding-right: 1.5rem;
+        }
+
+        .blog-content li {
+            margin-bottom: 0.5rem;
+            color: #94a3b8;
+        }
+
+        .blog-content blockquote {
+            border-right: 4px solid #22c55e;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 0 1rem 1rem 0;
+            font-style: italic;
+        }
+
+        .blog-content blockquote p {
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-bubble {
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.75rem;
+            max-width: 85%;
+        }
+
+        .chat-customer {
+            background: #1e293b;
+            margin-left: auto;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .chat-bot {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #0f172a;
+            margin-right: auto;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion } = Motion;
+
+        // Icons
+        const Icons = {
+            Message: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            ),
+            ArrowRight: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            ),
+            ArrowLeft: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            ),
+            Clock: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+            Calendar: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            ),
+            Tag: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+            ),
+            Check: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+            ),
+            TrendingUp: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+            ),
+            Ship: () => (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            )
+        };
+
+        // Navbar Component
+        const Navbar = () => {
+            const [isScrolled, setIsScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setIsScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                    isScrolled ? 'py-3 bg-slate-950/80 backdrop-blur-lg border-b border-white/10' : 'py-5 bg-transparent'
+                }`}>
+                    <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                        <a href="/" className="flex items-center gap-3 group">
+                            <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
+                                <Icons.Message />
+                            </div>
+                            <span className="text-2xl font-black tracking-tight">
+                                Easy<span className="text-green-500">chat</span>
+                            </span>
+                        </a>
+                        
+                        <div className="hidden md:flex items-center gap-8">
+                            <a href="/" className="text-slate-300 hover:text-green-500 transition-colors font-medium">בית</a>
+                            <a href="/blog" className="text-green-500 font-medium">בלוג</a>
+                            <a href="/#about" className="text-slate-300 hover:text-green-500 transition-colors font-medium">אודות</a>
+                        </div>
+
+                        <a href="/" className="px-6 py-2.5 bg-green-500 text-slate-950 rounded-full font-bold hover:bg-green-400 transition-all">
+                            התחל בחינם
+                        </a>
+                    </div>
+                </nav>
+            );
+        };
+
+        // Blog List Page
+        const BlogListPage = ({ onSelectPost }) => {
+            const posts = [
+                {
+                    id: 'sea4u-case-study',
+                    title: 'איך Sea4u הכפילו את כמות ההזמנות תוך חודש',
+                    excerpt: 'Sea4u, חברת השכרת יאכטות באילת, עברו מזמן מענה של 4-6 שעות ל-2 דקות. קרא את סיפור ההצלחה המלא.',
+                    category: 'סיפורי הצלחה',
+                    readTime: '5 דקות',
+                    date: 'ינואר 2025',
+                    image: '🚤',
+                    featured: true
+                },
+                {
+                    id: 'whatsapp-bot-guide',
+                    title: 'המדריך המלא: מהו בוט וואטסאפ ולמה העסק שלך צריך אחד',
+                    excerpt: 'כל מה שצריך לדעת על בוטים לוואטסאפ - איך הם עובדים, כמה הם עולים, ואיך לבחור את הנכון.',
+                    category: 'מדריכים',
+                    readTime: '8 דקות',
+                    date: 'בקרוב',
+                    image: '🤖',
+                    featured: false,
+                    comingSoon: true
+                },
+                {
+                    id: 'faster-response',
+                    title: '5 דרכים לענות ללקוחות מהר יותר (בלי לעבוד יותר)',
+                    excerpt: 'טיפים פרקטיים שיעזרו לך לשפר את זמני התגובה ולהפסיק לאבד לקוחות.',
+                    category: 'טיפים',
+                    readTime: '4 דקות',
+                    date: 'בקרוב',
+                    image: '⚡',
+                    featured: false,
+                    comingSoon: true
+                }
+            ];
+
+            return (
+                <section className="pt-32 pb-20 relative z-10">
+                    <div className="max-w-7xl mx-auto px-6">
+                        {/* Header */}
+                        <motion.div 
+                            className="text-center mb-16"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-xs font-black uppercase tracking-[0.2em] mb-6">
+                                הבלוג שלנו
+                            </div>
+                            <h1 className="text-4xl md:text-6xl font-black mb-6">
+                                טיפים, מדריכים <span className="gradient-text">וסיפורי הצלחה</span>
+                            </h1>
+                            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+                                למד איך להפוך את שירות הלקוחות שלך לאוטומטי, יעיל, וחכם יותר
+                            </p>
+                        </motion.div>
+
+                        {/* Featured Post */}
+                        {posts.filter(p => p.featured).map(post => (
+                            <motion.article
+                                key={post.id}
+                                className="glass rounded-[2rem] overflow-hidden mb-12 cursor-pointer hover-lift"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                onClick={() => onSelectPost(post.id)}
+                            >
+                                <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12">
+                                    <div className="flex flex-col justify-center">
+                                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-bold w-fit mb-4">
+                                            ⭐ מומלץ
+                                        </span>
+                                        <h2 className="text-2xl md:text-4xl font-black mb-4">{post.title}</h2>
+                                        <p className="text-slate-400 text-lg mb-6">{post.excerpt}</p>
+                                        <div className="flex items-center gap-6 text-sm text-slate-500">
+                                            <span className="flex items-center gap-2">
+                                                <Icons.Clock />
+                                                {post.readTime}
+                                            </span>
+                                            <span className="flex items-center gap-2">
+                                                <Icons.Calendar />
+                                                {post.date}
+                                            </span>
+                                            <span className="flex items-center gap-2">
+                                                <Icons.Tag />
+                                                {post.category}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-center">
+                                        <div className="w-48 h-48 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-3xl flex items-center justify-center text-8xl">
+                                            {post.image}
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.article>
+                        ))}
+
+                        {/* Posts Grid */}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {posts.filter(p => !p.featured).map((post, i) => (
+                                <motion.article
+                                    key={post.id}
+                                    className={`glass rounded-2xl p-6 hover-lift ${post.comingSoon ? 'opacity-60' : 'cursor-pointer'}`}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 + i * 0.1 }}
+                                    onClick={() => !post.comingSoon && onSelectPost(post.id)}
+                                >
+                                    <div className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl mb-4">
+                                        {post.image}
+                                    </div>
+                                    <span className="text-green-500 text-sm font-bold">{post.category}</span>
+                                    <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
+                                    <p className="text-slate-500 text-sm mb-4">{post.excerpt}</p>
+                                    <div className="flex items-center gap-4 text-xs text-slate-600">
+                                        <span className="flex items-center gap-1">
+                                            <Icons.Clock />
+                                            {post.readTime}
+                                        </span>
+                                        <span>{post.date}</span>
+                                    </div>
+                                    {post.comingSoon && (
+                                        <span className="inline-block mt-4 px-3 py-1 bg-slate-800 rounded-full text-xs text-slate-400">
+                                            בקרוב...
+                                        </span>
+                                    )}
+                                </motion.article>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Sea4u Case Study Post
+        const Sea4uCaseStudy = ({ onBack }) => {
+            return (
+                <article className="pt-32 pb-20 relative z-10">
+                    <div className="max-w-4xl mx-auto px-6">
+                        {/* Back Button */}
+                        <motion.button
+                            onClick={onBack}
+                            className="flex items-center gap-2 text-slate-400 hover:text-green-500 transition-colors mb-8"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            <Icons.ArrowLeft />
+                            חזרה לבלוג
+                        </motion.button>
+
+                        {/* Header */}
+                        <motion.header
+                            className="mb-12"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-bold mb-4">
+                                סיפורי הצלחה
+                            </span>
+                            <h1 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
+                                איך Sea4u הכפילו את כמות ההזמנות תוך חודש עם Easychat
+                            </h1>
+                            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
+                                <span className="flex items-center gap-2">
+                                    <Icons.Clock />
+                                    5 דקות קריאה
+                                </span>
+                                <span className="flex items-center gap-2">
+                                    <Icons.Calendar />
+                                    ינואר 2025
+                                </span>
+                                <span className="flex items-center gap-2">
+                                    <Icons.Tag />
+                                    השכרת יאכטות, אוטומציה, וואטסאפ
+                                </span>
+                            </div>
+                        </motion.header>
+
+                        {/* Hero Image */}
+                        <motion.div
+                            className="glass rounded-3xl p-12 mb-12 text-center"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            <div className="text-8xl mb-4">🚤</div>
+                            <h2 className="text-2xl font-bold text-green-500">Sea4u</h2>
+                            <p className="text-slate-400">השכרת יאכטות ושיט פרטי באילת</p>
+                        </motion.div>
+
+                        {/* Content */}
+                        <motion.div
+                            className="blog-content"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <h2>הסיפור של Sea4u</h2>
+                            <p>
+                                Sea4u היא חברת השכרת יאכטות ושיט פרטי באילת. עם יותר מ-10 שנות ניסיון, 
+                                הם מציעים חוויות ים בלתי נשכחות - מהפלגות שקיעה רומנטיות ועד ימי כיף לקבוצות.
+                            </p>
+                            <p>אבל הייתה להם בעיה גדולה.</p>
+
+                            <h2>האתגר: לקוחות שמחכים = לקוחות שהולכים</h2>
+                            <blockquote>
+                                <p>"רוב הפניות שלנו מגיעות בערב ובסופי שבוע. בדיוק כשאנחנו בים עם לקוחות, או מנסים לנוח."</p>
+                                <footer className="text-slate-500 text-sm mt-2">— בעל העסק</footer>
+                            </blockquote>
+
+                            <p>המספרים דיברו בעד עצמם:</p>
+
+                            {/* Stats Before */}
+                            <div className="grid grid-cols-3 gap-4 my-8">
+                                <div className="stat-card">
+                                    <div className="text-3xl font-black text-red-400">4-6</div>
+                                    <div className="text-slate-500 text-sm">שעות זמן מענה</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="text-3xl font-black text-red-400">60%</div>
+                                    <div className="text-slate-500 text-sm">פניות שנענו</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="text-3xl font-black text-red-400">15-20</div>
+                                    <div className="text-slate-500 text-sm">לידים אבודים בחודש</div>
+                                </div>
+                            </div>
+
+                            <p>
+                                "ידענו שאנחנו מפספסים הזמנות. לקוח ששולח הודעה ב-10 בלילה רוצה תשובה עכשיו, 
+                                לא מחר בבוקר."
+                            </p>
+
+                            <h2>הפתרון: בוט שמדבר בשפה של Sea4u</h2>
+                            <p>תוך 48 שעות, הקמנו בוט מותאם אישית שיודע:</p>
+                            <ul>
+                                <li>✅ לענות על שאלות נפוצות על היאכטות</li>
+                                <li>✅ לשלוח מחירון מעודכן</li>
+                                <li>✅ לתאם תאריכים ושעות</li>
+                                <li>✅ לאסוף פרטי לקוח ולהעביר ליומן</li>
+                                <li>✅ לזהות לקוחות "חמים" ולהתריע בזמן אמת</li>
+                            </ul>
+
+                            <h3>דוגמה לשיחה אמיתית</h3>
+                            
+                            {/* Chat Example */}
+                            <div className="glass rounded-2xl p-6 my-8">
+                                <div className="text-xs text-slate-500 text-center mb-4">22:47</div>
+                                
+                                <div className="chat-bubble chat-customer">
+                                    <p className="text-slate-200 m-0">היי, מתעניין בהשכרת יאכטה ל-10 אנשים ליום הולדת</p>
+                                </div>
+                                
+                                <div className="chat-bubble chat-bot">
+                                    <p className="m-0 font-medium">היי! שמח לעזור 🚤</p>
+                                    <p className="m-0 mt-2">ליום הולדת אני ממליץ על היאכטה "Blue Dream" - מושלמת ל-10 אנשים, עם מערכת סאונד ואזור שיזוף.</p>
+                                    <p className="m-0 mt-2 font-medium">📅 באיזה תאריך חשבתם?</p>
+                                </div>
+                                
+                                <div className="chat-bubble chat-customer">
+                                    <p className="text-slate-200 m-0">יום שישי הקרוב אפשרי?</p>
+                                </div>
+                                
+                                <div className="chat-bubble chat-bot">
+                                    <p className="m-0">בודק לך עכשיו... ✅ יש פנוי!</p>
+                                    <p className="m-0 mt-2">יש לנו שני מסלולים:</p>
+                                    <p className="m-0">• הפלגת בוקר (10:00-14:00) - ₪2,400</p>
+                                    <p className="m-0">• הפלגת שקיעה (16:00-20:00) - ₪2,800</p>
+                                    <p className="m-0 mt-2 font-medium">מה מתאים לך יותר?</p>
+                                </div>
+                            </div>
+
+                            <h2>התוצאות: המספרים מדברים</h2>
+                            <p>אחרי חודש אחד עם Easychat:</p>
+
+                            {/* Results Comparison */}
+                            <div className="glass rounded-2xl p-8 my-8">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    <div className="text-center">
+                                        <div className="text-sm text-slate-500 mb-2">זמן מענה</div>
+                                        <div className="text-red-400 line-through text-lg">4-6 שעות</div>
+                                        <div className="text-green-500 text-2xl font-black">2 דקות</div>
+                                        <div className="text-green-400 text-sm mt-1">↓ 99%</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-sm text-slate-500 mb-2">פניות שנענו</div>
+                                        <div className="text-red-400 line-through text-lg">60%</div>
+                                        <div className="text-green-500 text-2xl font-black">100%</div>
+                                        <div className="text-green-400 text-sm mt-1">↑ 67%</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-sm text-slate-500 mb-2">המרה לידים</div>
+                                        <div className="text-red-400 line-through text-lg">15%</div>
+                                        <div className="text-green-500 text-2xl font-black">32%</div>
+                                        <div className="text-green-400 text-sm mt-1">↑ 113%</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-sm text-slate-500 mb-2">הזמנות בחודש</div>
+                                        <div className="text-red-400 line-through text-lg">12</div>
+                                        <div className="text-green-500 text-2xl font-black">26</div>
+                                        <div className="text-green-400 text-sm mt-1">↑ 117%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <blockquote>
+                                <p>"הבוט ענה על 847 הודעות בחודש הראשון. זה כאילו שכרתי עובד שעובד 24/7 ולעולם לא מתעייף."</p>
+                                <footer className="text-slate-500 text-sm mt-2">— בעלי Sea4u</footer>
+                            </blockquote>
+
+                            <h2>מה הלקוחות אומרים?</h2>
+                            <div className="grid md:grid-cols-2 gap-4 my-8">
+                                <div className="glass rounded-xl p-6">
+                                    <p className="text-slate-300 italic">"וואו, תגובה מהירה! תודה רבה"</p>
+                                    <p className="text-slate-500 text-sm mt-2">— לקוח ב-23:15 בלילה</p>
+                                </div>
+                                <div className="glass rounded-xl p-6">
+                                    <p className="text-slate-300 italic">"אהבתי שקיבלתי את כל המידע מיד, בלי לחכות"</p>
+                                    <p className="text-slate-500 text-sm mt-2">— לקוחה שהזמינה הפלגת יום הולדת</p>
+                                </div>
+                            </div>
+
+                            <h2>הלמידה: למה זה עבד?</h2>
+                            
+                            <h3>1. התאמה אישית</h3>
+                            <p>הבוט לא נשמע כמו רובוט. הוא משתמש בשפה של Sea4u, עם אימוג'ים ונימה חמה.</p>
+                            
+                            <h3>2. מענה מיידי 24/7</h3>
+                            <p>לקוחות מקבלים תשובה תוך שניות, גם ב-3 בלילה.</p>
+                            
+                            <h3>3. מידע רלוונטי מיד</h3>
+                            <p>במקום "השאר פרטים ונחזור אליך", הלקוח מקבל מחירים, תאריכים פנויים, ואפשרות להזמין.</p>
+                            
+                            <h3>4. העברה חלקה לאדם</h3>
+                            <p>כשהשיחה מורכבת, הבוט מעביר לבעלים עם כל ההיסטוריה.</p>
+
+                            {/* CTA */}
+                            <div className="glass rounded-3xl p-8 md:p-12 text-center mt-16 bg-gradient-to-br from-green-500/10 to-blue-500/10">
+                                <h2 className="text-2xl md:text-3xl font-black mb-4">רוצה תוצאות דומות?</h2>
+                                <p className="text-slate-400 mb-8 text-lg">
+                                    אם גם אתה מרגיש שאתה מפספס לקוחות כי אין לך זמן לענות, בוא נדבר.
+                                    <br />
+                                    <strong className="text-white">ההתקנה לוקחת 48 שעות. הניסיון חינם.</strong>
+                                </p>
+                                <a 
+                                    href="/"
+                                    className="inline-flex items-center gap-3 px-10 py-5 bg-green-500 text-slate-950 rounded-2xl text-xl font-black hover:bg-green-400 transition-all"
+                                >
+                                    <Icons.Message />
+                                    אני רוצה לראות איך זה עובד
+                                    <Icons.ArrowRight />
+                                </a>
+                            </div>
+                        </motion.div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-white/10">
+                            {['השכרת יאכטות', 'וואטסאפ עסקי', 'אוטומציה', 'שירות לקוחות', 'case study'].map(tag => (
+                                <span key={tag} className="px-3 py-1 bg-slate-800 rounded-full text-sm text-slate-400">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </article>
+            );
+        };
+
+        // Footer
+        const Footer = () => (
+            <footer className="border-t border-white/5 py-12 relative z-10">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                                <Icons.Message />
+                            </div>
+                            <span className="font-bold">Easy<span className="text-green-500">chat</span></span>
+                        </div>
+                        <p className="text-slate-600 text-sm">© 2025 Easychat. כל הזכויות שמורות.</p>
+                        <span className="text-slate-600 text-sm">made with 💚 in Israel</span>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        // Main App
+        const App = () => {
+            const [currentPost, setCurrentPost] = useState(null);
+
+            return (
+                <>
+                    <Navbar />
+                    {currentPost === 'sea4u-case-study' ? (
+                        <Sea4uCaseStudy onBack={() => setCurrentPost(null)} />
+                    ) : (
+                        <BlogListPage onSelectPost={setCurrentPost} />
+                    )}
+                    <Footer />
+                </>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
