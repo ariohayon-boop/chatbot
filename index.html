@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easychat | המזכירה שעובדת בזמן שאתה חי</title>
+    <title>Easychat | הבוט החכם לעסק שלך</title>
     <meta name="description" content="Easychat - מזכירה אוטומטית לוואטסאפ שעונה על כל הודעה, קובעת פגישות, ולעולם לא ישנה. להפסיק לאבד לקוחות.">
     
     <!-- Fonts -->
@@ -35,16 +35,8 @@
     </script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Assistant', sans-serif;
             background: #0f172a;
@@ -56,11 +48,7 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
         ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 3px; }
-
-        ::selection {
-            background: #22c55e;
-            color: #0f172a;
-        }
+        ::selection { background: #22c55e; color: #0f172a; }
 
         .gradient-text {
             background: linear-gradient(90deg, #25D366, #128C7E, #34B7F1);
@@ -75,6 +63,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Animations */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
@@ -102,15 +91,73 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
         .animate-float { animation: float 6s ease-in-out infinite; }
         .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+        .animate-gradient { 
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease infinite;
+        }
 
+        /* Parallax */
+        .parallax-slow { transform: translateY(calc(var(--scroll) * 0.3px)); }
+        .parallax-medium { transform: translateY(calc(var(--scroll) * 0.5px)); }
+        .parallax-fast { transform: translateY(calc(var(--scroll) * 0.8px)); }
+
+        /* Micro-interactions */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.15);
+        }
+
+        .hover-glow:hover {
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .btn-shine:hover::after {
+            left: 100%;
+        }
+
+        /* Text reveal animation */
+        .text-reveal {
+            clip-path: inset(0 100% 0 0);
+            animation: reveal 1s ease forwards;
+        }
+        @keyframes reveal {
+            to { clip-path: inset(0 0 0 0); }
+        }
+
+        /* Modal & Form Styles */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(8px);
             z-index: 1000;
@@ -143,16 +190,12 @@
             outline: none;
             transition: all 0.3s;
         }
-
         .form-input::placeholder { color: #64748b; }
         .form-input:focus {
             border-color: #22c55e;
             box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
         }
-        .form-input.error {
-            border-color: #ef4444;
-            animation: shake 0.3s;
-        }
+        .form-input.error { border-color: #ef4444; animation: shake 0.3s; }
         .form-input.success { border-color: #22c55e; }
 
         .btn-primary {
@@ -172,19 +215,14 @@
             transition: all 0.3s;
             box-shadow: 0 20px 50px -10px rgba(34, 197, 94, 0.5);
         }
-
         .btn-primary:hover {
             background: #4ade80;
             transform: translateY(-3px) scale(1.02);
         }
-
-        .btn-primary:active {
-            transform: translateY(0) scale(0.98);
-        }
+        .btn-primary:active { transform: translateY(0) scale(0.98); }
 
         .spinner {
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             border: 3px solid rgba(15, 23, 42, 0.3);
             border-top-color: #0f172a;
             border-radius: 50%;
@@ -192,8 +230,7 @@
         }
 
         .success-check {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             background: linear-gradient(135deg, #22c55e, #4ade80);
             border-radius: 50%;
             display: flex;
@@ -216,21 +253,61 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
+        /* Dropdown */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 8px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .dropdown-item:hover {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
         @media (max-width: 768px) {
-            .btn-primary {
-                width: 100%;
-                padding: 16px 32px;
-            }
+            .btn-primary { width: 100%; padding: 16px 32px; }
             .sticky-cta {
                 position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
+                bottom: 0; left: 0; right: 0;
                 padding: 16px;
                 background: #0f172a;
                 border-top: 1px solid rgba(255, 255, 255, 0.1);
                 z-index: 100;
             }
+        }
+
+        /* Page transitions */
+        .page-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .page-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -239,378 +316,644 @@
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
-        const { motion, AnimatePresence, useInView } = Motion;
+        const { motion, AnimatePresence, useInView, useScroll, useTransform } = Motion;
 
         // ==================== SUPABASE CONFIG ====================
         const SUPABASE_URL = 'https://tqxrahpbidlctyttpffc.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxeHJhaHBiaWRsY3R5dHRwZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTk3MzQsImV4cCI6MjA4MzQzNTczNH0.tmh9_GzWJhIcRoS3L6gpCX95_eZrkIR7hy3gOl9Qd2s';
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ============== ICONS ==============
-        const SparklesIcon = () => (
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/>
-            </svg>
-        );
-
-        const MessageIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-        );
-
-        const ZapIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-        );
-
-        const TrendingUpIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-        );
-
-        const TrendingDownIcon = () => (
-            <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
-            </svg>
-        );
-
-        const ClockIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        );
-
-        const CalculatorIcon = () => (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-        );
-
-        const PlusIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-        );
-
-        const MinusIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-            </svg>
-        );
-
-        const RefreshIcon = () => (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-        );
-
-        const ArrowLeftIcon = () => (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-        );
+        const Icons = {
+            Sparkles: () => (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/>
+                </svg>
+            ),
+            Message: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            ),
+            Zap: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            ),
+            TrendingUp: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+            ),
+            Clock: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+            ChevronDown: () => (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+            ),
+            Check: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+            ),
+            Users: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            ),
+            Target: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            ),
+            Heart: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            ),
+            Play: () => (
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            ),
+            ArrowRight: () => (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            ),
+            Globe: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+            Shield: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            ),
+            Linkedin: () => (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+            ),
+            Twitter: () => (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+            ),
+            Facebook: () => (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+            ),
+            Plus: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+            ),
+            Minus: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                </svg>
+            ),
+            Menu: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            ),
+            X: () => (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            )
+        };
 
         // ============== BACKGROUND ==============
-        const BackgroundAnimation = () => (
-            <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-green-500/10 rounded-full blur-[120px] animate-pulse"></div>
-                <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" style={{animationDelay: '2s'}}></div>
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" style={{maskImage: 'radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%)'}}></div>
-                <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-500 rounded-full opacity-20 animate-ping"></div>
-                <div className="absolute top-3/4 right-1/4 w-2 h-2 bg-blue-500 rounded-full opacity-20 animate-ping" style={{animationDelay: '1.5s'}}></div>
-            </div>
-        );
+        const BackgroundAnimation = () => {
+            const { scrollY } = useScroll();
+            
+            return (
+                <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+                    {/* Aurora effects with parallax */}
+                    <motion.div 
+                        className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-green-500/10 rounded-full blur-[120px]"
+                        style={{ y: useTransform(scrollY, [0, 1000], [0, 100]) }}
+                        animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+                        transition={{ duration: 8, repeat: Infinity }}
+                    />
+                    <motion.div 
+                        className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-blue-500/10 rounded-full blur-[120px]"
+                        style={{ y: useTransform(scrollY, [0, 1000], [0, -50]) }}
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+                        transition={{ duration: 10, repeat: Infinity, delay: 2 }}
+                    />
+                    <motion.div 
+                        className="absolute top-[40%] right-[20%] w-[30%] h-[30%] bg-purple-500/5 rounded-full blur-[100px]"
+                        style={{ y: useTransform(scrollY, [0, 1000], [0, 150]) }}
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ duration: 12, repeat: Infinity, delay: 4 }}
+                    />
+                    
+                    {/* Grid Pattern */}
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:50px_50px]" />
+                    
+                    {/* Floating particles */}
+                    {[...Array(5)].map((_, i) => (
+                        <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-green-500 rounded-full"
+                            style={{
+                                left: `${20 + i * 15}%`,
+                                top: `${10 + i * 20}%`,
+                            }}
+                            animate={{
+                                y: [0, -30, 0],
+                                opacity: [0.2, 0.5, 0.2],
+                            }}
+                            transition={{
+                                duration: 4 + i,
+                                repeat: Infinity,
+                                delay: i * 0.5,
+                            }}
+                        />
+                    ))}
+                </div>
+            );
+        };
 
         // ============== NAVBAR ==============
-        const Navbar = ({ onOpenModal }) => (
-            <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6 md:px-8 flex justify-between items-center bg-slate-950/50 backdrop-blur-md border-b border-white/5">
-                <div className="flex items-center gap-2 group cursor-pointer">
-                    <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
-                        <MessageIcon />
-                    </div>
-                    <span className="text-2xl font-black tracking-tighter">
-                        <span className="text-green-500">Easychat</span>
-                    </span>
-                </div>
-                
-                <button 
-                    onClick={onOpenModal}
-                    className="px-5 py-2 bg-white text-slate-950 rounded-full text-sm font-bold hover:bg-green-500 hover:text-white transition-all shadow-xl"
-                >
-                    התחל עכשיו
-                </button>
-            </nav>
-        );
+        const Navbar = ({ onOpenModal, currentPage, setCurrentPage }) => {
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-        // ============== HERO (כמו ב-ZIP) ==============
-        const HeroSection = ({ onOpenModal }) => {
+            useEffect(() => {
+                const handleScroll = () => setIsScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navItems = [
+                { 
+                    label: 'מוצר', 
+                    dropdown: [
+                        { label: 'איך זה עובד', page: 'how-it-works' },
+                        { label: 'תכונות', page: 'features' },
+                        { label: 'אינטגרציות', page: 'integrations' },
+                    ]
+                },
+                { 
+                    label: 'פתרונות', 
+                    dropdown: [
+                        { label: 'לעסקים קטנים', page: 'solutions' },
+                        { label: 'למספרות ויופי', page: 'solutions' },
+                        { label: 'ליועצים ומאמנים', page: 'solutions' },
+                    ]
+                },
+                { label: 'אודות', page: 'about' },
+                { label: 'צור קשר', page: 'contact' },
+            ];
+
             return (
-                <section className="pt-48 pb-32 px-6 max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
-                    {/* Badge */}
-                    <motion.div 
-                        className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-green-400 text-sm font-bold mb-10 shadow-[0_0_20px_rgba(34,197,94,0.1)]"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                    >
-                        <SparklesIcon />
-                        <span className="tracking-wide">המזכירה שעובדת בזמן שאתה חי</span>
-                    </motion.div>
-
-                    {/* Main Headline */}
-                    <motion.h1 
-                        className="text-6xl md:text-9xl font-black leading-[0.9] mb-10 max-w-6xl tracking-tighter"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        אל תיתן ללקוחות שלך <span className="gradient-text">לחכות למענה.</span>
-                    </motion.h1>
-
-                    {/* Subtitle */}
-                    <motion.p 
-                        className="text-xl md:text-3xl text-slate-400 max-w-4xl mb-14 leading-relaxed font-light"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        הצ'אט-בוט החכם שלנו סוגר עסקאות, מתזמן פגישות ומסנן לידים <span className="text-white font-medium">בזמן אמת</span> – כדי שאתה תוכל להתמקד במה שחשוב באמת.
-                    </motion.p>
-
-                    {/* CTA Button */}
-                    <motion.div
-                        className="flex flex-col sm:flex-row gap-6 relative mb-32"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                    >
-                        <button 
-                            className="px-12 py-6 bg-green-500 text-slate-950 rounded-2xl text-2xl font-black hover:bg-green-400 hover:scale-105 active:scale-95 transition-all shadow-[0_20px_50px_-10px_rgba(34,197,94,0.5)] flex items-center justify-center gap-3 group"
-                            onClick={onOpenModal}
+                <motion.nav 
+                    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                        isScrolled ? 'py-3 bg-slate-950/80 backdrop-blur-lg border-b border-white/10' : 'py-5 bg-transparent'
+                    }`}
+                    initial={{ y: -100 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                        {/* Logo */}
+                        <motion.div 
+                            className="flex items-center gap-3 cursor-pointer group"
+                            onClick={() => setCurrentPage('home')}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                         >
-                            <span className="group-hover:rotate-12 transition-transform"><MessageIcon /></span>
-                            אני רוצה בוט לעסק שלי
+                            <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:shadow-green-500/50 transition-shadow">
+                                <Icons.Message />
+                            </div>
+                            <span className="text-2xl font-black tracking-tight">
+                                Easy<span className="text-green-500">chat</span>
+                            </span>
+                        </motion.div>
+                        
+                        {/* Desktop Nav */}
+                        <div className="hidden lg:flex items-center gap-8">
+                            {navItems.map((item, i) => (
+                                item.dropdown ? (
+                                    <div key={i} className="dropdown relative">
+                                        <button className="flex items-center gap-1 text-slate-300 hover:text-white transition-colors font-medium">
+                                            {item.label}
+                                            <Icons.ChevronDown />
+                                        </button>
+                                        <div className="dropdown-menu">
+                                            {item.dropdown.map((subItem, j) => (
+                                                <a 
+                                                    key={j} 
+                                                    href="#" 
+                                                    className="dropdown-item"
+                                                    onClick={(e) => { e.preventDefault(); setCurrentPage(subItem.page); }}
+                                                >
+                                                    {subItem.label}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <a 
+                                        key={i} 
+                                        href="#" 
+                                        className="text-slate-300 hover:text-green-500 transition-colors font-medium"
+                                        onClick={(e) => { e.preventDefault(); setCurrentPage(item.page); }}
+                                    >
+                                        {item.label}
+                                    </a>
+                                )
+                            ))}
+                        </div>
+
+                        {/* CTA Buttons */}
+                        <div className="hidden lg:flex items-center gap-4">
+                            <button className="text-slate-300 hover:text-white transition-colors font-medium">
+                                התחברות
+                            </button>
+                            <motion.button 
+                                className="px-6 py-2.5 bg-green-500 text-slate-950 rounded-full font-bold hover:bg-green-400 transition-all btn-shine"
+                                onClick={onOpenModal}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                התחל בחינם
+                            </motion.button>
+                        </div>
+
+                        {/* Mobile Menu Button */}
+                        <button 
+                            className="lg:hidden text-white"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? <Icons.X /> : <Icons.Menu />}
                         </button>
+                    </div>
+
+                    {/* Mobile Menu */}
+                    <AnimatePresence>
+                        {isMobileMenuOpen && (
+                            <motion.div
+                                className="lg:hidden absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-b border-white/10"
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                            >
+                                <div className="p-6 space-y-4">
+                                    {navItems.map((item, i) => (
+                                        <a 
+                                            key={i} 
+                                            href="#" 
+                                            className="block text-lg text-slate-300 hover:text-green-500 transition-colors"
+                                            onClick={(e) => { 
+                                                e.preventDefault(); 
+                                                setCurrentPage(item.page || item.dropdown?.[0]?.page || 'home');
+                                                setIsMobileMenuOpen(false);
+                                            }}
+                                        >
+                                            {item.label}
+                                        </a>
+                                    ))}
+                                    <button 
+                                        className="w-full py-3 bg-green-500 text-slate-950 rounded-xl font-bold mt-4"
+                                        onClick={() => { onOpenModal(); setIsMobileMenuOpen(false); }}
+                                    >
+                                        התחל בחינם
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.nav>
+            );
+        };
+
+        // ============== CLIENT LOGOS ==============
+        const ClientLogos = () => {
+            const logos = ['מספרת אורלי', 'סטודיו פיט', 'יועץ משכנתאות', 'קליניקה', 'סטודיו יוגה'];
+            
+            return (
+                <div className="py-16 border-y border-white/5">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <p className="text-center text-slate-500 mb-8 text-sm uppercase tracking-wider">מהימנים על ידי מאות עסקים בישראל</p>
+                        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                            {logos.map((logo, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="text-slate-600 text-lg font-bold opacity-50 hover:opacity-100 transition-opacity cursor-default"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 0.5, y: 0 }}
+                                    whileHover={{ opacity: 1, scale: 1.1 }}
+                                    transition={{ delay: i * 0.1 }}
+                                    viewport={{ once: true }}
+                                >
+                                    {logo}
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // ============== HERO ==============
+        const HeroSection = ({ onOpenModal }) => {
+            const { scrollY } = useScroll();
+            const y = useTransform(scrollY, [0, 500], [0, 150]);
+            const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+            return (
+                <section className="pt-32 pb-20 min-h-screen flex flex-col items-center justify-center relative z-10">
+                    <motion.div 
+                        className="max-w-7xl mx-auto px-6 text-center"
+                        style={{ y, opacity }}
+                    >
+                        {/* Badge */}
+                        <motion.div 
+                            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-green-400 text-sm font-bold mb-10 shadow-[0_0_30px_rgba(34,197,94,0.15)]"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <motion.span
+                                animate={{ rotate: [0, 15, -15, 0] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            >
+                                <Icons.Sparkles />
+                            </motion.span>
+                            <span className="tracking-wide">הבוט החכם שעובד בשבילך 24/7</span>
+                        </motion.div>
+
+                        {/* Main Headline */}
+                        <motion.h1 
+                            className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] mb-8 tracking-tighter"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            אל תיתן ללקוחות שלך
+                            <br />
+                            <span className="gradient-text">לחכות למענה.</span>
+                        </motion.h1>
+
+                        {/* Subtitle */}
+                        <motion.p 
+                            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-400 max-w-4xl mx-auto mb-12 leading-relaxed font-light"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                        >
+                            הצ'אט-בוט החכם שלנו סוגר עסקאות, מתזמן פגישות ומסנן לידים{' '}
+                            <span className="text-white font-medium">בזמן אמת</span>
+                            {' '}– כדי שאתה תוכל להתמקד במה שחשוב באמת.
+                        </motion.p>
+
+                        {/* CTA Buttons */}
+                        <motion.div
+                            className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                        >
+                            <motion.button 
+                                className="px-10 py-5 bg-green-500 text-slate-950 rounded-2xl text-xl font-black hover:bg-green-400 transition-all shadow-[0_20px_50px_-10px_rgba(34,197,94,0.5)] flex items-center justify-center gap-3 group btn-shine"
+                                onClick={onOpenModal}
+                                whileHover={{ scale: 1.05, y: -3 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <motion.span
+                                    className="group-hover:rotate-12 transition-transform"
+                                    whileHover={{ rotate: 12 }}
+                                >
+                                    <Icons.Message />
+                                </motion.span>
+                                התחל בחינם
+                                <Icons.ArrowRight />
+                            </motion.button>
+                            
+                            <motion.button 
+                                className="px-10 py-5 glass rounded-2xl text-xl font-bold text-white hover:bg-white/10 transition-all flex items-center justify-center gap-3 group"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                                    <Icons.Play />
+                                </div>
+                                צפה בהדגמה
+                            </motion.button>
+                        </motion.div>
+
+                        {/* Stats */}
+                        <motion.div 
+                            className="grid grid-cols-3 gap-8 max-w-3xl mx-auto"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                        >
+                            {[
+                                { number: '500+', label: 'עסקים פעילים' },
+                                { number: '1M+', label: 'הודעות נענו' },
+                                { number: '98%', label: 'שביעות רצון' },
+                            ].map((stat, i) => (
+                                <motion.div 
+                                    key={i}
+                                    className="text-center"
+                                    whileHover={{ scale: 1.1 }}
+                                >
+                                    <div className="text-3xl sm:text-4xl md:text-5xl font-black text-green-500 mb-2">{stat.number}</div>
+                                    <div className="text-slate-500 text-sm">{stat.label}</div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
                     </motion.div>
 
-                    {/* Feature Badges */}
+                    {/* Scroll indicator */}
                     <motion.div 
-                        className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8 }}
+                        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+                        animate={{ y: [0, 10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
                     >
-                        <div className="glass p-6 rounded-3xl flex items-center gap-4 border-white/10 hover:border-green-500/50 transition-colors">
-                            <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
-                                <ZapIcon />
-                            </div>
-                            <div className="text-right">
-                                <div className="font-bold">מענה מיידי</div>
-                                <div className="text-xs text-slate-500">פחות מ-2 שניות לכל לקוח</div>
-                            </div>
-                        </div>
-                        <div className="glass p-6 rounded-3xl flex items-center gap-4 border-white/10 hover:border-blue-500/50 transition-colors">
-                            <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400">
-                                <TrendingUpIcon />
-                            </div>
-                            <div className="text-right">
-                                <div className="font-bold">הגדלת המרה</div>
-                                <div className="text-xs text-slate-500">שיפור של 40% בסגירת לידים</div>
-                            </div>
-                        </div>
-                        <div className="glass p-6 rounded-3xl flex items-center gap-4 border-white/10 hover:border-purple-500/50 transition-colors">
-                            <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
-                                <ClockIcon />
-                            </div>
-                            <div className="text-right">
-                                <div className="font-bold">חיסכון בזמן</div>
-                                <div className="text-xs text-slate-500">10+ שעות שבועיות של מענה ידני</div>
-                            </div>
+                        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2">
+                            <motion.div 
+                                className="w-1.5 h-1.5 rounded-full bg-green-500"
+                                animate={{ y: [0, 12, 0] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            />
                         </div>
                     </motion.div>
                 </section>
             );
         };
 
-        // ============== LOSS CALCULATOR ==============
-        const LossCalculator = () => {
-            const [step, setStep] = useState(0);
-            const [formData, setFormData] = useState({
-                name: '',
-                email: '',
-                leadValue: '',
-                weeklyLeads: ''
-            });
-
-            const nextStep = () => setStep(step + 1);
-            const prevStep = () => setStep(step - 1);
-
-            const calculateLoss = () => {
-                const value = parseFloat(formData.leadValue) || 0;
-                const missedPerWeek = parseFloat(formData.weeklyLeads) || 0;
-                const monthlyLoss = (missedPerWeek * 4) * value;
-                return monthlyLoss.toLocaleString();
-            };
+        // ============== HOW IT WORKS ==============
+        const HowItWorksSection = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
 
             const steps = [
                 {
-                    title: "בואו נתחיל, מה השם שלך?",
-                    content: (
-                        <input 
-                            type="text" 
-                            placeholder="השם המלא שלך" 
-                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
-                            value={formData.name}
-                            onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        />
-                    )
+                    number: '01',
+                    title: 'חיבור פשוט',
+                    description: 'מחברים את הוואטסאפ העסקי שלך ב-2 דקות. בלי קוד, בלי התקנות מסובכות.',
+                    icon: '🔗',
+                    color: 'green'
                 },
                 {
-                    title: "אימייל לעדכונים (אופציונלי)",
-                    content: (
-                        <input 
-                            type="email" 
-                            placeholder="you@example.com" 
-                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
-                            value={formData.email}
-                            onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        />
-                    )
+                    number: '02',
+                    title: 'אימון הבוט',
+                    description: 'מלמדים את הבוט על העסק שלך - שירותים, מחירים, שעות פעילות. הוא לומד מהר.',
+                    icon: '🧠',
+                    color: 'blue'
                 },
                 {
-                    title: "מה הערך הממוצע של כל ליד עבורך? (₪)",
-                    content: (
-                        <input 
-                            type="number" 
-                            placeholder="למשל: 500" 
-                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
-                            value={formData.leadValue}
-                            onChange={(e) => setFormData({...formData, leadValue: e.target.value})}
-                        />
-                    )
+                    number: '03',
+                    title: 'מענה אוטומטי',
+                    description: 'הבוט עונה ללקוחות שלך 24/7, קובע פגישות, ושולח תזכורות - בזמן שאתה ישן.',
+                    icon: '⚡',
+                    color: 'purple'
                 },
                 {
-                    title: "כמה לידים אתה מפספס / שוכח לבצע פולואפ בשבוע?",
-                    content: (
-                        <input 
-                            type="number" 
-                            placeholder="למשל: 15" 
-                            className="w-full bg-white/5 border border-white/10 p-6 rounded-2xl text-2xl text-white outline-none focus:border-green-500 transition-colors text-right"
-                            value={formData.weeklyLeads}
-                            onChange={(e) => setFormData({...formData, weeklyLeads: e.target.value})}
-                        />
-                    )
-                },
-                {
-                    title: "התוצאות מוכנות...",
-                    content: (
-                        <div className="text-center p-8 bg-red-500/10 border border-red-500/20 rounded-3xl">
-                            <div className="text-red-500 mx-auto mb-6"><TrendingDownIcon /></div>
-                            <h3 className="text-2xl text-slate-300 mb-2">{formData.name}, העסק שלך מפסיד כרגע בגלל חוסר מענה:</h3>
-                            <div className="text-6xl md:text-8xl font-black text-red-500 mb-6 tracking-tighter">
-                                ₪{calculateLoss()}
-                            </div>
-                            <p className="text-slate-400 text-lg mb-8">כל חודש מבוזבז בגלל לידים שפשוט נופלים בין הכיסאות.</p>
-                            <button 
-                                onClick={() => setStep(0)}
-                                className="flex items-center gap-2 mx-auto text-slate-500 hover:text-white transition-colors"
-                            >
-                                <RefreshIcon /> חישוב מחדש
-                            </button>
-                        </div>
-                    )
+                    number: '04',
+                    title: 'צמיחה מתמדת',
+                    description: 'צופה בנתונים, מקבל תובנות, ורואה איך העסק שלך גדל מחודש לחודש.',
+                    icon: '📈',
+                    color: 'green'
                 }
             ];
 
             return (
-                <section className="py-32 px-6 relative z-10">
-                    <div className="max-w-3xl mx-auto">
-                        <div className="text-center mb-12">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-400 text-sm font-bold mb-6">
-                                <CalculatorIcon />
-                                מחשבון הפסד עסקי
+                <section ref={ref} className="py-32 relative z-10" id="how-it-works">
+                    <div className="max-w-7xl mx-auto px-6">
+                        {/* Header */}
+                        <motion.div 
+                            className="text-center mb-20"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-xs font-black uppercase tracking-[0.2em] mb-6">
+                                <Icons.Zap />
+                                איך זה עובד
                             </div>
-                            <h2 className="text-4xl md:text-6xl font-black mb-6">כמה כסף אתם <span className="text-red-500">מפסידים?</span></h2>
-                            <p className="text-slate-400 text-xl">גלו תוך 30 שניות את הפוטנציאל הלא מנוצל של הוואטסאפ שלכם</p>
+                            <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6">
+                                פשוט. מהיר. <span className="text-green-500">יעיל.</span>
+                            </h2>
+                            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+                                ב-4 צעדים פשוטים תהפוך את הוואטסאפ שלך למכונת מכירות אוטומטית
+                            </p>
+                        </motion.div>
+
+                        {/* Steps */}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            {steps.map((step, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="relative group"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.6, delay: i * 0.15 }}
+                                >
+                                    {/* Connector line */}
+                                    {i < steps.length - 1 && (
+                                        <div className="hidden lg:block absolute top-16 right-0 w-full h-0.5 bg-gradient-to-l from-green-500/50 to-transparent translate-x-1/2" />
+                                    )}
+                                    
+                                    <div className="glass p-8 rounded-3xl hover-lift hover-glow h-full">
+                                        {/* Number */}
+                                        <div className="text-6xl font-black text-white/5 absolute top-4 left-4">
+                                            {step.number}
+                                        </div>
+                                        
+                                        {/* Icon */}
+                                        <motion.div 
+                                            className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-white/10 group-hover:border-green-500/50 transition-colors relative z-10"
+                                            whileHover={{ scale: 1.1, rotate: 5 }}
+                                        >
+                                            {step.icon}
+                                        </motion.div>
+                                        
+                                        <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
+                                        <p className="text-slate-400 leading-relaxed">{step.description}</p>
+                                    </div>
+                                </motion.div>
+                            ))}
                         </div>
 
-                        <div className="glass p-1 rounded-[3rem] border-white/10 shadow-2xl relative overflow-hidden">
-                            <div className="absolute top-0 left-0 h-1 bg-green-500 transition-all duration-500" style={{ width: `${(step / (steps.length - 1)) * 100}%` }}></div>
-                            <div className="p-8 md:p-12 bg-slate-900 rounded-[calc(3rem-4px)]">
-                                <div className="min-h-[300px] flex flex-col justify-center">
-                                    <h4 className="text-2xl md:text-3xl font-bold mb-10 text-center">{steps[step].title}</h4>
-                                    {steps[step].content}
-                                </div>
-                                
-                                {step < steps.length - 1 && (
-                                    <div className="flex items-center justify-between mt-12 gap-6">
-                                        <button 
-                                            onClick={nextStep}
-                                            disabled={step === 0 && !formData.name}
-                                            className="flex-1 py-5 bg-white text-slate-950 rounded-2xl font-black text-xl hover:bg-green-500 hover:text-white transition-all disabled:opacity-30 flex items-center justify-center gap-3"
-                                        >
-                                            {step === steps.length - 2 ? 'ראה תוצאות' : 'המשך'}
-                                            <ArrowLeftIcon />
-                                        </button>
-                                        {step > 0 && (
-                                            <button 
-                                                onClick={prevStep}
-                                                className="px-8 py-5 border border-white/10 text-slate-400 rounded-2xl font-bold hover:text-white transition-all"
-                                            >
-                                                חזרה
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                        {/* CTA */}
+                        <motion.div 
+                            className="text-center mt-16"
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.8 }}
+                        >
+                            <button className="px-8 py-4 bg-white/5 border border-white/10 rounded-full text-white font-bold hover:bg-white/10 transition-all inline-flex items-center gap-2">
+                                למד עוד על התהליך
+                                <Icons.ArrowRight />
+                            </button>
+                        </motion.div>
                     </div>
                 </section>
             );
         };
 
-        // ============== FEATURES SECTION ==============
+        // ============== FEATURES ==============
         const FeaturesSection = () => {
             const ref = useRef(null);
             const isInView = useInView(ref, { once: true, margin: "-100px" });
 
             const features = [
-                { icon: '⚡', title: 'עונה בתוך שניות' },
-                { icon: '📅', title: 'קובע פגישות אוטומטית' },
-                { icon: '📄', title: 'שולח הצעות מחיר' },
-                { icon: '🎯', title: 'עוקב אחרי לידים' },
-                { icon: '💳', title: 'גובה תשלומים' },
-                { icon: '🧠', title: 'לומד איך אתה עובד' }
+                { icon: '⚡', title: 'מענה מיידי', desc: 'תוך 2 שניות לכל הודעה', color: 'green' },
+                { icon: '📅', title: 'תיאום פגישות', desc: 'סנכרון אוטומטי עם היומן', color: 'blue' },
+                { icon: '📄', title: 'הצעות מחיר', desc: 'שליחה אוטומטית ומעקב', color: 'purple' },
+                { icon: '🎯', title: 'ניהול לידים', desc: 'מעקב ותיעדוף חכם', color: 'green' },
+                { icon: '💳', title: 'גביית תשלומים', desc: 'קישור לתשלום בהודעה', color: 'blue' },
+                { icon: '🧠', title: 'למידה עצמית', desc: 'משתפר עם כל שיחה', color: 'purple' },
             ];
 
             return (
-                <section className="py-32 px-6 relative z-10" ref={ref}>
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-20">
-                            <div className="px-4 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-black uppercase tracking-[0.2em] mb-6 inline-block">
-                                מה Easychat עושה בשבילך
+                <section ref={ref} className="py-32 relative z-10">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <motion.div 
+                            className="text-center mb-20"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-xs font-black uppercase tracking-[0.2em] mb-6">
+                                תכונות
                             </div>
-                            <h2 className="text-4xl md:text-7xl font-black mb-8">
-                                מזכירה שלא צריכה <span className="text-green-500">משכורת.</span>
+                            <h2 className="text-4xl md:text-6xl font-black mb-6">
+                                הכל ב<span className="text-green-500">מקום אחד</span>
                             </h2>
-                        </div>
+                        </motion.div>
                         
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                             {features.map((feature, i) => (
                                 <motion.div
                                     key={i}
-                                    className="glass p-8 md:p-10 rounded-[2rem] text-center hover:bg-white/[0.04] hover:-translate-y-4 transition-all duration-700 group"
+                                    className="glass p-8 rounded-3xl hover-lift group"
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                                     transition={{ delay: i * 0.1 }}
                                 >
-                                    <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-800 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl md:text-4xl group-hover:scale-110 transition-transform duration-700 border border-white/10 group-hover:border-white/30">
+                                    <motion.div 
+                                        className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl mb-6 border border-white/10 group-hover:border-green-500/30 transition-all"
+                                        whileHover={{ scale: 1.15, rotate: 10 }}
+                                    >
                                         {feature.icon}
-                                    </div>
-                                    <h3 className="text-lg md:text-2xl font-black text-slate-100">{feature.title}</h3>
+                                    </motion.div>
+                                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                                    <p className="text-slate-500">{feature.desc}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -619,99 +962,192 @@
             );
         };
 
-        // ============== TESTIMONIALS (עם 5 עדויות) ==============
+        // ============== ABOUT PAGE ==============
+        const AboutPage = () => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+            const team = [
+                { name: 'אריאל אוחיון', role: 'מייסד ומנכ"ל', emoji: '👨‍💻', bio: 'יזם סדרתי עם חזון לפשט אוטומציה לעסקים קטנים' },
+                { name: 'שותף', role: 'שותף מייסד', emoji: '🚀', bio: 'מומחה לטכנולוגיה וחוויית משתמש' },
+            ];
+
+            const values = [
+                { icon: <Icons.Heart />, title: 'לקוח במרכז', desc: 'כל החלטה נבחנת דרך העיניים של הלקוח' },
+                { icon: <Icons.Zap />, title: 'פשטות', desc: 'טכנולוגיה מתקדמת, שימוש פשוט' },
+                { icon: <Icons.Target />, title: 'תוצאות', desc: 'מדידה מתמדת והשגת יעדים' },
+                { icon: <Icons.Users />, title: 'שותפות', desc: 'גדלים יחד עם הלקוחות שלנו' },
+            ];
+
+            return (
+                <section ref={ref} className="pt-32 pb-20 relative z-10">
+                    <div className="max-w-7xl mx-auto px-6">
+                        {/* Hero */}
+                        <motion.div 
+                            className="text-center mb-20"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-xs font-black uppercase tracking-[0.2em] mb-6">
+                                הסיפור שלנו
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-black mb-8">
+                                בונים את העתיד של <span className="gradient-text">שירות לקוחות</span>
+                            </h1>
+                            <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                                התחלנו את Easychat מתוך תסכול אישי. ראינו עסקים קטנים מפסידים לקוחות כי לא הספיקו לענות. 
+                                החלטנו שזה חייב להשתנות.
+                            </p>
+                        </motion.div>
+
+                        {/* Mission */}
+                        <motion.div 
+                            className="glass p-12 md:p-16 rounded-[3rem] mb-20"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <div className="grid md:grid-cols-2 gap-12 items-center">
+                                <div>
+                                    <h2 className="text-3xl md:text-4xl font-black mb-6">המשימה שלנו</h2>
+                                    <p className="text-lg text-slate-400 leading-relaxed mb-6">
+                                        לאפשר לכל עסק קטן בישראל לספק שירות לקוחות ברמה של חברה גדולה - 
+                                        בלי לשבור את הראש ובלי לשבור את הכיס.
+                                    </p>
+                                    <p className="text-lg text-slate-400 leading-relaxed">
+                                        אנחנו מאמינים שטכנולוגיית AI צריכה להיות נגישה לכולם, 
+                                        ושבעל עסק צריך להתעסק בעסק שלו - לא בלענות על הודעות עד חצות.
+                                    </p>
+                                </div>
+                                <div className="flex justify-center">
+                                    <motion.div 
+                                        className="w-64 h-64 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full flex items-center justify-center"
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                    >
+                                        <div className="w-48 h-48 bg-slate-900 rounded-full flex items-center justify-center text-6xl">
+                                            🎯
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Values */}
+                        <motion.div 
+                            className="mb-20"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.3 }}
+                        >
+                            <h2 className="text-3xl font-black text-center mb-12">הערכים שמנחים אותנו</h2>
+                            <div className="grid md:grid-cols-4 gap-6">
+                                {values.map((value, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="glass p-8 rounded-2xl text-center hover-lift"
+                                        initial={{ opacity: 0, y: 30 }}
+                                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                        transition={{ delay: 0.4 + i * 0.1 }}
+                                    >
+                                        <div className="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center text-green-500 mx-auto mb-4">
+                                            {value.icon}
+                                        </div>
+                                        <h3 className="text-xl font-bold mb-2">{value.title}</h3>
+                                        <p className="text-slate-500 text-sm">{value.desc}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Team */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ delay: 0.5 }}
+                        >
+                            <h2 className="text-3xl font-black text-center mb-12">הצוות</h2>
+                            <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                                {team.map((member, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="glass p-8 rounded-2xl text-center hover-lift"
+                                        whileHover={{ y: -10 }}
+                                    >
+                                        <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                                            {member.emoji}
+                                        </div>
+                                        <h3 className="text-xl font-bold">{member.name}</h3>
+                                        <p className="text-green-500 text-sm mb-3">{member.role}</p>
+                                        <p className="text-slate-500 text-sm">{member.bio}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============== TESTIMONIALS ==============
         const TestimonialsSection = () => {
             const ref = useRef(null);
             const isInView = useInView(ref, { once: true, margin: "-100px" });
             const [currentIndex, setCurrentIndex] = useState(0);
 
             const testimonials = [
-                {
-                    name: 'דני',
-                    role: 'יועץ עסקי',
-                    quote: 'חסכתי 4 שעות ביום. בוקר שלם פינה לי לעבודה אמיתית.',
-                    metric: '4 שעות חזרה ביום',
-                    avatar: '👨‍💼'
-                },
-                {
-                    name: 'מיכל',
-                    role: 'מאמנת אישית',
-                    quote: 'לקוח קבע פגישה ב-6 בבוקר. התעוררתי לתשלום.',
-                    metric: '0 לידים אבודים',
-                    avatar: '👩‍🏫'
-                },
-                {
-                    name: 'יוסי',
-                    role: 'צלם אירועים',
-                    quote: 'בזמן שצילמתי חתונה, הבוט סגר לי 3 חתונות נוספות.',
-                    metric: '+40% הכנסה',
-                    avatar: '📸'
-                },
-                {
-                    name: 'רונית',
-                    role: 'מעצבת גרפית',
-                    quote: 'לפני Easychat הפסדתי לקוחות כי לא הספקתי לענות. עכשיו הכל אוטומטי.',
-                    metric: '3x יותר לקוחות',
-                    avatar: '🎨'
-                },
-                {
-                    name: 'אורי',
-                    role: 'מדריך כושר',
-                    quote: 'הבוט מתאם לי אימונים גם כשאני באמצע אימון. פשוט גאוני.',
-                    metric: '100% זמינות',
-                    avatar: '💪'
-                }
+                { name: 'דני', role: 'יועץ עסקי', quote: 'חסכתי 4 שעות ביום. בוקר שלם פינה לי לעבודה אמיתית.', metric: '4 שעות חזרה ביום', avatar: '👨‍💼' },
+                { name: 'מיכל', role: 'מאמנת אישית', quote: 'לקוח קבע פגישה ב-6 בבוקר. התעוררתי לתשלום.', metric: '0 לידים אבודים', avatar: '👩‍🏫' },
+                { name: 'יוסי', role: 'צלם אירועים', quote: 'בזמן שצילמתי חתונה, הבוט סגר לי 3 חתונות נוספות.', metric: '+40% הכנסה', avatar: '📸' },
+                { name: 'רונית', role: 'מעצבת גרפית', quote: 'לפני Easychat הפסדתי לקוחות כי לא הספקתי לענות.', metric: '3x יותר לקוחות', avatar: '🎨' },
+                { name: 'אורי', role: 'מדריך כושר', quote: 'הבוט מתאם לי אימונים גם כשאני באמצע אימון.', metric: '100% זמינות', avatar: '💪' }
             ];
 
             useEffect(() => {
-                const timer = setInterval(() => {
-                    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-                }, 5000);
+                const timer = setInterval(() => setCurrentIndex((prev) => (prev + 1) % testimonials.length), 5000);
                 return () => clearInterval(timer);
             }, []);
 
             return (
-                <section className="py-32 px-6 relative z-10" ref={ref}>
-                    <div className="max-w-4xl mx-auto">
+                <section ref={ref} className="py-32 relative z-10">
+                    <div className="max-w-4xl mx-auto px-6">
                         <motion.h2
+                            className="text-4xl md:text-6xl font-black text-center mb-16"
                             initial={{ opacity: 0 }}
                             animate={isInView ? { opacity: 1 } : {}}
-                            className="text-4xl md:text-6xl font-black text-center mb-16"
                         >
                             מה אומרים <span className="text-green-500">הלקוחות</span>
                         </motion.h2>
                         
-                        <div className="relative">
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={currentIndex}
-                                    className="glass p-10 md:p-14 rounded-[2.5rem] text-center"
-                                    initial={{ opacity: 0, x: 50 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -50 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    <div className="text-6xl mb-6">{testimonials[currentIndex].avatar}</div>
-                                    <p className="text-xl md:text-2xl text-slate-300 mb-8 font-light italic">
-                                        "{testimonials[currentIndex].quote}"
-                                    </p>
-                                    <p className="font-bold text-lg">{testimonials[currentIndex].name}</p>
-                                    <p className="text-slate-500 text-sm mb-6">{testimonials[currentIndex].role}</p>
-                                    <div className="inline-block px-6 py-2 rounded-full bg-green-500/20 text-green-400 font-bold">
-                                        {testimonials[currentIndex].metric}
-                                    </div>
-                                </motion.div>
-                            </AnimatePresence>
-                            
-                            <div className="flex justify-center gap-2 mt-8">
-                                {testimonials.map((_, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setCurrentIndex(i)}
-                                        className={`w-3 h-3 rounded-full transition-all ${i === currentIndex ? 'bg-green-500 w-8' : 'bg-slate-700'}`}
-                                    />
-                                ))}
-                            </div>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentIndex}
+                                className="glass p-12 rounded-[2.5rem] text-center"
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -50 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <div className="text-6xl mb-6">{testimonials[currentIndex].avatar}</div>
+                                <p className="text-xl md:text-2xl text-slate-300 mb-8 font-light italic">
+                                    "{testimonials[currentIndex].quote}"
+                                </p>
+                                <p className="font-bold text-lg">{testimonials[currentIndex].name}</p>
+                                <p className="text-slate-500 text-sm mb-4">{testimonials[currentIndex].role}</p>
+                                <div className="inline-block px-6 py-2 rounded-full bg-green-500/20 text-green-400 font-bold">
+                                    {testimonials[currentIndex].metric}
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
+                        
+                        <div className="flex justify-center gap-2 mt-8">
+                            {testimonials.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrentIndex(i)}
+                                    className={`h-2 rounded-full transition-all ${i === currentIndex ? 'bg-green-500 w-8' : 'bg-slate-700 w-2'}`}
+                                />
+                            ))}
                         </div>
                     </div>
                 </section>
@@ -721,45 +1157,44 @@
         // ============== FAQ ==============
         const FAQItem = ({ question, answer }) => {
             const [isOpen, setIsOpen] = useState(false);
-
             return (
-                <div className="mb-4">
+                <motion.div className="mb-4" layout>
                     <button 
                         onClick={() => setIsOpen(!isOpen)}
                         className={`w-full p-6 rounded-2xl glass border flex items-center justify-between gap-4 text-right transition-all duration-300 ${isOpen ? 'border-green-500/50 bg-white/5' : 'border-white/5'}`}
                     >
-                        <span className="text-xl font-bold">{question}</span>
-                        <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180 text-green-500' : 'text-slate-500'}`}>
-                            {isOpen ? <MinusIcon /> : <PlusIcon />}
-                        </div>
+                        <span className="text-lg font-bold">{question}</span>
+                        <motion.div 
+                            animate={{ rotate: isOpen ? 180 : 0 }}
+                            className={isOpen ? 'text-green-500' : 'text-slate-500'}
+                        >
+                            {isOpen ? <Icons.Minus /> : <Icons.Plus />}
+                        </motion.div>
                     </button>
-                    <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                        <div className="p-6 text-slate-400 text-lg leading-relaxed border-x border-b border-white/5 rounded-b-2xl -mt-4 bg-white/[0.02]">
-                            {answer}
-                        </div>
-                    </div>
-                </div>
+                    <AnimatePresence>
+                        {isOpen && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                            >
+                                <div className="p-6 text-slate-400 text-lg leading-relaxed border-x border-b border-white/5 rounded-b-2xl bg-white/[0.02]">
+                                    {answer}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
             );
         };
 
         const FAQSection = () => {
             const faqs = [
-                {
-                    question: "האם הבוט יודע לדבר בעברית טבעית?",
-                    answer: "בוודאי. אנחנו משתמשים בטכנולוגיית AI מתקדמת שמותאמת במיוחד לשפה העברית, כולל סלנג, קיצורים והבנת הקשרים מורכבים בשיחה."
-                },
-                {
-                    question: "האם זה דורש מספר וואטסאפ חדש?",
-                    answer: "ממש לא. ניתן לחבר את המערכת למספר הקיים של העסק שלכם (וואטסאפ עסקי) בצורה חלקה ומאובטחת."
-                },
-                {
-                    question: "האם ניתן לחבר את הבוט למערכת ה-CRM שלי?",
-                    answer: "כן, אנחנו תומכים באינטגרציות לכל המערכות המובילות בשוק (Monday, Pipedrive, HubSpot) וגם למערכות ישראליות מקומיות."
-                },
-                {
-                    question: "כמה זמן לוקח להקים בוט כזה?",
-                    answer: "תהליך האפיון וההקמה שלנו מהיר במיוחד. בדרך כלל הבוט שלכם יהיה באוויר ויתחיל לענות ללקוחות תוך פחות מ-48 שעות."
-                }
+                { question: "האם הבוט יודע לדבר בעברית טבעית?", answer: "בוודאי. אנחנו משתמשים בטכנולוגיית AI מתקדמת שמותאמת במיוחד לשפה העברית, כולל סלנג, קיצורים והבנת הקשרים מורכבים בשיחה." },
+                { question: "האם זה דורש מספר וואטסאפ חדש?", answer: "ממש לא. ניתן לחבר את המערכת למספר הקיים של העסק שלכם (וואטסאפ עסקי) בצורה חלקה ומאובטחת." },
+                { question: "האם ניתן לחבר את הבוט למערכת ה-CRM שלי?", answer: "כן, אנחנו תומכים באינטגרציות לכל המערכות המובילות בשוק (Monday, Pipedrive, HubSpot) וגם למערכות ישראליות מקומיות." },
+                { question: "כמה זמן לוקח להקים בוט כזה?", answer: "תהליך האפיון וההקמה שלנו מהיר במיוחד. בדרך כלל הבוט שלכם יהיה באוויר ויתחיל לענות ללקוחות תוך פחות מ-48 שעות." }
             ];
 
             return (
@@ -768,102 +1203,202 @@
                         <h2 className="text-4xl md:text-6xl font-black mb-6">שאלות <span className="text-green-500">נפוצות</span></h2>
                         <p className="text-xl text-slate-400">כל מה שרציתם לדעת על הצ'אט-בוט החדש שלכם</p>
                     </div>
-                    
                     <div className="space-y-4">
-                        {faqs.map((faq, idx) => (
-                            <FAQItem key={idx} {...faq} />
-                        ))}
+                        {faqs.map((faq, i) => <FAQItem key={i} {...faq} />)}
                     </div>
                 </section>
             );
         };
 
-        // ============== SCARCITY ==============
-        const ScarcitySection = () => {
-            const [spots, setSpots] = useState(73);
-
-            useEffect(() => {
-                const timer = setInterval(() => {
-                    setSpots(prev => Math.max(prev - 1, 12));
-                }, 30000);
-                return () => clearInterval(timer);
-            }, []);
-
-            return (
-                <section className="py-16 px-6 relative z-10">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-[2rem] p-10 text-center text-slate-950">
-                            <h3 className="text-2xl font-bold mb-4">100 הנרשמים הראשונים מקבלים:</h3>
-                            <div className="flex flex-wrap justify-center gap-6 mb-8 text-lg">
-                                <span>✨ חודש ראשון חינם</span>
-                                <span>🎯 Setup אישי</span>
-                                <span>👑 תמיכה VIP</span>
-                            </div>
-                            <motion.div
-                                key={spots}
-                                initial={{ scale: 1.2 }}
-                                animate={{ scale: 1 }}
-                                className="text-5xl md:text-6xl font-black"
-                            >
-                                נותרו {spots} מקומות
-                            </motion.div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        // ============== FINAL CTA ==============
-        const FinalCTASection = ({ onOpenModal }) => {
+        // ============== CTA SECTION ==============
+        const CTASection = ({ onOpenModal }) => {
             const ref = useRef(null);
             const isInView = useInView(ref, { once: true, margin: "-100px" });
 
             return (
-                <section className="py-32 px-6 relative z-10" ref={ref}>
-                    <div className="max-w-4xl mx-auto text-center">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isInView ? { opacity: 1, y: 0 } : {}}
-                            className="text-4xl md:text-7xl font-black mb-10"
-                        >
-                            זה הזמן לחזור <span className="gradient-text">לחיים שלך</span>
-                        </motion.h2>
-                        
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ delay: 0.2 }}
-                        >
-                            <button 
-                                className="btn-primary text-xl md:text-2xl px-12 py-6 animate-pulse-glow"
-                                onClick={onOpenModal}
-                            >
-                                <MessageIcon />
-                                אני רוצה להפסיק לאבד לקוחות
-                            </button>
-                        </motion.div>
-                        
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={isInView ? { opacity: 1 } : {}}
-                            transition={{ delay: 0.4 }}
-                            className="mt-6 text-slate-500"
-                        >
-                            ללא כרטיס אשראי | ביטול בכל עת
-                        </motion.p>
-                    </div>
+                <section ref={ref} className="py-32 px-6 relative z-10">
+                    <motion.div 
+                        className="max-w-5xl mx-auto"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    >
+                        <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-green-500 to-emerald-600 p-12 md:p-20 text-center">
+                            {/* Decorative elements */}
+                            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+                            <div className="absolute bottom-0 right-0 w-96 h-96 bg-black/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+                            
+                            <div className="relative z-10">
+                                <motion.h2 
+                                    className="text-4xl md:text-6xl font-black text-slate-950 mb-6"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    מוכן להפסיק לאבד לקוחות?
+                                </motion.h2>
+                                <motion.p 
+                                    className="text-xl text-slate-900/80 mb-10 max-w-2xl mx-auto"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ delay: 0.3 }}
+                                >
+                                    הצטרף למאות עסקים שכבר משתמשים ב-Easychat ומרוויחים יותר
+                                </motion.p>
+                                <motion.button 
+                                    className="px-12 py-5 bg-slate-950 text-white rounded-2xl text-xl font-black hover:bg-slate-900 transition-all shadow-2xl inline-flex items-center gap-3"
+                                    onClick={onOpenModal}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ delay: 0.4 }}
+                                >
+                                    <Icons.Message />
+                                    התחל בחינם עכשיו
+                                    <Icons.ArrowRight />
+                                </motion.button>
+                                <motion.p 
+                                    className="mt-6 text-slate-900/60 text-sm"
+                                    initial={{ opacity: 0 }}
+                                    animate={isInView ? { opacity: 1 } : {}}
+                                    transition={{ delay: 0.5 }}
+                                >
+                                    ללא כרטיס אשראי • התקנה ב-2 דקות • ביטול בכל עת
+                                </motion.p>
+                            </div>
+                        </div>
+                    </motion.div>
                 </section>
+            );
+        };
+
+        // ============== FOOTER ==============
+        const Footer = ({ setCurrentPage }) => {
+            const footerLinks = {
+                product: [
+                    { label: 'תכונות', page: 'features' },
+                    { label: 'איך זה עובד', page: 'how-it-works' },
+                    { label: 'אינטגרציות', page: 'integrations' },
+                    { label: 'עדכונים', page: 'changelog' },
+                ],
+                company: [
+                    { label: 'אודות', page: 'about' },
+                    { label: 'קריירה', page: 'careers' },
+                    { label: 'בלוג', page: 'blog' },
+                    { label: 'צור קשר', page: 'contact' },
+                ],
+                resources: [
+                    { label: 'מרכז עזרה', page: 'help' },
+                    { label: 'תיעוד API', page: 'docs' },
+                    { label: 'סטטוס', page: 'status' },
+                    { label: 'שותפים', page: 'partners' },
+                ],
+                legal: [
+                    { label: 'תנאי שימוש', page: 'terms' },
+                    { label: 'פרטיות', page: 'privacy' },
+                    { label: 'אבטחה', page: 'security' },
+                ],
+            };
+
+            return (
+                <footer className="border-t border-white/5 pt-20 pb-10 relative z-10">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
+                            {/* Logo & Description */}
+                            <div className="col-span-2 md:col-span-1">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
+                                        <Icons.Message />
+                                    </div>
+                                    <span className="text-xl font-black">Easy<span className="text-green-500">chat</span></span>
+                                </div>
+                                <p className="text-slate-500 text-sm mb-6">הבוט החכם שעובד בשבילך 24/7</p>
+                                <div className="flex gap-4">
+                                    <a href="#" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
+                                        <Icons.Linkedin />
+                                    </a>
+                                    <a href="#" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
+                                        <Icons.Twitter />
+                                    </a>
+                                    <a href="#" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
+                                        <Icons.Facebook />
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Links */}
+                            <div>
+                                <h4 className="font-bold mb-4">מוצר</h4>
+                                <ul className="space-y-3">
+                                    {footerLinks.product.map((link, i) => (
+                                        <li key={i}>
+                                            <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="font-bold mb-4">חברה</h4>
+                                <ul className="space-y-3">
+                                    {footerLinks.company.map((link, i) => (
+                                        <li key={i}>
+                                            <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="font-bold mb-4">משאבים</h4>
+                                <ul className="space-y-3">
+                                    {footerLinks.resources.map((link, i) => (
+                                        <li key={i}>
+                                            <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="font-bold mb-4">משפטי</h4>
+                                <ul className="space-y-3">
+                                    {footerLinks.legal.map((link, i) => (
+                                        <li key={i}>
+                                            <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Bottom */}
+                        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                            <p className="text-slate-600 text-sm">© 2025 Easychat. כל הזכויות שמורות.</p>
+                            <div className="flex items-center gap-4 text-sm text-slate-600">
+                                <span className="flex items-center gap-2">
+                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                    כל המערכות פעילות
+                                </span>
+                                <span>made with 💚 in Israel</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             );
         };
 
         // ============== SIGNUP MODAL ==============
         const SignupModal = ({ isOpen, onClose }) => {
-            const [formData, setFormData] = useState({
-                name: '',
-                phone: '',
-                business: '',
-                clientsPerDay: ''
-            });
+            const [formData, setFormData] = useState({ name: '', phone: '', business: '', clientsPerDay: '' });
             const [isLoading, setIsLoading] = useState(false);
             const [isSuccess, setIsSuccess] = useState(false);
             const [errors, setErrors] = useState({});
@@ -878,140 +1413,51 @@
                 if (!formData.phone) newErrors.phone = true;
                 if (!formData.business) newErrors.business = true;
                 
-                if (Object.keys(newErrors).length > 0) {
-                    setErrors(newErrors);
-                    return;
-                }
+                if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
 
                 setIsLoading(true);
-
                 try {
-                    const { data, error } = await supabase
-                        .from('help_leads')
-                        .insert([{
-                            name: formData.name,
-                            phone: formData.phone,
-                            business_type: formData.business,
-                            clients_per_day: formData.clientsPerDay || null
-                        }]);
-
+                    const { error } = await supabase.from('help_leads').insert([{
+                        name: formData.name, phone: formData.phone, business_type: formData.business, clients_per_day: formData.clientsPerDay || null
+                    }]);
                     if (error) throw error;
-                    
                     setIsLoading(false);
                     setIsSuccess(true);
                     setFormData({ name: '', phone: '', business: '', clientsPerDay: '' });
-                    
                 } catch (error) {
-                    console.error('Error submitting lead:', error);
+                    console.error('Error:', error);
                     setIsLoading(false);
-                    setSubmitError('אירעה שגיאה, נסה שוב או צור קשר ישירות');
+                    setSubmitError('אירעה שגיאה, נסה שוב');
                 }
             };
 
-            const handleChange = (field, value) => {
-                setFormData(prev => ({ ...prev, [field]: value }));
-                setErrors(prev => ({ ...prev, [field]: false }));
-                setSubmitError('');
-            };
-
-            useEffect(() => {
-                if (!isOpen) {
-                    setTimeout(() => {
-                        setIsSuccess(false);
-                        setSubmitError('');
-                    }, 300);
-                }
-            }, [isOpen]);
+            useEffect(() => { if (!isOpen) setTimeout(() => { setIsSuccess(false); setSubmitError(''); }, 300); }, [isOpen]);
 
             if (!isOpen) return null;
 
             return (
                 <AnimatePresence>
-                    <motion.div
-                        className="modal-overlay"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                    >
-                        <motion.div
-                            className="modal-content"
-                            initial={{ opacity: 0, y: 100, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 100, scale: 0.9 }}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <button 
-                                onClick={onClose}
-                                className="absolute top-4 left-4 w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-green-500 hover:text-white transition-all"
-                            >
-                                ✕
-                            </button>
+                    <motion.div className="modal-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+                        <motion.div className="modal-content" initial={{ opacity: 0, y: 100, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 100, scale: 0.9 }} onClick={(e) => e.stopPropagation()}>
+                            <button onClick={onClose} className="absolute top-4 left-4 w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-green-500 hover:text-white transition-all">✕</button>
                             
                             {isSuccess ? (
                                 <div className="text-center py-10">
                                     <div className="success-check">✓</div>
-                                    <h3 className="text-2xl font-black mb-2">ברוך הבא למשפחה! 🎉</h3>
-                                    <p className="text-slate-400">
-                                        ניצור איתך קשר תוך 24 שעות להתחלת ההגדרה
-                                    </p>
+                                    <h3 className="text-2xl font-black mb-2">ברוך הבא! 🎉</h3>
+                                    <p className="text-slate-400">ניצור איתך קשר תוך 24 שעות</p>
                                 </div>
                             ) : (
                                 <>
                                     <h3 className="text-2xl font-black mb-2">בוא נתחיל! 🚀</h3>
-                                    <p className="text-slate-400 mb-8">
-                                        מלא את הפרטים ונחזור אליך תוך 24 שעות
-                                    </p>
-                                    
-                                    {submitError && (
-                                        <div className="error-message">{submitError}</div>
-                                    )}
-                                    
+                                    <p className="text-slate-400 mb-8">מלא את הפרטים ונחזור אליך תוך 24 שעות</p>
+                                    {submitError && <div className="error-message">{submitError}</div>}
                                     <form onSubmit={handleSubmit}>
-                                        <div className="mb-4">
-                                            <input
-                                                className={`form-input ${errors.name ? 'error' : formData.name ? 'success' : ''}`}
-                                                placeholder="שם מלא"
-                                                value={formData.name}
-                                                onChange={(e) => handleChange('name', e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="mb-4">
-                                            <input
-                                                className={`form-input ${errors.phone ? 'error' : formData.phone ? 'success' : ''}`}
-                                                placeholder="טלפון"
-                                                type="tel"
-                                                value={formData.phone}
-                                                onChange={(e) => handleChange('phone', e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="mb-4">
-                                            <input
-                                                className={`form-input ${errors.business ? 'error' : formData.business ? 'success' : ''}`}
-                                                placeholder="מה העסק שלך?"
-                                                value={formData.business}
-                                                onChange={(e) => handleChange('business', e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="mb-6">
-                                            <input
-                                                className="form-input"
-                                                placeholder="כמה לקוחות ביום? (אופציונלי)"
-                                                value={formData.clientsPerDay}
-                                                onChange={(e) => handleChange('clientsPerDay', e.target.value)}
-                                            />
-                                        </div>
-                                        <button 
-                                            type="submit" 
-                                            className="btn-primary w-full"
-                                            disabled={isLoading}
-                                        >
-                                            {isLoading ? (
-                                                <div className="spinner" />
-                                            ) : (
-                                                'להתחיל עכשיו'
-                                            )}
-                                        </button>
+                                        <div className="mb-4"><input className={`form-input ${errors.name ? 'error' : formData.name ? 'success' : ''}`} placeholder="שם מלא" value={formData.name} onChange={(e) => { setFormData(prev => ({...prev, name: e.target.value})); setErrors(prev => ({...prev, name: false})); }} /></div>
+                                        <div className="mb-4"><input className={`form-input ${errors.phone ? 'error' : formData.phone ? 'success' : ''}`} placeholder="טלפון" type="tel" value={formData.phone} onChange={(e) => { setFormData(prev => ({...prev, phone: e.target.value})); setErrors(prev => ({...prev, phone: false})); }} /></div>
+                                        <div className="mb-4"><input className={`form-input ${errors.business ? 'error' : formData.business ? 'success' : ''}`} placeholder="מה העסק שלך?" value={formData.business} onChange={(e) => { setFormData(prev => ({...prev, business: e.target.value})); setErrors(prev => ({...prev, business: false})); }} /></div>
+                                        <div className="mb-6"><input className="form-input" placeholder="כמה לקוחות ביום? (אופציונלי)" value={formData.clientsPerDay} onChange={(e) => setFormData(prev => ({...prev, clientsPerDay: e.target.value}))} /></div>
+                                        <button type="submit" className="btn-primary w-full" disabled={isLoading}>{isLoading ? <div className="spinner" /> : 'להתחיל עכשיו'}</button>
                                     </form>
                                 </>
                             )}
@@ -1021,86 +1467,48 @@
             );
         };
 
-        // ============== FOOTER ==============
-        const Footer = () => (
-            <footer className="py-16 px-6 border-t border-white/5 relative z-10">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <div>
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
-                                    <MessageIcon />
-                                </div>
-                                <span className="text-2xl font-black text-green-500">Easychat</span>
-                            </div>
-                            <p className="text-slate-500 mb-2">המזכירה שעובדת בזמן שאתה חי</p>
-                            <p className="text-slate-600 text-sm">made with 💚 in Israel</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">קישורים</h4>
-                            <ul className="space-y-2 text-slate-500">
-                                <li><a href="#" className="hover:text-green-500 transition-colors">תנאי שימוש</a></li>
-                                <li><a href="#" className="hover:text-green-500 transition-colors">מדיניות פרטיות</a></li>
-                                <li><a href="#" className="hover:text-green-500 transition-colors">צור קשר</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">אמון</h4>
-                            <p className="text-green-500 font-bold">מהימן ע״י 200+ solopreneurs</p>
-                        </div>
-                    </div>
-                    <div className="mt-12 pt-8 border-t border-white/5 text-center text-slate-600 text-sm">
-                        © 2025 Easychat. כל הזכויות שמורות.
-                    </div>
-                </div>
-            </footer>
-        );
-
-        // ============== STICKY CTA ==============
-        const StickyCTA = ({ onOpenModal }) => {
-            const [isVisible, setIsVisible] = useState(false);
-
-            useEffect(() => {
-                const handleScroll = () => {
-                    setIsVisible(window.scrollY > 500);
-                };
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            if (typeof window !== 'undefined' && window.innerWidth > 768) return null;
-            if (!isVisible) return null;
-
-            return (
-                <motion.div
-                    className="sticky-cta"
-                    initial={{ y: 100 }}
-                    animate={{ y: 0 }}
-                >
-                    <button className="btn-primary w-full" onClick={onOpenModal}>
-                        להתחיל עכשיו
-                    </button>
-                </motion.div>
-            );
-        };
-
         // ============== MAIN APP ==============
         const App = () => {
             const [isModalOpen, setIsModalOpen] = useState(false);
+            const [currentPage, setCurrentPage] = useState('home');
+
+            // Scroll to top on page change
+            useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [currentPage]);
+
+            const renderPage = () => {
+                switch(currentPage) {
+                    case 'about':
+                        return <AboutPage />;
+                    case 'how-it-works':
+                        return (
+                            <>
+                                <div className="pt-32" />
+                                <HowItWorksSection />
+                                <FeaturesSection />
+                                <CTASection onOpenModal={() => setIsModalOpen(true)} />
+                            </>
+                        );
+                    default:
+                        return (
+                            <>
+                                <HeroSection onOpenModal={() => setIsModalOpen(true)} />
+                                <ClientLogos />
+                                <HowItWorksSection />
+                                <FeaturesSection />
+                                <TestimonialsSection />
+                                <FAQSection />
+                                <CTASection onOpenModal={() => setIsModalOpen(true)} />
+                            </>
+                        );
+                }
+            };
 
             return (
                 <>
                     <BackgroundAnimation />
-                    <Navbar onOpenModal={() => setIsModalOpen(true)} />
-                    <HeroSection onOpenModal={() => setIsModalOpen(true)} />
-                    <FeaturesSection />
-                    <TestimonialsSection />
-                    <FAQSection />
-                    <LossCalculator />
-                    <ScarcitySection />
-                    <FinalCTASection onOpenModal={() => setIsModalOpen(true)} />
-                    <Footer />
-                    <StickyCTA onOpenModal={() => setIsModalOpen(true)} />
+                    <Navbar onOpenModal={() => setIsModalOpen(true)} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                    {renderPage()}
+                    <Footer setCurrentPage={setCurrentPage} />
                     <SignupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 </>
             );
