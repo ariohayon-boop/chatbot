@@ -841,17 +841,17 @@ return (
                     {/* Left - Info */}
                     <div className="p-8 md:p-12 flex flex-col justify-center">
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center text-3xl">
-                                🚤
+                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-2">
+                                <img src="https://sea4u.co.il/wp-content/uploads/2025/07/Group-1-3.png" alt="Sea4u Logo" className="w-full h-full object-contain" />
                             </div>
                             <div>
                                 <h3 className="text-2xl font-black">Sea4u</h3>
-                                <p className="text-slate-400">השכרת יאכטות באילת</p>
+                                <p className="text-slate-400">השכרת יאכטות במרינה הרצליה</p>
                             </div>
                         </div>
 
                         <blockquote className="text-xl md:text-2xl text-slate-300 font-light italic mb-8 leading-relaxed">
-                            "הבוט ענה על 847 הודעות בחודש הראשון. זה כאילו שכרתי עובד שעובד 24/7 ולעולם לא מתעייף."
+                            "הבוט עונה על כל פנייה תוך שניות - בזמן שאנחנו בים עם לקוחות. זה כאילו שכרנו עובד שעובד 24/7 ולעולם לא מתעייף."
                         </blockquote>
 
                         {/* Stats */}
@@ -897,20 +897,21 @@ return (
                             </div>
                             
                             <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl rounded-br-sm p-4 ml-8">
-                                <p className="text-slate-900 font-medium">היי! שמח לעזור 🚤</p>
-                                <p className="text-slate-900 mt-2">ליום הולדת אני ממליץ על היאכטה "Blue Dream" - מושלמת ל-10 אנשים, עם מערכת סאונד ואזור שיזוף.</p>
+                                <p className="text-slate-900 font-medium">היי! שמח לעזור ⛵</p>
+                                <p className="text-slate-900 mt-2">ליום הולדת ל-10 אנשים היאכטה שלנו מושלמת - עד 13 משתתפים, עם מערכת סאונד ואזור שיזוף.</p>
                                 <p className="text-slate-900 mt-2 font-medium">📅 באיזה תאריך חשבתם?</p>
                             </div>
                             
                             <div className="bg-slate-800 rounded-2xl rounded-bl-sm p-4 mr-8">
-                                <p className="text-white">יום שישי הקרוב אפשרי?</p>
+                                <p className="text-white">יום שישי הקרוב אפשרי? כמה זה עולה?</p>
                             </div>
                             
                             <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl rounded-br-sm p-4 ml-8">
                                 <p className="text-slate-900">בודק לך עכשיו... ✅ יש פנוי!</p>
-                                <p className="text-slate-900 mt-2">יש לנו שני מסלולים:</p>
-                                <p className="text-slate-900">• הפלגת בוקר (10:00-14:00) - ₪2,400</p>
-                                <p className="text-slate-900">• הפלגת שקיעה (16:00-20:00) - ₪2,800</p>
+                                <p className="text-slate-900 mt-2">המחירים לקבוצה עד 10:</p>
+                                <p className="text-slate-900">• שעה - ₪650</p>
+                                <p className="text-slate-900">• שעה וחצי - ₪950</p>
+                                <p className="text-slate-900">• שעתיים - ₪1,250</p>
                                 <p className="text-slate-900 mt-2 font-medium">מה מתאים לך יותר?</p>
                             </div>
                         </div>
@@ -1338,9 +1339,11 @@ if (showPost) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
                 >
-                    <div className="text-8xl mb-4">🚤</div>
+                    <div className="w-32 h-32 mx-auto mb-4 bg-white rounded-2xl p-4">
+                        <img src="https://sea4u.co.il/wp-content/uploads/2025/07/Group-1-3.png" alt="Sea4u Logo" className="w-full h-full object-contain" />
+                    </div>
                     <h2 className="text-2xl font-bold text-green-500">Sea4u</h2>
-                    <p className="text-slate-400">השכרת יאכטות ושיט פרטי באילת</p>
+                    <p className="text-slate-400">השכרת יאכטות במרינה הרצליה</p>
                 </motion.div>
 
                 {/* Content */}
@@ -1352,17 +1355,20 @@ if (showPost) {
                 >
                     <h2 className="text-2xl font-black mt-8 mb-4">הסיפור של Sea4u</h2>
                     <p className="text-slate-300 text-lg mb-6">
-                        Sea4u היא חברת השכרת יאכטות ושיט פרטי באילת. עם יותר מ-10 שנות ניסיון, 
-                        הם מציעים חוויות ים בלתי נשכחות - מהפלגות שקיעה רומנטיות ועד ימי כיף לקבוצות.
+                        Sea4u היא חברת השכרת יאכטות מובילה במרינה הרצליה. עם ניסיון שהחל משנת 1979 בתנועת צופי ים, 
+                        הם מציעים חוויות ים בלתי נשכחות - מהפלגות שקיעה רומנטיות, דרך ימי הולדת ומסיבות רווקים/רווקות, ועד ימי גיבוש לחברות.
                     </p>
-                    <p className="text-slate-300 text-lg mb-6">אבל הייתה להם בעיה גדולה.</p>
+                    <p className="text-slate-300 text-lg mb-6">
+                        חזי דיין, הבעלים והסקיפר הראשי, מפעיל יאכטה בוטיק מפוארת עם קיבולת של עד 13 משתתפים. 
+                        אבל הייתה להם בעיה גדולה.
+                    </p>
 
                     <h2 className="text-2xl font-black mt-8 mb-4">האתגר: לקוחות שמחכים = לקוחות שהולכים</h2>
                     <div className="border-r-4 border-green-500 pr-6 py-4 my-8 bg-green-500/10 rounded-l-xl">
                         <p className="text-white text-xl italic">
                             "רוב הפניות שלנו מגיעות בערב ובסופי שבוע. בדיוק כשאנחנו בים עם לקוחות, או מנסים לנוח."
                         </p>
-                        <p className="text-slate-400 mt-2">— בעל העסק</p>
+                        <p className="text-slate-400 mt-2">— חזי דיין, בעלים</p>
                     </div>
 
                     {/* Stats Before */}
@@ -1403,20 +1409,21 @@ if (showPost) {
                             </div>
                             
                             <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl rounded-br-sm p-4 ml-8">
-                                <p className="text-slate-900 font-medium m-0">היי! שמח לעזור 🚤</p>
-                                <p className="text-slate-900 m-0 mt-2">ליום הולדת אני ממליץ על היאכטה "Blue Dream" - מושלמת ל-10 אנשים, עם מערכת סאונד ואזור שיזוף.</p>
+                                <p className="text-slate-900 font-medium m-0">היי! שמח לעזור ⛵</p>
+                                <p className="text-slate-900 m-0 mt-2">ליום הולדת ל-10 אנשים היאכטה שלנו מושלמת - עד 13 משתתפים, עם מערכת סאונד ואזור שיזוף.</p>
                                 <p className="text-slate-900 m-0 mt-2 font-medium">📅 באיזה תאריך חשבתם?</p>
                             </div>
                             
                             <div className="bg-slate-800 rounded-2xl rounded-bl-sm p-4 mr-8">
-                                <p className="text-white m-0">יום שישי הקרוב אפשרי?</p>
+                                <p className="text-white m-0">יום שישי הקרוב אפשרי? כמה זה עולה?</p>
                             </div>
                             
                             <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl rounded-br-sm p-4 ml-8">
                                 <p className="text-slate-900 m-0">בודק לך עכשיו... ✅ יש פנוי!</p>
-                                <p className="text-slate-900 m-0 mt-2">יש לנו שני מסלולים:</p>
-                                <p className="text-slate-900 m-0">• הפלגת בוקר (10:00-14:00) - ₪2,400</p>
-                                <p className="text-slate-900 m-0">• הפלגת שקיעה (16:00-20:00) - ₪2,800</p>
+                                <p className="text-slate-900 m-0 mt-2">המחירים לקבוצה עד 10:</p>
+                                <p className="text-slate-900 m-0">• שעה - ₪650</p>
+                                <p className="text-slate-900 m-0">• שעה וחצי - ₪950</p>
+                                <p className="text-slate-900 m-0">• שעתיים - ₪1,250</p>
                                 <p className="text-slate-900 m-0 mt-2 font-medium">מה מתאים לך יותר?</p>
                             </div>
                         </div>
@@ -1456,9 +1463,9 @@ if (showPost) {
 
                     <div className="border-r-4 border-green-500 pr-6 py-4 my-8 bg-green-500/10 rounded-l-xl">
                         <p className="text-white text-xl italic">
-                            "הבוט ענה על 847 הודעות בחודש הראשון. זה כאילו שכרתי עובד שעובד 24/7 ולעולם לא מתעייף."
+                            "הים הוא המקום המושלם לחגיגות אירוע בלתי נשכח. הבוט עוזר לנו לתת מענה מיידי ללקוחות גם כשאנחנו באמצע הפלגה."
                         </p>
-                        <p className="text-slate-400 mt-2">— בעלי Sea4u</p>
+                        <p className="text-slate-400 mt-2">— חזי דיין, בעלים</p>
                     </div>
 
                     {/* CTA */}
@@ -1520,7 +1527,7 @@ return (
                             ⭐ מומלץ
                         </span>
                         <h2 className="text-2xl md:text-4xl font-black mb-4">איך Sea4u הכפילו את כמות ההזמנות תוך חודש</h2>
-                        <p className="text-slate-400 text-lg mb-6">Sea4u, חברת השכרת יאכטות באילת, עברו מזמן מענה של 4-6 שעות ל-2 דקות. קרא את סיפור ההצלחה המלא.</p>
+                        <p className="text-slate-400 text-lg mb-6">Sea4u, חברת השכרת יאכטות במרינה הרצליה, עברו מזמן מענה של 4-6 שעות ל-2 דקות. קרא את סיפור ההצלחה המלא.</p>
                         <div className="flex items-center gap-6 text-sm text-slate-500">
                             <span className="flex items-center gap-2">
                                 <Icons.Clock />
@@ -1531,8 +1538,8 @@ return (
                         </div>
                     </div>
                     <div className="flex items-center justify-center">
-                        <div className="w-48 h-48 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-3xl flex items-center justify-center text-8xl">
-                            🚤
+                        <div className="w-48 h-48 bg-white rounded-3xl flex items-center justify-center p-6">
+                            <img src="https://sea4u.co.il/wp-content/uploads/2025/07/Group-1-3.png" alt="Sea4u Logo" className="w-full h-full object-contain" />
                         </div>
                     </div>
                 </div>
