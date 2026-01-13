@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
@@ -21,7 +20,6 @@
         * { font-family: 'Heebo', sans-serif; }
         body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; }
         .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
-        .glass-light { background: rgba(255,255,255,0.95); }
         .gradient-primary { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
         .gradient-glow { box-shadow: 0 0 40px rgba(99, 102, 241, 0.3); }
         .card-modern { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; }
@@ -34,6 +32,8 @@
         .input-modern { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: white; transition: all 0.3s ease; }
         .input-modern:focus { background: rgba(255,255,255,0.08); border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); outline: none; }
         .input-modern::placeholder { color: rgba(255,255,255,0.4); }
+        .input-modern option { background: #1e293b; color: white; }
+        select.input-modern { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 16px center; background-size: 16px; padding-left: 48px; }
         .toggle-modern { position: relative; width: 56px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 14px; cursor: pointer; transition: all 0.3s ease; }
         .toggle-modern.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .toggle-modern::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -213,25 +213,6 @@
                         </div>
                     </section>
                     
-                    <!-- Plan Info -->
-                    <section class="card-modern p-6" id="plan-section">
-                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 flex items-center justify-center">
-                                <i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i>
-                            </div>
-                            התוכנית
-                        </h3>
-                        
-                        <div class="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-2xl p-5 mb-4">
-                            <p class="text-2xl font-bold text-white" id="plan-name">טוען...</p>
-                            <p class="text-sm text-gray-400" id="plan-status">טוען...</p>
-                            <div class="mt-4 bg-white/10 rounded-full h-2 overflow-hidden">
-                                <div class="gradient-primary h-full transition-all" id="plan-progress" style="width: 0%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-2" id="plan-days">טוען...</p>
-                        </div>
-                    </section>
-                    
                     <!-- Quick Stats -->
                     <section class="card-modern p-6">
                         <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-3">
@@ -282,7 +263,6 @@ const dayNames = {
 };
 
 let settings = null;
-let originalSettings = null;
 let hasChanges = false;
 
 lucide.createIcons();
@@ -298,12 +278,10 @@ async function loadSettings() {
         
         if (error) throw error;
         settings = data;
-        originalSettings = JSON.stringify(data);
         
         populateForm();
         renderWorkingHours();
         loadStats();
-        updatePlanInfo();
     } catch (error) {
         console.error('Error:', error);
         showToast('שגיאה בטעינת ההגדרות', 'error');
@@ -362,46 +340,21 @@ function toggleDay(day, element) {
     markChanged();
 }
 
-function updatePlanInfo() {
-    if (!settings) return;
-    
-    const planName = settings.plan_type === 'premium' ? 'Premium' : settings.plan_type === 'pro' ? 'Pro' : 'Trial';
-    document.getElementById('plan-name').textContent = planName;
-    
-    if (settings.trial_ends_at) {
-        const trialEnd = new Date(settings.trial_ends_at);
-        const now = new Date();
-        const daysLeft = Math.max(0, Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24)));
-        const progress = Math.min(100, ((14 - daysLeft) / 14) * 100);
-        
-        document.getElementById('plan-status').textContent = `תקופת ניסיון - ${daysLeft > 0 ? daysLeft + ' ימים נותרו' : 'הסתיים'}`;
-        document.getElementById('plan-progress').style.width = progress + '%';
-        document.getElementById('plan-days').textContent = daysLeft > 0 ? `נותרו ${daysLeft} ימים` : 'תקופת הניסיון הסתיימה';
-    } else {
-        document.getElementById('plan-status').textContent = 'פעיל';
-        document.getElementById('plan-progress').style.width = '100%';
-        document.getElementById('plan-days').textContent = '';
-    }
-}
-
 async function loadStats() {
     try {
         const db = getSupabase();
         
-        // Get conversations count
         const { count: convCount } = await db
             .from('conversations')
             .select('*', { count: 'exact', head: true })
             .eq('business_id', BUSINESS_ID);
         
-        // Get answered count
         const { count: answeredCount } = await db
             .from('conversations')
             .select('*', { count: 'exact', head: true })
             .eq('business_id', BUSINESS_ID)
             .eq('response_type', 'answered');
         
-        // Get knowledge count
         const { count: knowledgeCount } = await db
             .from('knowledge_base')
             .select('*', { count: 'exact', head: true })
@@ -420,14 +373,12 @@ function markChanged() {
     document.getElementById('save-indicator').classList.remove('hidden');
 }
 
-// Listen for changes on all inputs
 document.querySelectorAll('input, textarea, select').forEach(el => {
     el.addEventListener('input', markChanged);
     el.addEventListener('change', markChanged);
 });
 
 async function saveSettings() {
-    // Collect working hours
     const workingHours = {};
     Object.keys(dayNames).forEach(day => {
         const toggle = document.querySelector(`[data-day="${day}"].toggle-modern`);
@@ -467,16 +418,13 @@ async function saveSettings() {
         document.getElementById('save-indicator').classList.add('hidden');
         showToast('ההגדרות נשמרו בהצלחה! ✓');
         
-        // Update local settings
         settings = { ...settings, ...updatedSettings };
-        originalSettings = JSON.stringify(settings);
     } catch (error) {
         console.error('Error:', error);
         showToast('שגיאה בשמירת ההגדרות', 'error');
     }
 }
 
-// Warn before leaving with unsaved changes
 window.addEventListener('beforeunload', (e) => {
     if (hasChanges) {
         e.preventDefault();
