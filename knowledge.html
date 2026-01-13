@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
@@ -21,9 +20,7 @@
         * { font-family: 'Heebo', sans-serif; }
         body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; }
         .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
-        .glass-light { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); }
         .gradient-primary { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
-        .gradient-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .gradient-glow { box-shadow: 0 0 40px rgba(99, 102, 241, 0.3); }
         .card-modern { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-modern:hover { background: rgba(255,255,255,0.05); border-color: rgba(99, 102, 241, 0.3); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
@@ -35,9 +32,10 @@
         .btn-modern:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5); }
         .btn-outline { background: transparent; border: 2px solid rgba(99, 102, 241, 0.5); border-radius: 16px; color: #a5b4fc; transition: all 0.3s ease; }
         .btn-outline:hover { background: rgba(99, 102, 241, 0.1); border-color: #6366f1; }
-        .input-modern { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: white; transition: all 0.3s ease; }
-        .input-modern:focus { background: rgba(255,255,255,0.05); border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); outline: none; }
+        .input-modern { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: white; transition: all 0.3s ease; }
+        .input-modern:focus { background: rgba(255,255,255,0.08); border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); outline: none; }
         .input-modern::placeholder { color: rgba(255,255,255,0.4); }
+        .input-modern option { background: #1e293b; color: white; padding: 12px; }
         .badge { padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; }
         .badge-pricing { background: rgba(16, 185, 129, 0.15); color: #34d399; }
         .badge-services { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; }
@@ -46,8 +44,9 @@
         .badge-terms { background: rgba(239, 68, 68, 0.15); color: #f87171; }
         .badge-faq { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
         .badge-other { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
-        .modal-overlay { background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); }
+        .modal-overlay { background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); }
         .modal-content { animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid rgba(255,255,255,0.1); }
         @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); }
         .pulse-glow { animation: pulseGlow 2s infinite; }
@@ -59,6 +58,7 @@
         .toggle-modern.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .toggle-modern::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .toggle-modern.active::after { transform: translateX(28px); }
+        select.input-modern { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 16px center; background-size: 16px; padding-left: 48px; }
     </style>
 </head>
 <body>
@@ -174,7 +174,7 @@
                         <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2"></i>
                         <input type="text" id="search-input" placeholder="חפש שאלה או תשובה..." class="input-modern w-full pr-12 pl-4 py-4">
                     </div>
-                    <select id="category-filter" class="input-modern px-5 py-4 min-w-40">
+                    <select id="category-filter" class="input-modern px-5 py-4 min-w-44">
                         <option value="">כל הקטגוריות</option>
                         <option value="pricing">💰 מחירים</option>
                         <option value="services">🛠️ שירותים</option>
@@ -184,7 +184,7 @@
                         <option value="faq">❓ שאלות נפוצות</option>
                         <option value="other">📁 אחר</option>
                     </select>
-                    <select id="status-filter" class="input-modern px-5 py-4 min-w-32">
+                    <select id="status-filter" class="input-modern px-5 py-4 min-w-36">
                         <option value="">הכל</option>
                         <option value="active">✅ פעילים</option>
                         <option value="inactive">❌ מושבתים</option>
@@ -227,21 +227,21 @@
         </main>
     </div>
     
-    <!-- Add/Edit Modal -->
+    <!-- Add/Edit Modal - DARK THEME -->
     <div id="modal" class="fixed inset-0 z-50 hidden">
         <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
-        <div class="modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl glass-light rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between p-6 border-b border-gray-100">
-                <h3 class="text-xl font-bold text-dark" id="modal-title">הוסף שאלה חדשה</h3>
-                <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-                    <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+        <div class="modal-content modal-dark absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
+                <h3 class="text-xl font-bold text-white" id="modal-title">הוסף שאלה חדשה</h3>
+                <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-xl transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-gray-400"></i>
                 </button>
             </div>
             <form id="knowledge-form" class="p-6 space-y-5">
                 <input type="hidden" id="edit-id">
                 <div>
-                    <label class="block text-sm font-semibold text-dark mb-2">קטגוריה *</label>
-                    <select id="form-category" required class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-dark">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">קטגוריה *</label>
+                    <select id="form-category" required class="input-modern w-full px-5 py-4">
                         <option value="">בחר קטגוריה</option>
                         <option value="pricing">💰 מחירים</option>
                         <option value="services">🛠️ שירותים</option>
@@ -253,28 +253,28 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-dark mb-2">השאלה *</label>
-                    <input type="text" id="form-question" required placeholder='לדוגמה: "כמה עולה?"' class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-dark">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">השאלה *</label>
+                    <input type="text" id="form-question" required placeholder='לדוגמה: "כמה עולה?"' class="input-modern w-full px-5 py-4">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-dark mb-2">התשובה *</label>
-                    <textarea id="form-answer" required rows="5" placeholder="כתוב תשובה מפורטת..." class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all resize-none text-dark"></textarea>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">התשובה *</label>
+                    <textarea id="form-answer" required rows="5" placeholder="כתוב תשובה מפורטת..." class="input-modern w-full px-5 py-4 resize-none"></textarea>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-dark mb-2">מילות מפתח</label>
-                    <input type="text" id="form-keywords" placeholder="מחיר, עלות, כמה (הפרד בפסיקים)" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-dark">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">מילות מפתח</label>
+                    <input type="text" id="form-keywords" placeholder="מחיר, עלות, כמה (הפרד בפסיקים)" class="input-modern w-full px-5 py-4">
                 </div>
-                <div class="flex items-center justify-between p-5 bg-gray-50 rounded-2xl">
+                <div class="flex items-center justify-between p-5 bg-white/5 rounded-2xl">
                     <div>
-                        <p class="font-semibold text-dark">שאלה פעילה</p>
-                        <p class="text-sm text-gray-500">הבוט ישתמש בשאלה הזו</p>
+                        <p class="font-semibold text-white">שאלה פעילה</p>
+                        <p class="text-sm text-gray-400">הבוט ישתמש בשאלה הזו</p>
                     </div>
                     <div id="form-active" class="toggle-modern active" onclick="toggleActive()"></div>
                 </div>
             </form>
-            <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
-                <button onclick="closeModal()" class="px-6 py-3 text-gray-600 hover:bg-gray-100 rounded-2xl transition-colors font-medium">ביטול</button>
-                <button onclick="saveKnowledge()" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-8 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all flex items-center gap-2">
+            <div class="flex items-center justify-end gap-3 p-6 border-t border-white/10">
+                <button onclick="closeModal()" class="px-6 py-3 text-gray-400 hover:bg-white/10 rounded-2xl transition-colors font-medium">ביטול</button>
+                <button onclick="saveKnowledge()" class="btn-modern text-white px-8 py-3 flex items-center gap-2">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     <span id="save-btn-text">שמור</span>
                 </button>
@@ -282,51 +282,46 @@
         </div>
     </div>
     
-    <!-- Bulk Import Modal -->
+    <!-- Bulk Import Modal - DARK THEME -->
     <div id="bulk-modal" class="fixed inset-0 z-50 hidden">
         <div class="modal-overlay absolute inset-0" onclick="closeBulkModal()"></div>
-        <div class="modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl glass-light rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between p-6 border-b border-gray-100">
+        <div class="modal-content modal-dark absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
                 <div>
-                    <h3 class="text-xl font-bold text-dark">ייבוא מהיר ✨</h3>
-                    <p class="text-sm text-gray-500 mt-1">הדבק טקסט עם מידע על העסק והמערכת תסדר אותו אוטומטית</p>
+                    <h3 class="text-xl font-bold text-white">ייבוא מהיר ✨</h3>
+                    <p class="text-sm text-gray-400 mt-1">הדבק טקסט עם מידע על העסק והמערכת תסדר אותו אוטומטית</p>
                 </div>
-                <button onclick="closeBulkModal()" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-                    <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+                <button onclick="closeBulkModal()" class="p-2 hover:bg-white/10 rounded-xl transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-gray-400"></i>
                 </button>
             </div>
             <div class="p-6 space-y-5">
                 <div>
-                    <label class="block text-sm font-semibold text-dark mb-2">הדבק את כל המידע על העסק</label>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">הדבק את כל המידע על העסק</label>
                     <textarea id="bulk-text" rows="12" placeholder="לדוגמה:
 מחירים:
 יאכטה קטנה עד 8 אנשים - 3,500-4,500 ש״ח
 יאכטה בינונית עד 15 אנשים - 5,000-6,500 ש״ח
-יאכטה גדולה עד 25 אנשים - 7,000-9,000 ש״ח
 
 שעות פעילות:
 ימים א-ה: 09:00-18:00
 יום ו: 09:00-14:00
-שבת: סגור
 
 מיקום:
-מרינה הרצליה, רציף 3
-
-מה כולל השייט:
-קפטן מקצועי, דלק, ציוד בטיחות, מערכת סאונד" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all resize-none text-dark"></textarea>
+מרינה הרצליה, רציף 3" class="input-modern w-full px-5 py-4 resize-none"></textarea>
                 </div>
                 <div id="bulk-preview" class="hidden">
-                    <label class="block text-sm font-semibold text-dark mb-3">תצוגה מקדימה</label>
+                    <label class="block text-sm font-semibold text-gray-300 mb-3">תצוגה מקדימה</label>
                     <div id="bulk-preview-content" class="space-y-3 max-h-60 overflow-y-auto"></div>
                 </div>
             </div>
-            <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
-                <button onclick="closeBulkModal()" class="px-6 py-3 text-gray-600 hover:bg-gray-100 rounded-2xl transition-colors font-medium">ביטול</button>
-                <button onclick="previewBulk()" id="preview-btn" class="bg-gray-800 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-gray-700 transition-all flex items-center gap-2">
+            <div class="flex items-center justify-end gap-3 p-6 border-t border-white/10">
+                <button onclick="closeBulkModal()" class="px-6 py-3 text-gray-400 hover:bg-white/10 rounded-2xl transition-colors font-medium">ביטול</button>
+                <button onclick="previewBulk()" id="preview-btn" class="btn-outline px-6 py-3 flex items-center gap-2">
                     <i data-lucide="eye" class="w-4 h-4"></i>
                     תצוגה מקדימה
                 </button>
-                <button onclick="importBulk()" id="import-btn" class="hidden bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-8 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all flex items-center gap-2">
+                <button onclick="importBulk()" id="import-btn" class="hidden btn-modern text-white px-8 py-3 flex items-center gap-2">
                     <i data-lucide="upload" class="w-4 h-4"></i>
                     ייבא הכל
                 </button>
@@ -334,18 +329,18 @@
         </div>
     </div>
     
-    <!-- Delete Modal -->
+    <!-- Delete Modal - DARK THEME -->
     <div id="delete-modal" class="fixed inset-0 z-50 hidden">
         <div class="modal-overlay absolute inset-0" onclick="closeDeleteModal()"></div>
-        <div class="modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md glass-light rounded-3xl shadow-2xl p-8 text-center">
-            <div class="w-20 h-20 mx-auto mb-6 bg-red-100 rounded-full flex items-center justify-center">
-                <i data-lucide="trash-2" class="w-10 h-10 text-red-500"></i>
+        <div class="modal-content modal-dark absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-3xl shadow-2xl p-8 text-center">
+            <div class="w-20 h-20 mx-auto mb-6 bg-red-500/20 rounded-full flex items-center justify-center">
+                <i data-lucide="trash-2" class="w-10 h-10 text-red-400"></i>
             </div>
-            <h3 class="text-xl font-bold text-dark mb-2">למחוק את השאלה?</h3>
-            <p class="text-gray-500 mb-8">הפעולה הזו לא ניתנת לביטול</p>
+            <h3 class="text-xl font-bold text-white mb-2">למחוק את השאלה?</h3>
+            <p class="text-gray-400 mb-8">הפעולה הזו לא ניתנת לביטול</p>
             <div class="flex items-center justify-center gap-4">
-                <button onclick="closeDeleteModal()" class="px-8 py-3 text-gray-600 hover:bg-gray-100 rounded-2xl transition-colors font-medium">ביטול</button>
-                <button onclick="confirmDelete()" class="bg-red-500 text-white px-8 py-3 rounded-2xl font-semibold hover:bg-red-600 transition-all">כן, מחק</button>
+                <button onclick="closeDeleteModal()" class="px-8 py-3 text-gray-400 hover:bg-white/10 rounded-2xl transition-colors font-medium">ביטול</button>
+                <button onclick="confirmDelete()" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-2xl font-semibold transition-all">כן, מחק</button>
             </div>
         </div>
     </div>
@@ -402,14 +397,14 @@ function renderKnowledge(items = knowledgeItems) {
                         <button onclick="toggleMenu('${item.id}')" class="p-2 hover:bg-white/10 rounded-xl transition-colors">
                             <i data-lucide="more-vertical" class="w-4 h-4 text-gray-400"></i>
                         </button>
-                        <div id="menu-${item.id}" class="hidden absolute left-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-36 z-10">
-                            <button onclick="editItem('${item.id}')" class="w-full px-4 py-3 text-right text-sm hover:bg-gray-50 flex items-center gap-3 text-gray-700">
+                        <div id="menu-${item.id}" class="hidden absolute left-0 top-full mt-2 modal-dark rounded-2xl shadow-xl py-2 min-w-36 z-10">
+                            <button onclick="editItem('${item.id}')" class="w-full px-4 py-3 text-right text-sm hover:bg-white/10 flex items-center gap-3 text-gray-300">
                                 <i data-lucide="edit-2" class="w-4 h-4"></i> ערוך
                             </button>
-                            <button onclick="toggleItemActive('${item.id}')" class="w-full px-4 py-3 text-right text-sm hover:bg-gray-50 flex items-center gap-3 text-gray-700">
+                            <button onclick="toggleItemActive('${item.id}')" class="w-full px-4 py-3 text-right text-sm hover:bg-white/10 flex items-center gap-3 text-gray-300">
                                 <i data-lucide="${item.is_active ? 'eye-off' : 'eye'}" class="w-4 h-4"></i> ${item.is_active ? 'השבת' : 'הפעל'}
                             </button>
-                            <button onclick="deleteItem('${item.id}')" class="w-full px-4 py-3 text-right text-sm hover:bg-red-50 flex items-center gap-3 text-red-500">
+                            <button onclick="deleteItem('${item.id}')" class="w-full px-4 py-3 text-right text-sm hover:bg-red-500/20 flex items-center gap-3 text-red-400">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i> מחק
                             </button>
                         </div>
@@ -587,7 +582,6 @@ async function saveKnowledge() {
     }
 }
 
-// Bulk Import Functions
 function openBulkModal() {
     document.getElementById('bulk-modal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -620,11 +614,11 @@ async function previewBulk() {
     
     const previewContent = document.getElementById('bulk-preview-content');
     previewContent.innerHTML = bulkItems.map((item, i) => `
-        <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+        <div class="flex items-start gap-3 p-4 bg-white/5 rounded-xl">
             <span class="badge badge-${item.category} text-xs">${CATEGORY_LABELS[item.category] || item.category}</span>
             <div class="flex-1">
-                <p class="font-medium text-dark text-sm">${item.question}</p>
-                <p class="text-gray-500 text-xs mt-1 line-clamp-2">${item.answer}</p>
+                <p class="font-medium text-white text-sm">${item.question}</p>
+                <p class="text-gray-400 text-xs mt-1 line-clamp-2">${item.answer}</p>
             </div>
         </div>
     `).join('');
@@ -657,7 +651,6 @@ async function importBulk() {
     }
 }
 
-// Filters
 document.getElementById('search-input').addEventListener('input', filterKnowledge);
 document.getElementById('category-filter').addEventListener('change', filterKnowledge);
 document.getElementById('status-filter').addEventListener('change', filterKnowledge);
