@@ -3,92 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBot Pro - הגדרות</title>
-    
+    <title>EasyChat - הגדרות</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
-    
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#00D4AA',
-                        'primary-dark': '#00A080',
-                        secondary: '#0066FF',
-                        dark: '#1A1A2E',
-                        success: '#00E676',
-                    }
-                }
-            }
+            theme: { extend: { colors: { primary: '#6366f1', 'primary-dark': '#4f46e5', secondary: '#8b5cf6', dark: '#0f172a', success: '#10b981', warning: '#f59e0b', danger: '#ef4444' } } }
         }
     </script>
-    
     <style>
         * { font-family: 'Heebo', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .gradient-bg { background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); }
-        .gradient-primary { background: linear-gradient(135deg, #00D4AA 0%, #00A080 100%); }
-        .sidebar-item { transition: all 0.2s ease; }
-        .sidebar-item:hover { background: rgba(0, 212, 170, 0.1); }
-        .sidebar-item.active { background: rgba(0, 212, 170, 0.15); border-right: 3px solid #00D4AA; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .toast { animation: slideIn 0.3s ease; }
-        .pulse-dot { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .toggle-switch { position: relative; width: 48px; height: 24px; background: #e5e7eb; border-radius: 12px; cursor: pointer; transition: background 0.3s; }
-        .toggle-switch.active { background: #00D4AA; }
-        .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .toggle-switch.active::after { transform: translateX(24px); }
+        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); min-height: 100vh; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+        .glass-light { background: rgba(255,255,255,0.95); }
+        .gradient-primary { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+        .gradient-glow { box-shadow: 0 0 40px rgba(99, 102, 241, 0.3); }
+        .card-modern { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; }
+        .sidebar-modern { background: linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(30,41,59,0.98) 100%); border-left: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-item { transition: all 0.3s ease; border-radius: 16px; }
+        .sidebar-item:hover { background: rgba(99, 102, 241, 0.1); }
+        .sidebar-item.active { background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%); border: 1px solid rgba(99, 102, 241, 0.3); }
+        .btn-modern { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 16px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+        .btn-modern:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5); }
+        .input-modern { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: white; transition: all 0.3s ease; }
+        .input-modern:focus { background: rgba(255,255,255,0.08); border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); outline: none; }
+        .input-modern::placeholder { color: rgba(255,255,255,0.4); }
+        .toggle-modern { position: relative; width: 56px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 14px; cursor: pointer; transition: all 0.3s ease; }
+        .toggle-modern.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .toggle-modern::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .toggle-modern.active::after { transform: translateX(28px); }
+        .pulse-glow { animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.5); } 50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); } }
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 3px; }
+        .save-indicator { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 100; }
     </style>
 </head>
-<body class="gradient-bg min-h-screen">
-    
+<body>
     <div id="toast-container" class="fixed top-4 left-4 z-50 flex flex-col gap-2"></div>
     
     <div class="flex min-h-screen">
-        
         <!-- Sidebar -->
-        <aside class="sidebar w-64 bg-white shadow-lg fixed h-full z-40">
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center">
-                        <i data-lucide="message-square" class="w-5 h-5 text-white"></i>
+        <aside class="sidebar-modern w-72 fixed h-full z-40">
+            <div class="p-6 border-b border-white/5">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 gradient-primary rounded-2xl flex items-center justify-center gradient-glow">
+                        <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-dark">ChatBot Pro</h1>
-                        <p class="text-xs text-gray-500">ניהול בוט וואטסאפ</p>
+                        <h1 class="text-xl font-bold text-white">EasyChat</h1>
+                        <p class="text-xs text-gray-400">ניהול בוט חכם</p>
                     </div>
                 </div>
             </div>
             
-            <nav class="p-4">
-                <ul class="space-y-1">
-                    <li><a href="index.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>דשבורד</span></a></li>
-                    <li><a href="conversations.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark"><i data-lucide="message-circle" class="w-5 h-5"></i><span>שיחות</span></a></li>
-                    <li><a href="knowledge.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark"><i data-lucide="book-open" class="w-5 h-5"></i><span>מאגר מידע</span></a></li>
-                    <li><a href="appointments.html" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:text-dark"><i data-lucide="calendar" class="w-5 h-5"></i><span>פגישות</span></a></li>
-                    <li><a href="settings.html" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-lg text-dark"><i data-lucide="settings" class="w-5 h-5"></i><span>הגדרות</span></a></li>
-                </ul>
+            <nav class="p-4 space-y-2">
+                <a href="conversations.html" class="sidebar-item flex items-center gap-4 px-5 py-4 text-gray-300 hover:text-white">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    <span class="font-medium">שיחות</span>
+                </a>
+                <a href="knowledge.html" class="sidebar-item flex items-center gap-4 px-5 py-4 text-gray-300 hover:text-white">
+                    <i data-lucide="brain" class="w-5 h-5"></i>
+                    <span class="font-medium">מאגר מידע</span>
+                </a>
+                <a href="settings.html" class="sidebar-item active flex items-center gap-4 px-5 py-4 text-white">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span class="font-medium">הגדרות</span>
+                </a>
             </nav>
             
-            <div class="absolute bottom-0 w-full p-4 border-t border-gray-100">
-                <div class="glass rounded-xl p-3">
+            <div class="absolute bottom-0 w-full p-4 border-t border-white/5">
+                <div class="glass rounded-2xl p-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-3 h-3 bg-success rounded-full pulse-dot"></div>
+                        <div class="w-3 h-3 bg-emerald-500 rounded-full pulse-glow"></div>
                         <div>
-                            <p class="text-sm font-medium text-dark">וואטסאפ מחובר</p>
-                            <p class="text-xs text-gray-500">מצב דמו</p>
+                            <p class="text-sm font-medium text-white">בוט פעיל</p>
+                            <p class="text-xs text-gray-400">WhatsApp מחובר</p>
                         </div>
                     </div>
                 </div>
@@ -96,90 +93,93 @@
         </aside>
         
         <!-- Main Content -->
-        <main class="flex-1 mr-64 p-8">
-            
+        <main class="flex-1 mr-72 p-8 pb-32">
             <!-- Header -->
-            <header class="mb-8 opacity-0" id="header">
-                <h2 class="text-2xl font-bold text-dark">הגדרות ⚙️</h2>
-                <p class="text-gray-500">נהל את הגדרות העסק והבוט</p>
+            <header class="mb-8" id="header">
+                <h2 class="text-3xl font-bold text-white mb-2">הגדרות ⚙️</h2>
+                <p class="text-gray-400">נהל את הגדרות העסק והבוט</p>
             </header>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
                 <!-- Main Settings -->
                 <div class="lg:col-span-2 space-y-6">
-                    
                     <!-- Business Info -->
-                    <section class="glass rounded-2xl p-6 opacity-0" id="business-section">
-                        <h3 class="text-lg font-bold text-dark mb-6 flex items-center gap-2">
-                            <i data-lucide="building" class="w-5 h-5 text-primary"></i>
+                    <section class="card-modern p-6" id="business-section">
+                        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                                <i data-lucide="building-2" class="w-5 h-5 text-indigo-400"></i>
+                            </div>
                             פרטי העסק
                         </h3>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">שם העסק</label>
-                                <input type="text" id="business-name" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" value="יאכטות פלוס">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">שם העסק</label>
+                                <input type="text" id="business-name" class="input-modern w-full px-5 py-4" placeholder="שם העסק שלך">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">שם בעל העסק</label>
-                                <input type="text" id="owner-name" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" value="ישראל ישראלי">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">שם בעל העסק</label>
+                                <input type="text" id="owner-name" class="input-modern w-full px-5 py-4" placeholder="השם שלך">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">אימייל</label>
-                                <input type="email" id="email" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" value="demo@chatbot-pro.com">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">אימייל</label>
+                                <input type="email" id="email" class="input-modern w-full px-5 py-4" placeholder="email@example.com">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">טלפון</label>
-                                <input type="tel" id="phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" value="050-1234567">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">טלפון</label>
+                                <input type="tel" id="phone" class="input-modern w-full px-5 py-4" placeholder="050-1234567">
                             </div>
                         </div>
                     </section>
                     
                     <!-- Bot Settings -->
-                    <section class="glass rounded-2xl p-6 opacity-0" id="bot-section">
-                        <h3 class="text-lg font-bold text-dark mb-6 flex items-center gap-2">
-                            <i data-lucide="bot" class="w-5 h-5 text-primary"></i>
+                    <section class="card-modern p-6" id="bot-section">
+                        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center">
+                                <i data-lucide="bot" class="w-5 h-5 text-emerald-400"></i>
+                            </div>
                             הגדרות הבוט
                         </h3>
                         
-                        <div class="space-y-4">
+                        <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">שם הבוט</label>
-                                <input type="text" id="bot-name" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" value="מיכל - העוזרת הוירטואלית">
-                                <p class="text-xs text-gray-500 mt-1">השם שהבוט יציג ללקוחות</p>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">שם הבוט</label>
+                                <input type="text" id="bot-name" class="input-modern w-full px-5 py-4" placeholder="העוזר הוירטואלי">
+                                <p class="text-xs text-gray-500 mt-2">השם שהבוט יציג ללקוחות</p>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">סגנון תקשורת</label>
-                                <select id="bot-style" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">סגנון תקשורת</label>
+                                <select id="bot-style" class="input-modern w-full px-5 py-4">
                                     <option value="formal">🎩 רשמי ומקצועי</option>
-                                    <option value="friendly" selected>😊 ידידותי ונעים</option>
+                                    <option value="friendly">😊 ידידותי ונעים</option>
                                     <option value="casual">🤙 קז'ואלי וחברי</option>
                                 </select>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">הודעת פתיחה</label>
-                                <textarea id="welcome-message" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent resize-none">שלום! 👋 אני מיכל מיאכטות פלוס. איך אוכל לעזור לך היום?</textarea>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">הודעת פתיחה</label>
+                                <textarea id="welcome-message" rows="3" class="input-modern w-full px-5 py-4 resize-none" placeholder="שלום! 👋 איך אוכל לעזור?"></textarea>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">הודעה כשאין תשובה</label>
-                                <textarea id="no-answer-message" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent resize-none">שאלה מעולה! 🤔 אעביר אותה למנהל והוא יחזור אליך בהקדם.</textarea>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">הודעה כשאין תשובה</label>
+                                <textarea id="no-answer-message" rows="3" class="input-modern w-full px-5 py-4 resize-none" placeholder="שאלה מעולה! אעביר למנהל..."></textarea>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium text-dark mb-2">הודעה מחוץ לשעות פעילות</label>
-                                <textarea id="out-of-hours-message" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent resize-none">תודה על הפנייה! 🙏 אנחנו כרגע לא זמינים, אבל נחזור אליך בשעות הפעילות.</textarea>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">הודעה מחוץ לשעות פעילות</label>
+                                <textarea id="out-of-hours-message" rows="3" class="input-modern w-full px-5 py-4 resize-none" placeholder="אנחנו לא זמינים כרגע..."></textarea>
                             </div>
                         </div>
                     </section>
                     
                     <!-- Working Hours -->
-                    <section class="glass rounded-2xl p-6 opacity-0" id="hours-section">
-                        <h3 class="text-lg font-bold text-dark mb-6 flex items-center gap-2">
-                            <i data-lucide="clock" class="w-5 h-5 text-primary"></i>
+                    <section class="card-modern p-6" id="hours-section">
+                        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center">
+                                <i data-lucide="clock" class="w-5 h-5 text-amber-400"></i>
+                            </div>
                             שעות פעילות
                         </h3>
                         
@@ -187,250 +187,304 @@
                             <!-- Will be populated by JS -->
                         </div>
                     </section>
-                    
-                    <!-- Save Button -->
-                    <button onclick="saveSettings()" class="w-full gradient-primary text-white py-4 rounded-xl font-medium hover:shadow-lg transition-shadow flex items-center justify-center gap-2">
-                        <i data-lucide="save" class="w-5 h-5"></i>
-                        שמור הגדרות
-                    </button>
-                    
                 </div>
                 
                 <!-- Side Panel -->
                 <div class="space-y-6">
-                    
                     <!-- WhatsApp Connection -->
-                    <section class="glass rounded-2xl p-6 opacity-0" id="whatsapp-section">
-                        <h3 class="text-lg font-bold text-dark mb-4 flex items-center gap-2">
-                            <i data-lucide="smartphone" class="w-5 h-5 text-green-600"></i>
-                            חיבור WhatsApp
+                    <section class="card-modern p-6" id="whatsapp-section">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+                                <i data-lucide="smartphone" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            WhatsApp
                         </h3>
                         
-                        <div class="bg-green-50 rounded-xl p-4 mb-4">
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                                    <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                                <div class="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
+                                    <i data-lucide="check" class="w-6 h-6 text-white"></i>
                                 </div>
                                 <div>
-                                    <p class="font-medium text-green-800">מחובר</p>
-                                    <p class="text-sm text-green-600" id="connected-number">052-1234567</p>
+                                    <p class="font-semibold text-emerald-400">מחובר</p>
+                                    <p class="text-sm text-gray-400" id="connected-number">טוען...</p>
                                 </div>
                             </div>
                         </div>
-                        
-                        <button class="w-full py-3 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                            חבר מספר אחר
-                        </button>
                     </section>
                     
                     <!-- Plan Info -->
-                    <section class="glass rounded-2xl p-6 opacity-0" id="plan-section">
-                        <h3 class="text-lg font-bold text-dark mb-4 flex items-center gap-2">
-                            <i data-lucide="crown" class="w-5 h-5 text-yellow-500"></i>
-                            התוכנית שלך
-                        </h3>
-                        
-                        <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-4 mb-4">
-                            <p class="text-2xl font-bold text-dark">Trial</p>
-                            <p class="text-sm text-gray-600">תקופת ניסיון - 14 ימים</p>
-                            <div class="mt-3 bg-white rounded-full h-2 overflow-hidden">
-                                <div class="bg-primary h-full" style="width: 30%"></div>
+                    <section class="card-modern p-6" id="plan-section">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-500/20 flex items-center justify-center">
+                                <i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i>
                             </div>
-                            <p class="text-xs text-gray-500 mt-1">נותרו 10 ימים</p>
-                        </div>
-                        
-                        <button class="w-full gradient-primary text-white py-3 rounded-xl font-medium hover:shadow-lg transition-shadow">
-                            שדרג לתוכנית Pro
-                        </button>
-                    </section>
-                    
-                    <!-- Danger Zone -->
-                    <section class="glass rounded-2xl p-6 opacity-0 border-2 border-red-100" id="danger-section">
-                        <h3 class="text-lg font-bold text-red-600 mb-4 flex items-center gap-2">
-                            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                            אזור מסוכן
+                            התוכנית
                         </h3>
                         
-                        <button class="w-full py-3 border border-red-200 rounded-xl text-red-600 hover:bg-red-50 transition-colors">
-                            מחק את כל הנתונים
-                        </button>
+                        <div class="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-2xl p-5 mb-4">
+                            <p class="text-2xl font-bold text-white" id="plan-name">טוען...</p>
+                            <p class="text-sm text-gray-400" id="plan-status">טוען...</p>
+                            <div class="mt-4 bg-white/10 rounded-full h-2 overflow-hidden">
+                                <div class="gradient-primary h-full transition-all" id="plan-progress" style="width: 0%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2" id="plan-days">טוען...</p>
+                        </div>
                     </section>
                     
+                    <!-- Quick Stats -->
+                    <section class="card-modern p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5 text-pink-400"></i>
+                            </div>
+                            סטטיסטיקות
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">שיחות החודש</span>
+                                <span class="text-white font-bold" id="stat-conversations">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">אחוז מענה</span>
+                                <span class="text-emerald-400 font-bold" id="stat-answer-rate">0%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">שאלות במאגר</span>
+                                <span class="text-white font-bold" id="stat-knowledge">0</span>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
-            
         </main>
     </div>
     
-    <script>
-        // ============================================
-        // State
-        // ============================================
-        const BUSINESS_ID = getBusinessId();
-        const dayNames = {
-            sunday: 'ראשון',
-            monday: 'שני',
-            tuesday: 'שלישי',
-            wednesday: 'רביעי',
-            thursday: 'חמישי',
-            friday: 'שישי',
-            saturday: 'שבת'
-        };
+    <!-- Floating Save Button -->
+    <div class="save-indicator hidden" id="save-indicator">
+        <button onclick="saveSettings()" class="btn-modern text-white px-8 py-4 flex items-center gap-3 shadow-2xl">
+            <i data-lucide="save" class="w-5 h-5"></i>
+            שמור שינויים
+        </button>
+    </div>
+
+<script>
+const BUSINESS_ID = getBusinessId();
+const dayNames = {
+    sunday: 'ראשון',
+    monday: 'שני',
+    tuesday: 'שלישי',
+    wednesday: 'רביעי',
+    thursday: 'חמישי',
+    friday: 'שישי',
+    saturday: 'שבת'
+};
+
+let settings = null;
+let originalSettings = null;
+let hasChanges = false;
+
+lucide.createIcons();
+
+async function loadSettings() {
+    try {
+        const db = getSupabase();
+        const { data, error } = await db
+            .from('businesses')
+            .select('*')
+            .eq('id', BUSINESS_ID)
+            .single();
         
-        let settings = null;
+        if (error) throw error;
+        settings = data;
+        originalSettings = JSON.stringify(data);
         
-        // ============================================
-        // Initialize
-        // ============================================
-        lucide.createIcons();
-        
-        gsap.set('#header', { opacity: 0, y: -20 });
-        gsap.set('#business-section', { opacity: 0, y: 20 });
-        gsap.set('#bot-section', { opacity: 0, y: 20 });
-        gsap.set('#hours-section', { opacity: 0, y: 20 });
-        gsap.set('#whatsapp-section', { opacity: 0, x: 20 });
-        gsap.set('#plan-section', { opacity: 0, x: 20 });
-        gsap.set('#danger-section', { opacity: 0, x: 20 });
-        
-        function initAnimations() {
-            gsap.to('#header', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
-            gsap.to('#business-section', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.2 });
-            gsap.to('#bot-section', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.3 });
-            gsap.to('#hours-section', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.4 });
-            gsap.to('#whatsapp-section', { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.3 });
-            gsap.to('#plan-section', { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.4 });
-            gsap.to('#danger-section', { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.5 });
-        }
-        
-        // ============================================
-        // Load Settings
-        // ============================================
-        async function loadSettings() {
-            if (isDemoMode()) {
-                settings = DEMO_DATA.business;
-            } else {
-                try {
-                    const db = getSupabase();
-                    const { data, error } = await db
-                        .from('businesses')
-                        .select('*')
-                        .eq('id', BUSINESS_ID)
-                        .single();
-                    
-                    if (error) throw error;
-                    settings = data;
-                } catch (error) {
-                    console.error('Error:', error);
-                    settings = DEMO_DATA.business;
-                }
-            }
-            
-            populateForm();
-            renderWorkingHours();
-        }
-        
-        function populateForm() {
-            if (!settings) return;
-            
-            document.getElementById('business-name').value = settings.business_name || '';
-            document.getElementById('owner-name').value = settings.owner_name || '';
-            document.getElementById('email').value = settings.email || '';
-            document.getElementById('phone').value = settings.phone || '';
-            document.getElementById('bot-name').value = settings.bot_name || '';
-            document.getElementById('bot-style').value = settings.bot_style || 'friendly';
-            document.getElementById('welcome-message').value = settings.welcome_message || '';
-            document.getElementById('no-answer-message').value = settings.no_answer_message || '';
-            document.getElementById('out-of-hours-message').value = settings.out_of_hours_message || '';
-            document.getElementById('connected-number').textContent = formatPhone(settings.whatsapp_number);
-        }
-        
-        function renderWorkingHours() {
-            const container = document.getElementById('working-hours');
-            const hours = settings?.working_hours || DEMO_DATA.business.working_hours;
-            
-            container.innerHTML = Object.entries(dayNames).map(([day, label]) => {
-                const dayHours = hours[day] || { active: false, start: '09:00', end: '18:00' };
-                return `
-                    <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
-                        <div class="toggle-switch ${dayHours.active ? 'active' : ''}" onclick="toggleDay('${day}', this)" data-day="${day}"></div>
-                        <span class="w-16 font-medium text-dark">${label}</span>
-                        <input type="time" value="${dayHours.start}" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm" data-day="${day}" data-type="start" ${!dayHours.active ? 'disabled' : ''}>
-                        <span class="text-gray-400">-</span>
-                        <input type="time" value="${dayHours.end}" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm" data-day="${day}" data-type="end" ${!dayHours.active ? 'disabled' : ''}>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        function toggleDay(day, element) {
-            element.classList.toggle('active');
-            const isActive = element.classList.contains('active');
-            
-            document.querySelectorAll(`input[data-day="${day}"]`).forEach(input => {
-                input.disabled = !isActive;
-            });
-        }
-        
-        // ============================================
-        // Save Settings
-        // ============================================
-        async function saveSettings() {
-            // Collect working hours
-            const workingHours = {};
-            Object.keys(dayNames).forEach(day => {
-                const toggle = document.querySelector(`[data-day="${day}"].toggle-switch`);
-                const startInput = document.querySelector(`input[data-day="${day}"][data-type="start"]`);
-                const endInput = document.querySelector(`input[data-day="${day}"][data-type="end"]`);
-                
-                workingHours[day] = {
-                    active: toggle?.classList.contains('active') || false,
-                    start: startInput?.value || '09:00',
-                    end: endInput?.value || '18:00'
-                };
-            });
-            
-            const updatedSettings = {
-                business_name: document.getElementById('business-name').value,
-                owner_name: document.getElementById('owner-name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                bot_name: document.getElementById('bot-name').value,
-                bot_style: document.getElementById('bot-style').value,
-                welcome_message: document.getElementById('welcome-message').value,
-                no_answer_message: document.getElementById('no-answer-message').value,
-                out_of_hours_message: document.getElementById('out-of-hours-message').value,
-                working_hours: workingHours
-            };
-            
-            if (isDemoMode()) {
-                showToast('במצב דמו - ההגדרות לא נשמרות', 'warning');
-                return;
-            }
-            
-            try {
-                const db = getSupabase();
-                const { error } = await db
-                    .from('businesses')
-                    .update(updatedSettings)
-                    .eq('id', BUSINESS_ID);
-                
-                if (error) throw error;
-                showToast('ההגדרות נשמרו בהצלחה! ✓');
-            } catch (error) {
-                console.error('Error:', error);
-                showToast('שגיאה בשמירת ההגדרות', 'error');
-            }
-        }
-        
-        // ============================================
-        // Init
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            initAnimations();
-            loadSettings();
-        });
-    </script>
+        populateForm();
+        renderWorkingHours();
+        loadStats();
+        updatePlanInfo();
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('שגיאה בטעינת ההגדרות', 'error');
+    }
+}
+
+function populateForm() {
+    if (!settings) return;
     
+    document.getElementById('business-name').value = settings.business_name || '';
+    document.getElementById('owner-name').value = settings.owner_name || '';
+    document.getElementById('email').value = settings.email || '';
+    document.getElementById('phone').value = settings.phone || '';
+    document.getElementById('bot-name').value = settings.bot_name || '';
+    document.getElementById('bot-style').value = settings.bot_style || 'friendly';
+    document.getElementById('welcome-message').value = settings.welcome_message || '';
+    document.getElementById('no-answer-message').value = settings.no_answer_message || '';
+    document.getElementById('out-of-hours-message').value = settings.out_of_hours_message || '';
+    document.getElementById('connected-number').textContent = settings.twilio_phone_number ? `+${settings.twilio_phone_number}` : formatPhone(settings.whatsapp_number);
+}
+
+function renderWorkingHours() {
+    const container = document.getElementById('working-hours');
+    const hours = settings?.working_hours || {
+        sunday: { active: true, start: '09:00', end: '18:00' },
+        monday: { active: true, start: '09:00', end: '18:00' },
+        tuesday: { active: true, start: '09:00', end: '18:00' },
+        wednesday: { active: true, start: '09:00', end: '18:00' },
+        thursday: { active: true, start: '09:00', end: '18:00' },
+        friday: { active: true, start: '09:00', end: '14:00' },
+        saturday: { active: false, start: '00:00', end: '00:00' }
+    };
+    
+    container.innerHTML = Object.entries(dayNames).map(([day, label]) => {
+        const dayHours = hours[day] || { active: false, start: '09:00', end: '18:00' };
+        return `
+            <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl">
+                <div class="toggle-modern ${dayHours.active ? 'active' : ''}" onclick="toggleDay('${day}', this)" data-day="${day}"></div>
+                <span class="w-16 font-medium text-white">${label}</span>
+                <input type="time" value="${dayHours.start}" class="input-modern px-4 py-3 text-sm" data-day="${day}" data-type="start" onchange="markChanged()" ${!dayHours.active ? 'disabled' : ''}>
+                <span class="text-gray-500">-</span>
+                <input type="time" value="${dayHours.end}" class="input-modern px-4 py-3 text-sm" data-day="${day}" data-type="end" onchange="markChanged()" ${!dayHours.active ? 'disabled' : ''}>
+            </div>
+        `;
+    }).join('');
+}
+
+function toggleDay(day, element) {
+    element.classList.toggle('active');
+    const isActive = element.classList.contains('active');
+    
+    document.querySelectorAll(`input[data-day="${day}"]`).forEach(input => {
+        input.disabled = !isActive;
+    });
+    
+    markChanged();
+}
+
+function updatePlanInfo() {
+    if (!settings) return;
+    
+    const planName = settings.plan_type === 'premium' ? 'Premium' : settings.plan_type === 'pro' ? 'Pro' : 'Trial';
+    document.getElementById('plan-name').textContent = planName;
+    
+    if (settings.trial_ends_at) {
+        const trialEnd = new Date(settings.trial_ends_at);
+        const now = new Date();
+        const daysLeft = Math.max(0, Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24)));
+        const progress = Math.min(100, ((14 - daysLeft) / 14) * 100);
+        
+        document.getElementById('plan-status').textContent = `תקופת ניסיון - ${daysLeft > 0 ? daysLeft + ' ימים נותרו' : 'הסתיים'}`;
+        document.getElementById('plan-progress').style.width = progress + '%';
+        document.getElementById('plan-days').textContent = daysLeft > 0 ? `נותרו ${daysLeft} ימים` : 'תקופת הניסיון הסתיימה';
+    } else {
+        document.getElementById('plan-status').textContent = 'פעיל';
+        document.getElementById('plan-progress').style.width = '100%';
+        document.getElementById('plan-days').textContent = '';
+    }
+}
+
+async function loadStats() {
+    try {
+        const db = getSupabase();
+        
+        // Get conversations count
+        const { count: convCount } = await db
+            .from('conversations')
+            .select('*', { count: 'exact', head: true })
+            .eq('business_id', BUSINESS_ID);
+        
+        // Get answered count
+        const { count: answeredCount } = await db
+            .from('conversations')
+            .select('*', { count: 'exact', head: true })
+            .eq('business_id', BUSINESS_ID)
+            .eq('response_type', 'answered');
+        
+        // Get knowledge count
+        const { count: knowledgeCount } = await db
+            .from('knowledge_base')
+            .select('*', { count: 'exact', head: true })
+            .eq('business_id', BUSINESS_ID);
+        
+        document.getElementById('stat-conversations').textContent = convCount || 0;
+        document.getElementById('stat-answer-rate').textContent = convCount > 0 ? Math.round((answeredCount / convCount) * 100) + '%' : '0%';
+        document.getElementById('stat-knowledge').textContent = knowledgeCount || 0;
+    } catch (error) {
+        console.error('Error loading stats:', error);
+    }
+}
+
+function markChanged() {
+    hasChanges = true;
+    document.getElementById('save-indicator').classList.remove('hidden');
+}
+
+// Listen for changes on all inputs
+document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', markChanged);
+    el.addEventListener('change', markChanged);
+});
+
+async function saveSettings() {
+    // Collect working hours
+    const workingHours = {};
+    Object.keys(dayNames).forEach(day => {
+        const toggle = document.querySelector(`[data-day="${day}"].toggle-modern`);
+        const startInput = document.querySelector(`input[data-day="${day}"][data-type="start"]`);
+        const endInput = document.querySelector(`input[data-day="${day}"][data-type="end"]`);
+        
+        workingHours[day] = {
+            active: toggle?.classList.contains('active') || false,
+            start: startInput?.value || '09:00',
+            end: endInput?.value || '18:00'
+        };
+    });
+    
+    const updatedSettings = {
+        business_name: document.getElementById('business-name').value,
+        owner_name: document.getElementById('owner-name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        bot_name: document.getElementById('bot-name').value,
+        bot_style: document.getElementById('bot-style').value,
+        welcome_message: document.getElementById('welcome-message').value,
+        no_answer_message: document.getElementById('no-answer-message').value,
+        out_of_hours_message: document.getElementById('out-of-hours-message').value,
+        working_hours: workingHours
+    };
+    
+    try {
+        const db = getSupabase();
+        const { error } = await db
+            .from('businesses')
+            .update(updatedSettings)
+            .eq('id', BUSINESS_ID);
+        
+        if (error) throw error;
+        
+        hasChanges = false;
+        document.getElementById('save-indicator').classList.add('hidden');
+        showToast('ההגדרות נשמרו בהצלחה! ✓');
+        
+        // Update local settings
+        settings = { ...settings, ...updatedSettings };
+        originalSettings = JSON.stringify(settings);
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('שגיאה בשמירת ההגדרות', 'error');
+    }
+}
+
+// Warn before leaving with unsaved changes
+window.addEventListener('beforeunload', (e) => {
+    if (hasChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', loadSettings);
+</script>
 </body>
 </html>
