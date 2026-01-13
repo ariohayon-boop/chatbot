@@ -1,5 +1,4 @@
-[README (2).md](https://github.com/user-attachments/files/24457308/README.2.md)# chatbot
-[Upl# 🤖 ChatBot Pro
+# 🤖 ChatBot Pro
 
 <div align="center">
 
@@ -9,8 +8,7 @@
 
 [🚀 התחלה מהירה](#-התחלה-מהירה) •
 [📖 תיעוד](#-תיעוד) •
-[🎨 עיצוב](#-עיצוב) •
-[🔧 התקנה](#-התקנה)
+[🔧 Twilio Setup](TWILIO_SETUP.md)
 
 </div>
 
@@ -24,8 +22,6 @@
 - [סטאק טכנולוגי](#-סטאק-טכנולוגי)
 - [מבנה הפרויקט](#-מבנה-הפרויקט)
 - [התחלה מהירה](#-התחלה-מהירה)
-- [תיעוד API](#-תיעוד-api)
-- [עיצוב](#-עיצוב)
 
 ---
 
@@ -79,8 +75,8 @@ ChatBot Pro היא פלטפורמה מתקדמת שמאפשרת לבעלי עס�
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
 │                 │     │                 │     │                 │
-│    WhatsApp     │────▶│  Evolution API  │────▶│   Edge Function │
-│    (לקוחות)     │     │    (Webhook)    │     │  (handle-msg)   │
+│    WhatsApp     │────▶│   Twilio API    │────▶│   Edge Function │
+│    (לקוחות)     │     │    (Webhook)    │     │(handle-twilio)  │
 │                 │     │                 │     │                 │
 └─────────────────┘     └─────────────────┘     └────────┬────────┘
                                                          │
@@ -110,11 +106,11 @@ ChatBot Pro היא פלטפורמה מתקדמת שמאפשרת לבעלי עס�
 
 | שכבה | טכנולוגיה |
 |------|-----------|
-| **Frontend** | HTML5, Tailwind CSS, Vanilla JS |
+| **Frontend** | HTML5, Tailwind CSS, Vanilla JS, Vite (React) |
 | **Backend** | Supabase Edge Functions (Deno) |
 | **Database** | PostgreSQL (Supabase) |
 | **AI** | Claude API (Anthropic) |
-| **WhatsApp** | Evolution API |
+| **WhatsApp** | Twilio WhatsApp Business API |
 | **Calendar** | Google Calendar API |
 | **Animations** | GSAP |
 | **Icons** | Lucide Icons |
@@ -125,22 +121,36 @@ ChatBot Pro היא פלטפורמה מתקדמת שמאפשרת לבעלי עס�
 ## 📂 מבנה הפרויקט
 
 ```
-chatbot-pro/
-├── 📁 frontend/
-│   ├── dashboard.html      # דשבורד ראשי
-│   ├── knowledge.html      # ניהול מאגר מידע
-│   ├── conversations.html  # היסטוריית שיחות
-│   ├── appointments.html   # ניהול פגישות
-│   └── settings.html       # הגדרות
+chatbot/
+├── 📁 easychat/               # React App (Vite)
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
 │
-├── 📁 backend/
-│   └── 📁 supabase/
-│       ├── schema.sql      # Database schema
-│       └── 📁 edge-functions/
-│           └── 📁 handle-whatsapp-message/
-│               └── index.ts
+├── 📁 supabase/
+│   ├── 📁 functions/
+│   │   └── 📁 handle-twilio-webhook/
+│   │       └── index.ts       # Twilio Webhook Handler
+│   └── 📁 migrations/
+│       └── 001_add_twilio_fields.sql
 │
-└── README.md
+├── 📁 js/
+│   └── config.js              # Frontend configuration
+│
+├── schema.sql                  # Main database schema
+├── TWILIO_SETUP.md            # 📱 מדריך הגדרת Twilio
+├── README.md
+├── vercel.json
+│
+├── appointments.html
+├── blog.html
+├── conversations.html
+├── crm.html
+├── knowledge.html
+└── settings.html
 ```
 
 ---
@@ -150,19 +160,18 @@ chatbot-pro/
 ### 1️⃣ הקמת Database (Supabase)
 
 1. צור פרויקט חדש ב-[Supabase](https://supabase.com)
-2. העתק את תוכן `schema.sql` ל-SQL Editor
-3. הרץ את הקוד
+2. העתק את תוכן `schema.sql` ל-SQL Editor והרץ
+3. העתק את תוכן `supabase/migrations/001_add_twilio_fields.sql` והרץ
 
-### 2️⃣ הגדרת Evolution API
+### 2️⃣ הגדרת Twilio (WhatsApp)
 
-```bash
-# התקנה עם Docker
-docker run -d \
-  --name evolution-api \
-  -p 8080:8080 \
-  -e AUTHENTICATION_API_KEY=your_api_key \
-  atendai/evolution-api
-```
+📖 **[מדריך מלא - TWILIO_SETUP.md](TWILIO_SETUP.md)**
+
+בקצרה:
+1. הירשם ל-[Twilio](https://www.twilio.com/try-twilio) (תקבל $15 חינם)
+2. שמור את Account SID ו-Auth Token
+3. חבר את הטלפון שלך ל-WhatsApp Sandbox
+4. הגדר Webhook לכתובת ה-Edge Function
 
 ### 3️⃣ הגדרת משתני סביבה
 
@@ -172,90 +181,72 @@ docker run -d \
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 CLAUDE_API_KEY=your_anthropic_api_key
-EVOLUTION_API_URL=https://your-evolution-api.com
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ### 4️⃣ Deploy Edge Function
 
 ```bash
-supabase functions deploy handle-whatsapp-message
+# התקנת Supabase CLI
+npm install -g supabase
+
+# התחברות
+supabase login
+
+# פריסה
+supabase functions deploy handle-twilio-webhook --project-ref YOUR_PROJECT_REF
 ```
 
-### 5️⃣ הגדרת Webhook
+### 5️⃣ הגדרת Webhook ב-Twilio
 
-ב-Evolution API, הגדר webhook ל:
+ב-Twilio Console → Messaging → WhatsApp Sandbox:
 ```
-https://your-project.supabase.co/functions/v1/handle-whatsapp-message
+https://YOUR_PROJECT.supabase.co/functions/v1/handle-twilio-webhook
 ```
 
-### 6️⃣ Deploy Frontend
+### 6️⃣ עדכון Database
 
-1. עדכן את `SUPABASE_URL` ו-`SUPABASE_ANON_KEY` בכל קובץ HTML
-2. העלה ל-Vercel או כל שירות hosting
+```sql
+-- הוסף מספר Twilio לעסק
+UPDATE businesses 
+SET twilio_phone_number = '14155238886'  -- מספר Sandbox
+WHERE email = 'your@email.com';
+```
+
+### 7️⃣ בדיקה
+
+שלח הודעה מהטלפון שלך למספר Sandbox: `+1 415 523 8886`
 
 ---
 
 ## 📖 תיעוד API
 
-### Edge Function: `handle-whatsapp-message`
+### Edge Function: `handle-twilio-webhook`
 
-**Webhook Payload (מ-Evolution API):**
-```json
-{
-  "event": "messages.upsert",
-  "instance": "instance_id",
-  "data": {
-    "key": {
-      "remoteJid": "972501234567@s.whatsapp.net",
-      "fromMe": false
-    },
-    "pushName": "שם הלקוח",
-    "message": {
-      "conversation": "הודעת הלקוח"
-    }
-  }
-}
+**Webhook Payload (מ-Twilio):**
+```
+From=whatsapp:+972501234567
+To=whatsapp:+14155238886
+Body=כמה עולה?
+ProfileName=שם הלקוח
 ```
 
-**Response:**
-```json
-{
-  "status": "success",
-  "responseType": "answered|no_answer|scheduling",
-  "confidence": 0.95
-}
+**Response:** TwiML (XML)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response></Response>
 ```
 
 ### Database Tables
 
 | טבלה | תיאור |
 |------|-------|
-| `businesses` | פרטי עסקים והגדרות |
+| `businesses` | פרטי עסקים והגדרות + Twilio credentials |
 | `knowledge_base` | שאלות ותשובות |
 | `conversations` | היסטוריית שיחות |
 | `appointments` | פגישות |
 | `notifications` | התראות |
-
----
-
-## 🎨 עיצוב
-
-### פלטת צבעים
-
-| צבע | Hex | שימוש |
-|-----|-----|-------|
-| 🟢 Primary | `#00D4AA` | כפתורים ראשיים, הדגשות |
-| 🟢 Primary Dark | `#00A080` | hover states |
-| 🔵 Secondary | `#0066FF` | אייקונים, קישורים |
-| ⬛ Dark | `#1A1A2E` | טקסט ראשי |
-| 🟢 Success | `#00E676` | סטטוס חיובי |
-
-### עקרונות עיצוב
-
-- **Glass Morphism** - רקע שקוף עם blur
-- **Soft Shadows** - צללים עדינים
-- **Smooth Animations** - מעברים חלקים (GSAP)
-- **RTL Support** - תמיכה מלאה בעברית
 
 ---
 
@@ -265,12 +256,14 @@ https://your-project.supabase.co/functions/v1/handle-whatsapp-message
 - ✅ API Keys מאוחסנים ב-Secrets
 - ✅ HTTPS בכל התקשורת
 - ✅ Input validation בכל הפונקציות
+- ✅ Twilio Webhook Signature Verification (אופציונלי)
 
 ---
 
 ## 📈 שלבים הבאים
 
 - [ ] הוספת Authentication (Supabase Auth)
+- [ ] מעבר ל-Twilio Production (מספר אמיתי)
 - [ ] תמיכה בהודעות קוליות
 - [ ] תמיכה בתמונות
 - [ ] דוחות PDF
@@ -295,5 +288,3 @@ MIT License
 **נבנה עם ❤️ על ידי [Ariel](https://github.com/ariohayon-boop)**
 
 </div>
-oading README (2).md…]()
-
