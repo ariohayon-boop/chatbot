@@ -1,13 +1,13 @@
 // ============================================
-// ChatBot Pro - Global Configuration
+// EasyChat - Global Configuration
 // ============================================
 
 const CONFIG = {
     SUPABASE_URL: 'https://fqfdetxvfdgaxbtwrulj.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxZmRldHh2ZmRnYXhidHdydWxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTcxNTEsImV4cCI6MjA4MzI5MzE1MX0.foTliw-WXvPhtlhYqA_yXe0TDoU4LWfvxDhOSSMLMHA',
-    APP_NAME: 'ChatBot Pro',
+    APP_NAME: 'EasyChat',
     DEFAULT_BOT_NAME: 'עוזר וירטואלי',
-    DEMO_MODE: true
+    DEMO_MODE: false
 };
 
 let supabaseClient = null;
@@ -20,7 +20,12 @@ function getSupabase() {
 }
 
 function getBusinessId() {
-    return new URLSearchParams(window.location.search).get('business_id') || 'demo';
+    const urlId = new URLSearchParams(window.location.search).get('business_id');
+    return urlId || localStorage.getItem('easychat_business_id') || 'f6dcf952-6e4a-4f74-8de7-ae9818f73fd0';
+}
+
+function setBusinessId(id) {
+    localStorage.setItem('easychat_business_id', id);
 }
 
 function isDemoMode() {
@@ -31,6 +36,7 @@ function formatPhone(phone) {
     if (!phone) return 'לא ידוע';
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 10) return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    if (cleaned.startsWith('972')) return '0' + cleaned.substring(3).replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
     return phone;
 }
 
@@ -69,12 +75,15 @@ function showToast(message, type = 'success') {
         document.body.appendChild(container);
     }
     const toast = document.createElement('div');
-    const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-orange-500' : 'bg-blue-500';
-    toast.className = `toast ${bgColor} text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3`;
+    const bgColor = type === 'success' ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : 
+                    type === 'error' ? 'bg-gradient-to-r from-red-500 to-rose-500' : 
+                    type === 'warning' ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 
+                    'bg-gradient-to-r from-blue-500 to-indigo-500';
+    toast.className = `toast ${bgColor} text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-sm`;
     toast.style.animation = 'slideIn 0.3s ease';
-    toast.innerHTML = `<span>${message}</span>`;
+    const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : type === 'warning' ? '⚠' : 'ℹ';
+    toast.innerHTML = `<span class="text-lg">${icon}</span><span class="font-medium">${message}</span>`;
     container.appendChild(toast);
-    if (window.lucide) lucide.createIcons();
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(100%)';
@@ -83,15 +92,69 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
+// AI Auto-categorize function
+async function autoCategorizeBusiness(rawText) {
+    const categories = {
+        pricing: { keywords: ['מחיר', 'עלות', 'כמה עולה', 'תעריף', '₪', 'שקל', 'עלות'], items: [] },
+        services: { keywords: ['שירות', 'כולל', 'מציעים', 'אפשרויות', 'חבילה', 'מה יש'], items: [] },
+        hours: { keywords: ['שעות', 'פתוח', 'סגור', 'זמינים', 'פעילות', 'ימים'], items: [] },
+        location: { keywords: ['כתובת', 'מיקום', 'איפה', 'הגעה', 'חניה', 'רחוב'], items: [] },
+        terms: { keywords: ['ביטול', 'תנאים', 'מדיניות', 'החזר', 'אחריות'], items: [] },
+        faq: { keywords: ['שאלה', 'האם', 'אפשר', 'מותר'], items: [] }
+    };
+    
+    const lines = rawText.split('\n').filter(line => line.trim());
+    const result = [];
+    
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.length < 5) continue;
+        
+        let bestCategory = 'other';
+        let bestScore = 0;
+        
+        for (const [cat, data] of Object.entries(categories)) {
+            const score = data.keywords.filter(kw => trimmed.includes(kw)).length;
+            if (score > bestScore) {
+                bestScore = score;
+                bestCategory = cat;
+            }
+        }
+        
+        // Generate question from content
+        let question = trimmed;
+        if (trimmed.includes(':')) {
+            question = trimmed.split(':')[0] + '?';
+        } else if (bestCategory === 'pricing') {
+            question = 'כמה עולה ' + trimmed.substring(0, 30) + '?';
+        } else if (bestCategory === 'hours') {
+            question = 'מתי אתם פתוחים?';
+        } else if (bestCategory === 'location') {
+            question = 'איפה אתם נמצאים?';
+        }
+        
+        result.push({
+            category: bestCategory,
+            question: question.substring(0, 100),
+            answer: trimmed,
+            keywords: categories[bestCategory]?.keywords.slice(0, 3) || [],
+            is_active: true,
+            priority: bestCategory === 'pricing' ? 10 : 5
+        });
+    }
+    
+    return result;
+}
+
 const DEMO_DATA = {
     business: {
         id: 'demo',
-        business_name: 'יאכטות פלוס',
+        business_name: 'Sea4u',
         owner_name: 'ישראל',
-        email: 'demo@chatbot-pro.com',
+        email: 'demo@easychat.com',
         phone: '050-1234567',
         whatsapp_number: '972501234567',
-        bot_name: 'מיכל - העוזרת הוירטואלית',
+        bot_name: 'הבוט של Sea4u',
         bot_style: 'friendly',
         status: 'active',
         total_conversations: 156,
@@ -120,11 +183,7 @@ const DEMO_DATA = {
         { id: '4', customer_phone: '053-7777777', customer_name: 'רונית דוד', message: 'אפשר לקבוע שיחה?', bot_response: 'מעולה! אשמח לקבוע לך שיחה...', response_type: 'scheduling', ai_confidence: 1.0, timestamp: new Date(Date.now() - 5 * 3600000).toISOString(), is_read: true },
         { id: '5', customer_phone: '058-8888888', customer_name: null, message: 'כמה אנשים אפשר על היאכטה הגדולה?', bot_response: 'היאכטה הגדולה מתאימה לעד 25 אנשים...', response_type: 'answered', ai_confidence: 0.88, timestamp: new Date(Date.now() - 24 * 3600000).toISOString(), is_read: true }
     ],
-    appointments: [
-        { id: '1', customer_phone: '054-1234567', customer_name: 'שרה לוי', scheduled_time: new Date(Date.now() + 2 * 3600000).toISOString(), duration_minutes: 30, status: 'confirmed', notes: 'שיחת ייעוץ לגבי יום הולדת' },
-        { id: '2', customer_phone: '052-9876543', customer_name: 'דני כהן', scheduled_time: new Date(Date.now() + 26 * 3600000).toISOString(), duration_minutes: 15, status: 'pending', notes: '' },
-        { id: '3', customer_phone: '050-1111111', customer_name: 'משה כהן', scheduled_time: new Date(Date.now() - 24 * 3600000).toISOString(), duration_minutes: 30, status: 'completed', notes: 'הזמין יאכטה בינונית' }
-    ],
+    appointments: [],
     stats: { total: 156, answered: 142, pending: 8, appointments: 2 }
 };
 
