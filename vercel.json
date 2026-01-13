@@ -1,5 +1,7 @@
 {
-  "buildCommand": "cd easychat && npm install && npm run build",
-  "outputDirectory": "easychat/dist",
-  "framework": "vite"
+  "outputDirectory": ".",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
