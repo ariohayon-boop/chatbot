@@ -21,7 +21,7 @@ function getSupabase() {
 
 function getBusinessId() {
     const urlId = new URLSearchParams(window.location.search).get('business_id');
-    return urlId || localStorage.getItem('easychat_business_id') || 'f6dcf952-6e4a-4f74-8de7-ae9818f73fd0';
+    return urlId || localStorage.getItem('easychat_business_id') || 'f6dcf962-6e4a-4f74-8d67-ae9818f73fd0';
 }
 
 function setBusinessId(id) {
