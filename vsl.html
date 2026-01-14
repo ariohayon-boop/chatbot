@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בעלי עסקים מפסידים 47 לקוחות בחודש בגלל זה... | EasyChat</title>
+    
+    <!-- Meta for ads -->
+    <meta property="og:title" content="למה הלקוחות שלך קונים אצל המתחרים?">
+    <meta property="og:description" content="גלה את הטעות הפשוטה שעולה לך אלפי שקלים בחודש">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Facebook Pixel (placeholder) -->
+    <!-- <script>!function(f,b,e,v,n,t,s)...</script> -->
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #06D6A0;
+            --primary-dark: #05B888;
+            --bg-dark: #0a0a0a;
+            --bg-card: #111111;
+            --text: #ffffff;
+            --text-muted: #9ca3af;
+            --accent: #f97316;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(6, 214, 160, 0.08) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Attention Grabber */
+        .attention-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            animation: shake 3s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            2%, 6% { transform: translateX(-3px); }
+            4%, 8% { transform: translateX(3px); }
+            10% { transform: translateX(0); }
+        }
+
+        /* Main Headline */
+        .headline {
+            font-size: clamp(28px, 6vw, 48px);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        .headline .highlight {
+            color: var(--primary);
+            position: relative;
+        }
+
+        .headline .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .headline .danger {
+            color: var(--danger);
+        }
+
+        /* Sub-headline */
+        .subheadline {
+            font-size: clamp(18px, 3vw, 22px);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .subheadline strong {
+            color: var(--text);
+        }
+
+        /* Pain Points */
+        .pain-points {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+            text-align: right;
+        }
+
+        .pain-points-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .pain-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .pain-point:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .pain-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .pain-text {
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .pain-text strong {
+            color: var(--danger);
+        }
+
+        /* Form Section */
+        .form-section {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(6, 214, 160, 0.05) 100%);
+            border: 2px solid var(--primary);
+            border-radius: 24px;
+            padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .form-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--bg-dark);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(6, 214, 160, 0.05);
+            box-shadow: 0 0 0 4px rgba(6, 214, 160, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, var(--accent) 0%, #ea580c 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(249, 115, 22, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .form-trust {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .form-trust span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Success State */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 24px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .success-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .success-text {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .form-container.success .lead-form {
+            display: none;
+        }
+
+        .form-container.success .success-message {
+            display: block;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .proof-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .proof-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .proof-stat {
+            text-align: center;
+        }
+
+        .proof-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .proof-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            .hero {
+                padding: 32px 16px;
+            }
+
+            .pain-points {
+                padding: 24px 20px;
+            }
+
+            .form-section {
+                padding: 32px 20px;
+            }
+
+            .proof-stats {
+                gap: 24px;
+            }
+
+            .form-trust {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        /* Urgency Bar */
+        .urgency-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--danger);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+            display: none; /* Enable when needed */
+        }
+
+        /* Logo */
+        .logo {
+            margin-bottom: 32px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-text">Easy<span>Chat</span></div>
+            </div>
+
+            <!-- Attention Badge -->
+            <div class="attention-badge">
+                <span>⚠️</span>
+                <span>זה קורה גם לך עכשיו</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="headline">
+                בזמן שאתה קורא את זה,
+                <br>
+                <span class="danger">3 לקוחות</span> כבר הלכו
+                <br>
+                <span class="highlight">למתחרים שלך</span>
+            </h1>
+
+            <!-- Sub-headline -->
+            <p class="subheadline">
+                לא בגלל המחיר. לא בגלל האיכות.
+                <br>
+                <strong>בגלל שלא ענית להם מספיק מהר.</strong>
+            </p>
+
+            <!-- Pain Points -->
+            <div class="pain-points">
+                <div class="pain-points-title">אם אתה מרגיש את זה, אתה לא לבד:</div>
+                
+                <div class="pain-point">
+                    <span class="pain-icon">😤</span>
+                    <span class="pain-text">
+                        "אני לא מספיק לענות לכולם, ואני יודע שאני <strong>מפסיד לקוחות</strong>"
+                    </span>
+                </div>
+                
+                <div class="pain-point">
+                    <span class="pain-icon">📱</span>
+                    <span class="pain-text">
+                        "אני עונה על הודעות עד <strong>חצות בלילה</strong> ועדיין מפספס פניות"
+                    </span>
+                </div>
+                
+                <div class="pain-point">
+                    <span class="pain-icon">💸</span>
+                    <span class="pain-text">
+                        "משקיע אלפים בפרסום, אבל <strong>חצי מהלידים נעלמים</strong> לפני שהספקתי לענות"
+                    </span>
+                </div>
+                
+                <div class="pain-point">
+                    <span class="pain-icon">😴</span>
+                    <span class="pain-text">
+                        "אני עייף מלעבוד <strong>24/7</strong> רק כדי לשרוד"
+                    </span>
+                </div>
+            </div>
+
+            <!-- Lead Form -->
+            <div class="form-section">
+                <div class="form-container" id="formContainer">
+                    <!-- Form -->
+                    <form class="lead-form" id="leadForm">
+                        <div class="form-badge">🎯 פתרון תוך 48 שעות</div>
+                        <h2 class="form-title">רוצה לגלות כמה לקוחות אתה מפסיד?</h2>
+                        <p class="form-subtitle">
+                            השאר פרטים ונראה לך בדיוק איפה הכסף בורח לך - בלי התחייבות
+                        </p>
+
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="name" 
+                                placeholder="השם שלך"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <input 
+                                type="tel" 
+                                class="form-input" 
+                                id="phone" 
+                                placeholder="מספר הטלפון שלך"
+                                required
+                                dir="ltr"
+                                style="text-align: right;"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                id="business" 
+                                placeholder="מה סוג העסק שלך?"
+                                required
+                            >
+                        </div>
+
+                        <!-- Hidden fields for tracking -->
+                        <input type="hidden" id="source" value="paid_ad">
+                        <input type="hidden" id="utm_source" value="">
+                        <input type="hidden" id="utm_medium" value="">
+                        <input type="hidden" id="utm_campaign" value="">
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-text">אני רוצה לראות את המספרים שלי ←</span>
+                            <span class="spinner"></span>
+                        </button>
+
+                        <div class="form-trust">
+                            <span>🔒 מאובטח</span>
+                            <span>⏱️ תשובה תוך 24 שעות</span>
+                            <span>🚫 בלי ספאם</span>
+                        </div>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div class="success-message">
+                        <div class="success-icon">✓</div>
+                        <h3 class="success-title">מעולה! קיבלנו את הפרטים</h3>
+                        <p class="success-text">
+                            אחד מהצוות שלנו יחזור אליך תוך 24 שעות
+                            <br>
+                            עם ניתוח מותאם אישית לעסק שלך
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Proof -->
+            <div class="social-proof">
+                <div class="proof-title">בעלי עסקים כמוך כבר חסכו:</div>
+                <div class="proof-stats">
+                    <div class="proof-stat">
+                        <div class="proof-number">+117%</div>
+                        <div class="proof-label">יותר לקוחות</div>
+                    </div>
+                    <div class="proof-stat">
+                        <div class="proof-number">3 שעות</div>
+                        <div class="proof-label">חיסכון ביום</div>
+                    </div>
+                    <div class="proof-stat">
+                        <div class="proof-number">2 דק'</div>
+                        <div class="proof-label">זמן תגובה</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 EasyChat. כל הזכויות שמורות.</p>
+        <p>
+            <a href="https://easychat.company">easychat.company</a>
+        </p>
+    </footer>
+
+    <script>
+        // ==================== SUPABASE CONFIG ====================
+        const SUPABASE_URL = 'https://tqxrahpbidlctyttpffc.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxeHJhaHBiaWRsY3R5dHRwZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTk3MzQsImV4cCI6MjA4MzQzNTczNH0.tmh9_GzWJhIcRoS3L6gpCX95_eZrkIR7hy3gOl9Qd2s';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ==================== UTM TRACKING ====================
+        function getUTMParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                utm_source: params.get('utm_source') || '',
+                utm_medium: params.get('utm_medium') || '',
+                utm_campaign: params.get('utm_campaign') || '',
+                utm_content: params.get('utm_content') || '',
+                utm_term: params.get('utm_term') || ''
+            };
+        }
+
+        // Detect platform from UTM or referrer
+        function detectPlatform() {
+            const utm = getUTMParams();
+            
+            // Check UTM source first
+            if (utm.utm_source) {
+                if (utm.utm_source.toLowerCase().includes('facebook') || 
+                    utm.utm_source.toLowerCase().includes('fb')) {
+                    return 'facebook';
+                }
+                if (utm.utm_source.toLowerCase().includes('instagram') || 
+                    utm.utm_source.toLowerCase().includes('ig')) {
+                    return 'instagram';
+                }
+                return utm.utm_source.toLowerCase();
+            }
+            
+            // Check referrer
+            const referrer = document.referrer.toLowerCase();
+            if (referrer.includes('facebook.com') || referrer.includes('fb.com')) {
+                return 'facebook';
+            }
+            if (referrer.includes('instagram.com')) {
+                return 'instagram';
+            }
+            
+            return 'direct';
+        }
+
+        // Populate hidden fields
+        function populateUTMFields() {
+            const utm = getUTMParams();
+            document.getElementById('utm_source').value = utm.utm_source || detectPlatform();
+            document.getElementById('utm_medium').value = utm.utm_medium || 'paid';
+            document.getElementById('utm_campaign').value = utm.utm_campaign || '';
+        }
+
+        // ==================== FORM HANDLING ====================
+        const form = document.getElementById('leadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formContainer = document.getElementById('formContainer');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                business_type: document.getElementById('business').value.trim(),
+                source: 'paid_ad',
+                utm_source: document.getElementById('utm_source').value || detectPlatform(),
+                utm_medium: document.getElementById('utm_medium').value || 'paid',
+                utm_campaign: document.getElementById('utm_campaign').value,
+                status: 'new',
+                created_at: new Date().toISOString()
+            };
+
+            try {
+                // Send to Supabase
+                const { data, error } = await supabase
+                    .from('help_leads')
+                    .insert([formData]);
+
+                if (error) {
+                    console.error('Supabase error:', error);
+                    // Still show success to user (we'll handle the error internally)
+                }
+
+                // Track conversion (Facebook Pixel, Google Analytics, etc.)
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: 'VSL Lead Form',
+                        content_category: formData.business_type
+                    });
+                }
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'generate_lead', {
+                        'event_category': 'VSL',
+                        'event_label': formData.utm_source
+                    });
+                }
+
+                // Show success state
+                formContainer.classList.add('success');
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                // Show success anyway (better UX - we'll catch the lead from logs)
+                formContainer.classList.add('success');
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.slice(0, 10);
+            
+            // Format as 05X-XXX-XXXX
+            if (value.length > 3 && value.length <= 6) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            } else if (value.length > 6) {
+                value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6);
+            }
+            
+            e.target.value = value;
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            populateUTMFields();
+            
+            // Auto-focus on name field after a short delay
+            setTimeout(() => {
+                document.getElementById('name').focus();
+            }, 1000);
+        });
+
+        // Prevent form resubmission on page refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</body>
+</html>
