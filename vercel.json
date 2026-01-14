@@ -1,39 +1,15 @@
 {
-  "buildCommand": "cd easychat && npm install && npm run build",
+  "buildCommand": "cd easychat && npm install && npm run build && cp ../vsl.html ../crm.html ../conversations.html ../knowledge.html ../settings.html ../appointments.html ../blog.html ./dist/ 2>/dev/null || true",
   "outputDirectory": "easychat/dist",
   "framework": "vite",
-  "routes": [
-    {
-      "src": "/vsl.html",
-      "dest": "/vsl.html"
-    },
-    {
-      "src": "/crm.html",
-      "dest": "/crm.html"
-    },
-    {
-      "src": "/conversations.html",
-      "dest": "/conversations.html"
-    },
-    {
-      "src": "/knowledge.html",
-      "dest": "/knowledge.html"
-    },
-    {
-      "src": "/settings.html",
-      "dest": "/settings.html"
-    },
-    {
-      "src": "/appointments.html",
-      "dest": "/appointments.html"
-    },
-    {
-      "src": "/blog.html",
-      "dest": "/blog.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+  "rewrites": [
+    { "source": "/vsl.html", "destination": "/vsl.html" },
+    { "source": "/crm.html", "destination": "/crm.html" },
+    { "source": "/conversations.html", "destination": "/conversations.html" },
+    { "source": "/knowledge.html", "destination": "/knowledge.html" },
+    { "source": "/settings.html", "destination": "/settings.html" },
+    { "source": "/appointments.html", "destination": "/appointments.html" },
+    { "source": "/blog.html", "destination": "/blog.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
