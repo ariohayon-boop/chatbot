@@ -150,6 +150,11 @@ Phone: () => (
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
     </svg>
 ),
+Calculator: () => (
+    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    </svg>
+),
 WhatsApp: () => (
     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -252,7 +257,7 @@ const StickyCTA = ({ onOpenModal }) => {
                         whileTap={{ scale: 0.95 }}
                     >
                         <Icons.Message />
-                        התחל עכשיו - חינם
+                        התחל עכשיו
                     </motion.button>
                 </motion.div>
             )}
@@ -305,7 +310,6 @@ const TrustBadges = () => {
         { icon: <Icons.Lock />, text: 'מאובטח SSL', color: 'green' },
         { icon: <Icons.ShieldCheck />, text: 'GDPR Compliant', color: 'blue' },
         { icon: <Icons.Headphones />, text: 'תמיכה 24/7', color: 'purple' },
-        { icon: <Icons.CreditCard />, text: 'ללא כרטיס אשראי', color: 'orange' },
     ];
     
     return (
@@ -355,7 +359,7 @@ const ConsultationSection = ({ onOpenModal }) => {
                         {/* Left - Content */}
                         <div>
                             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-xs font-black uppercase tracking-[0.2em] mb-6">
-                                🎁 חינם ובלי התחייבות
+                                🎁 בלי התחייבות
                             </div>
                             <h2 className="text-3xl md:text-4xl font-black mb-4">
                                 שיחת ייעוץ של <span className="text-green-500">15 דקות</span>
@@ -388,7 +392,7 @@ const ConsultationSection = ({ onOpenModal }) => {
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <Icons.Calendar />
-                                קבע שיחה עכשיו - חינם
+                                קבע שיחה עכשיו
                             </motion.button>
                         </div>
                         
@@ -406,7 +410,7 @@ const ConsultationSection = ({ onOpenModal }) => {
                                     </div>
                                     <div>
                                         <div className="font-bold">שיחה עם מומחה</div>
-                                        <div className="text-sm text-slate-400">15 דקות • חינם</div>
+                                        <div className="text-sm text-slate-400">15 דקות</div>
                                     </div>
                                 </div>
                                 
@@ -602,39 +606,18 @@ return (
 );
 };
 
-// ============== CLIENT LOGOS ==============
-const ClientLogos = () => {
-const logos = ['מספרת אורלי', 'סטודיו פיט', 'יועץ משכנתאות', 'קליניקה', 'סטודיו יוגה'];
-
-return (
-    <div className="py-16 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-            <p className="text-center text-slate-500 mb-8 text-sm uppercase tracking-wider">מהימנים על ידי מאות עסקים בישראל</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-                {logos.map((logo, i) => (
-                    <motion.div
-                        key={i}
-                        className="text-slate-600 text-lg font-bold opacity-50 hover:opacity-100 transition-opacity cursor-default"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 0.5, y: 0 }}
-                        whileHover={{ opacity: 1, scale: 1.1 }}
-                        transition={{ delay: i * 0.1 }}
-                        viewport={{ once: true }}
-                    >
-                        {logo}
-                    </motion.div>
-                ))}
-            </div>
-        </div>
-    </div>
-);
-};
-
 // ============== HERO ==============
 const HeroSection = ({ onOpenModal }) => {
 const { scrollY } = useScroll();
 const y = useTransform(scrollY, [0, 500], [0, 150]);
 const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+const scrollToCalculator = () => {
+    const calculatorSection = document.getElementById('roi-calculator');
+    if (calculatorSection) {
+        calculatorSection.scrollIntoView({ behavior: 'smooth' });
+    }
+};
 
 return (
     <section className="pt-32 pb-20 min-h-screen flex flex-col items-center justify-center relative z-10">
@@ -707,13 +690,14 @@ return (
                 
                 <motion.button 
                     className="px-10 py-5 bg-slate-800/80 border border-white/10 rounded-2xl text-xl font-bold text-white hover:bg-slate-700/80 transition-all flex items-center justify-center gap-3 group"
+                    onClick={scrollToCalculator}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
-                        <Icons.Play />
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
+                        <Icons.Calculator />
                     </div>
-                    צפה בהדגמה
+                    חשב הפסד
                 </motion.button>
             </motion.div>
 
@@ -729,12 +713,6 @@ return (
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                     מאובטח SSL
-                </div>
-                <div className="flex items-center gap-2 text-slate-400 text-sm">
-                    <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    ללא כרטיס אשראי
                 </div>
                 <div className="flex items-center gap-2 text-slate-400 text-sm">
                     <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -801,7 +779,7 @@ const steps = [
     {
         number: '01',
         title: 'חיבור פשוט',
-        description: 'מחברים את הוואטסאפ העסקי שלך ב-2 דקות. בלי קוד, בלי התקנות מסובכות.',
+        description: 'מחברים את הוואטסאפ העסקי שלך במינימום זמן - עם יכולת שינויים דינמיים בצד שלך, בלחיצת כפתור.',
         icon: '🔗',
         color: 'green'
     },
@@ -1213,7 +1191,7 @@ const lostCustomers = Math.round(messages * 0.3 * 30);
 const yearlyLoss = lostCustomers * customerValue;
 
 return (
-    <section ref={ref} className="py-32 relative z-10">
+    <section ref={ref} className="py-32 relative z-10" id="roi-calculator">
         <div className="max-w-5xl mx-auto px-6">
             <motion.div
                 className="text-center mb-16"
@@ -1313,707 +1291,3 @@ return (
                             whileTap={{ scale: 0.98 }}
                         >
                             אני רוצה להפסיק להפסיד 💪
-                        </motion.button>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
-    </section>
-);
-};
-
-// ============== FAQ ==============
-const FAQItem = ({ question, answer }) => {
-const [isOpen, setIsOpen] = useState(false);
-return (
-    <motion.div className="mb-4" layout>
-        <button 
-            onClick={() => setIsOpen(!isOpen)}
-            className={`w-full p-6 rounded-2xl glass border flex items-center justify-between gap-4 text-right transition-all duration-300 ${isOpen ? 'border-green-500/50 bg-white/5' : 'border-white/5'}`}
-        >
-            <span className="text-lg font-bold">{question}</span>
-            <motion.div 
-                animate={{ rotate: isOpen ? 180 : 0 }}
-                className={isOpen ? 'text-green-500' : 'text-slate-500'}
-            >
-                {isOpen ? <Icons.Minus /> : <Icons.Plus />}
-            </motion.div>
-        </button>
-        <AnimatePresence>
-            {isOpen && (
-                <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
-                >
-                    <div className="p-6 text-slate-400 text-lg leading-relaxed border-x border-b border-white/5 rounded-b-2xl bg-white/[0.02]">
-                        {answer}
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-    </motion.div>
-);
-};
-
-const FAQSection = () => {
-const faqs = [
-    { question: "האם הבוט יודע לדבר בעברית טבעית?", answer: "בוודאי. אנחנו משתמשים בטכנולוגיית AI מתקדמת שמותאמת במיוחד לשפה העברית, כולל סלנג, קיצורים והבנת הקשרים מורכבים בשיחה." },
-    { question: "האם זה דורש מספר וואטסאפ חדש?", answer: "ממש לא. ניתן לחבר את המערכת למספר הקיים של העסק שלכם (וואטסאפ עסקי) בצורה חלקה ומאובטחת." },
-    { question: "האם ניתן לחבר את הבוט למערכת ה-CRM שלי?", answer: "כן, אנחנו תומכים באינטגרציות לכל המערכות המובילות בשוק (Monday, Pipedrive, HubSpot) וגם למערכות ישראליות מקומיות." },
-    { question: "כמה זמן לוקח להקים בוט כזה?", answer: "תהליך האפיון וההקמה שלנו מהיר במיוחד. בדרך כלל הבוט שלכם יהיה באוויר ויתחיל לענות ללקוחות תוך פחות מ-48 שעות." }
-];
-
-return (
-    <section className="py-32 px-6 max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-black mb-6">שאלות <span className="text-green-500">נפוצות</span></h2>
-            <p className="text-xl text-slate-400">כל מה שרציתם לדעת על הצ'אט-בוט החדש שלכם</p>
-        </div>
-        <div className="space-y-4">
-            {faqs.map((faq, i) => <FAQItem key={i} {...faq} />)}
-        </div>
-    </section>
-);
-};
-
-// ============== CTA SECTION ==============
-const CTASection = ({ onOpenModal }) => {
-const ref = useRef(null);
-const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-return (
-    <section ref={ref} className="py-32 px-6 relative z-10">
-        <motion.div 
-            className="max-w-5xl mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-        >
-            <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-green-500 to-emerald-600 p-12 md:p-20 text-center">
-                {/* Decorative elements */}
-                <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-black/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-                
-                <div className="relative z-10">
-                    <motion.h2 
-                        className="text-4xl md:text-6xl font-black text-slate-950 mb-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ delay: 0.2 }}
-                    >
-                        מוכן להפסיק לאבד לקוחות?
-                    </motion.h2>
-                    <motion.p 
-                        className="text-xl text-slate-900/80 mb-10 max-w-2xl mx-auto"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ delay: 0.3 }}
-                    >
-                        הצטרף למאות עסקים שכבר משתמשים ב-Easychat ומרוויחים יותר
-                    </motion.p>
-                    <motion.button 
-                        className="px-12 py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 rounded-2xl text-xl font-black hover:from-orange-400 hover:to-amber-400 transition-all shadow-2xl inline-flex items-center gap-3"
-                        onClick={onOpenModal}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ delay: 0.4 }}
-                    >
-                        <Icons.Message />
-                        אני רוצה להתחיל עכשיו
-                        <Icons.ArrowRight />
-                    </motion.button>
-                    <motion.p 
-                        className="mt-6 text-slate-900/60 text-sm"
-                        initial={{ opacity: 0 }}
-                        animate={isInView ? { opacity: 1 } : {}}
-                        transition={{ delay: 0.5 }}
-                    >
-                        ללא כרטיס אשראי • התקנה ב-2 דקות • ביטול בכל עת
-                    </motion.p>
-                </div>
-            </div>
-        </motion.div>
-    </section>
-);
-};
-
-// ============== FOOTER ==============
-const Footer = ({ setCurrentPage }) => {
-const footerLinks = {
-    product: [
-        { label: 'תכונות', page: 'features' },
-        { label: 'איך זה עובד', page: 'how-it-works' },
-        { label: 'אינטגרציות', page: 'integrations' },
-        { label: 'עדכונים', page: 'changelog' },
-    ],
-    company: [
-        { label: 'אודות', page: 'about' },
-        { label: 'קריירה', page: 'careers' },
-        { label: 'בלוג', page: 'blog' },
-        { label: 'צור קשר', page: 'contact' },
-    ],
-    resources: [
-        { label: 'מרכז עזרה', page: 'help' },
-        { label: 'תיעוד API', page: 'docs' },
-        { label: 'סטטוס', page: 'status' },
-        { label: 'שותפים', page: 'partners' },
-    ],
-    legal: [
-        { label: 'תנאי שימוש', page: 'terms' },
-        { label: 'פרטיות', page: 'privacy' },
-        { label: 'אבטחה', page: 'security' },
-    ],
-};
-
-return (
-    <footer className="border-t border-white/5 pt-20 pb-10 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
-                {/* Logo & Description */}
-                <div className="col-span-2 md:col-span-1">
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
-                            <Icons.Message />
-                        </div>
-                        <span className="text-xl font-black">Easy<span className="text-green-500">chat</span></span>
-                    </div>
-                    <p className="text-slate-500 text-sm mb-6">הבוט החכם שעובד בשבילך 24/7</p>
-                    <div className="flex gap-4">
-                        <a href="#" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
-                            <Icons.Linkedin />
-                        </a>
-                        <a href="#" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
-                            <Icons.Twitter />
-                        </a>
-                        <a href="#" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
-                            <Icons.Facebook />
-                        </a>
-                        <a href="https://instagram.com/easy_chat_ai" target="_blank" rel="noopener noreferrer" className="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-green-500 hover:border-green-500/50 transition-all">
-                            <Icons.Instagram />
-                        </a>
-                    </div>
-                </div>
-
-                {/* Links */}
-                <div>
-                    <h4 className="font-bold mb-4">מוצר</h4>
-                    <ul className="space-y-3">
-                        {footerLinks.product.map((link, i) => (
-                            <li key={i}>
-                                <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
-                                    {link.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 className="font-bold mb-4">חברה</h4>
-                    <ul className="space-y-3">
-                        {footerLinks.company.map((link, i) => (
-                            <li key={i}>
-                                <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
-                                    {link.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 className="font-bold mb-4">משאבים</h4>
-                    <ul className="space-y-3">
-                        {footerLinks.resources.map((link, i) => (
-                            <li key={i}>
-                                <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
-                                    {link.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 className="font-bold mb-4">משפטי</h4>
-                    <ul className="space-y-3">
-                        {footerLinks.legal.map((link, i) => (
-                            <li key={i}>
-                                <a href="#" className="text-slate-500 hover:text-green-500 transition-colors text-sm" onClick={(e) => { e.preventDefault(); setCurrentPage(link.page); }}>
-                                    {link.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-            {/* Bottom */}
-            <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-slate-600 text-sm">© 2025 Easychat. כל הזכויות שמורות.</p>
-                <div className="flex items-center gap-4 text-sm text-slate-600">
-                    <span className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        כל המערכות פעילות
-                    </span>
-                    <span>made with 💚 in Israel</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-);
-};
-
-// ============== BLOG PAGE ==============
-const BlogPage = ({ setCurrentPage, onOpenModal }) => {
-const [showPost, setShowPost] = useState(false);
-
-if (showPost) {
-    return (
-        <article className="pt-32 pb-20 relative z-10">
-            <div className="max-w-4xl mx-auto px-6">
-                {/* Back Button */}
-                <motion.button
-                    onClick={() => setShowPost(false)}
-                    className="flex items-center gap-2 text-slate-400 hover:text-green-500 transition-colors mb-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    חזרה לבלוג
-                </motion.button>
-
-                {/* Header */}
-                <motion.header
-                    className="mb-12"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                >
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-bold mb-4">
-                        סיפורי הצלחה
-                    </span>
-                    <h1 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
-                        איך Sea4u הכפילו את כמות ההזמנות תוך חודש עם Easychat
-                    </h1>
-                    <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
-                        <span className="flex items-center gap-2">
-                            <Icons.Clock />
-                            5 דקות קריאה
-                        </span>
-                        <span>ינואר 2025</span>
-                    </div>
-                </motion.header>
-
-                {/* Hero */}
-                <motion.div
-                    className="glass rounded-3xl p-12 mb-12 text-center"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                >
-                    <div className="w-32 h-32 mx-auto mb-4 bg-white rounded-2xl p-4">
-                        <img src="https://sea4u.co.il/wp-content/uploads/2025/07/Group-1-3.png" alt="Sea4u Logo" className="w-full h-full object-contain" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-green-500">Sea4u</h2>
-                    <p className="text-slate-400">השכרת יאכטות במרינה הרצליה</p>
-                </motion.div>
-
-                {/* Content */}
-                <motion.div
-                    className="prose prose-invert max-w-none"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                >
-                    <h2 className="text-2xl font-black mt-8 mb-4">הסיפור של Sea4u</h2>
-                    <p className="text-slate-300 text-lg mb-6">
-                        Sea4u היא חברת השכרת יאכטות מובילה במרינה הרצליה. עם ניסיון שהחל משנת 1979 בתנועת צופי ים, 
-                        הם מציעים חוויות ים בלתי נשכחות - מהפלגות שקיעה רומנטיות, דרך ימי הולדת ומסיבות רווקים/רווקות, ועד ימי גיבוש לחברות.
-                    </p>
-                    <p className="text-slate-300 text-lg mb-6">
-                        חזי דיין, הבעלים והסקיפר הראשי, מפעיל יאכטה בוטיק מפוארת עם קיבולת של עד 13 משתתפים. 
-                        אבל הייתה להם בעיה גדולה.
-                    </p>
-
-                    <h2 className="text-2xl font-black mt-8 mb-4">האתגר: לקוחות שמחכים = לקוחות שהולכים</h2>
-                    <div className="border-r-4 border-green-500 pr-6 py-4 my-8 bg-green-500/10 rounded-l-xl">
-                        <p className="text-white text-xl italic">
-                            "רוב הפניות שלנו מגיעות בערב ובסופי שבוע. בדיוק כשאנחנו בים עם לקוחות, או מנסים לנוח."
-                        </p>
-                        <p className="text-slate-400 mt-2">— חזי דיין, בעלים</p>
-                    </div>
-
-                    {/* Stats Before */}
-                    <div className="grid grid-cols-3 gap-4 my-8">
-                        <div className="glass rounded-xl p-4 text-center">
-                            <div className="text-3xl font-black text-red-400">4-6</div>
-                            <div className="text-slate-500 text-sm">שעות זמן מענה</div>
-                        </div>
-                        <div className="glass rounded-xl p-4 text-center">
-                            <div className="text-3xl font-black text-red-400">60%</div>
-                            <div className="text-slate-500 text-sm">פניות שנענו</div>
-                        </div>
-                        <div className="glass rounded-xl p-4 text-center">
-                            <div className="text-3xl font-black text-red-400">15-20</div>
-                            <div className="text-slate-500 text-sm">לידים אבודים בחודש</div>
-                        </div>
-                    </div>
-
-                    <h2 className="text-2xl font-black mt-8 mb-4">הפתרון: בוט שמדבר בשפה של Sea4u</h2>
-                    <p className="text-slate-300 text-lg mb-4">תוך 48 שעות, הקמנו בוט מותאם אישית שיודע:</p>
-                    <ul className="text-slate-300 text-lg space-y-2 mb-8">
-                        <li>✅ לענות על שאלות נפוצות על היאכטות</li>
-                        <li>✅ לשלוח מחירון מעודכן</li>
-                        <li>✅ לתאם תאריכים ושעות</li>
-                        <li>✅ לאסוף פרטי לקוח ולהעביר ליומן</li>
-                        <li>✅ לזהות לקוחות "חמים" ולהתריע בזמן אמת</li>
-                    </ul>
-
-                    <h3 className="text-xl font-bold text-green-500 mt-8 mb-4">דוגמה לשיחה אמיתית</h3>
-                    
-                    {/* Chat Example */}
-                    <div className="glass rounded-2xl p-6 my-8">
-                        <div className="text-xs text-slate-500 text-center mb-4">22:47</div>
-                        
-                        <div className="space-y-4">
-                            <div className="bg-slate-800 rounded-2xl rounded-bl-sm p-4 mr-8">
-                                <p className="text-white m-0">היי, מתעניין בהשכרת יאכטה ל-10 אנשים ליום הולדת</p>
-                            </div>
-                            
-                            <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl rounded-br-sm p-4 ml-8">
-                                <p className="text-slate-900 font-medium m-0">היי! שמח לעזור ⛵</p>
-                                <p className="text-slate-900 m-0 mt-2">ליום הולדת ל-10 אנשים היאכטה שלנו מושלמת - עד 13 משתתפים, עם מערכת סאונד ואזור שיזוף.</p>
-                                <p className="text-slate-900 m-0 mt-2 font-medium">📅 באיזה תאריך חשבתם?</p>
-                            </div>
-                            
-                            <div className="bg-slate-800 rounded-2xl rounded-bl-sm p-4 mr-8">
-                                <p className="text-white m-0">יום שישי הקרוב אפשרי? כמה זה עולה?</p>
-                            </div>
-                            
-                            <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl rounded-br-sm p-4 ml-8">
-                                <p className="text-slate-900 m-0">בודק לך עכשיו... ✅ יש פנוי!</p>
-                                <p className="text-slate-900 m-0 mt-2">המחירים לקבוצה עד 10:</p>
-                                <p className="text-slate-900 m-0">• שעה - ₪650</p>
-                                <p className="text-slate-900 m-0">• שעה וחצי - ₪950</p>
-                                <p className="text-slate-900 m-0">• שעתיים - ₪1,250</p>
-                                <p className="text-slate-900 m-0 mt-2 font-medium">מה מתאים לך יותר?</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h2 className="text-2xl font-black mt-8 mb-4">התוצאות: המספרים מדברים</h2>
-                    
-                    {/* Results */}
-                    <div className="glass rounded-2xl p-8 my-8">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            <div className="text-center">
-                                <div className="text-sm text-slate-500 mb-2">זמן מענה</div>
-                                <div className="text-red-400 line-through text-lg">4-6 שעות</div>
-                                <div className="text-green-500 text-2xl font-black">2 דקות</div>
-                                <div className="text-green-400 text-sm mt-1">↓ 99%</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-sm text-slate-500 mb-2">פניות שנענו</div>
-                                <div className="text-red-400 line-through text-lg">60%</div>
-                                <div className="text-green-500 text-2xl font-black">100%</div>
-                                <div className="text-green-400 text-sm mt-1">↑ 67%</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-sm text-slate-500 mb-2">המרה לידים</div>
-                                <div className="text-red-400 line-through text-lg">15%</div>
-                                <div className="text-green-500 text-2xl font-black">32%</div>
-                                <div className="text-green-400 text-sm mt-1">↑ 113%</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-sm text-slate-500 mb-2">הזמנות בחודש</div>
-                                <div className="text-red-400 line-through text-lg">12</div>
-                                <div className="text-green-500 text-2xl font-black">26</div>
-                                <div className="text-green-400 text-sm mt-1">↑ 117%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="border-r-4 border-green-500 pr-6 py-4 my-8 bg-green-500/10 rounded-l-xl">
-                        <p className="text-white text-xl italic">
-                            "הים הוא המקום המושלם לחגיגות אירוע בלתי נשכח. הבוט עוזר לנו לתת מענה מיידי ללקוחות גם כשאנחנו באמצע הפלגה."
-                        </p>
-                        <p className="text-slate-400 mt-2">— חזי דיין, בעלים</p>
-                    </div>
-
-                    {/* CTA */}
-                    <div className="glass rounded-3xl p-8 md:p-12 text-center mt-16 bg-gradient-to-br from-green-500/10 to-blue-500/10">
-                        <h2 className="text-2xl md:text-3xl font-black mb-4">רוצה תוצאות דומות?</h2>
-                        <p className="text-slate-400 mb-8 text-lg">
-                            אם גם אתה מרגיש שאתה מפספס לקוחות כי אין לך זמן לענות, בוא נדבר.
-                            <br />
-                            <strong className="text-white">ההתקנה לוקחת 48 שעות. הניסיון חינם.</strong>
-                        </p>
-                        <motion.button 
-                            onClick={onOpenModal}
-                            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 rounded-2xl text-xl font-black hover:from-orange-400 hover:to-amber-400 transition-all"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <Icons.Message />
-                            אני רוצה לראות איך זה עובד
-                        </motion.button>
-                    </div>
-                </motion.div>
-            </div>
-        </article>
-    );
-}
-
-return (
-    <section className="pt-32 pb-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
-            {/* Header */}
-            <motion.div 
-                className="text-center mb-16"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-xs font-black uppercase tracking-[0.2em] mb-6">
-                    הבלוג שלנו
-                </div>
-                <h1 className="text-4xl md:text-6xl font-black mb-6">
-                    טיפים, מדריכים <span className="gradient-text">וסיפורי הצלחה</span>
-                </h1>
-                <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-                    למד איך להפוך את שירות הלקוחות שלך לאוטומטי, יעיל, וחכם יותר
-                </p>
-            </motion.div>
-
-            {/* Featured Post */}
-            <motion.article
-                className="glass rounded-[2rem] overflow-hidden mb-12 cursor-pointer hover-lift"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                onClick={() => setShowPost(true)}
-                whileHover={{ scale: 1.01 }}
-            >
-                <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12">
-                    <div className="flex flex-col justify-center">
-                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-bold w-fit mb-4">
-                            ⭐ מומלץ
-                        </span>
-                        <h2 className="text-2xl md:text-4xl font-black mb-4">איך Sea4u הכפילו את כמות ההזמנות תוך חודש</h2>
-                        <p className="text-slate-400 text-lg mb-6">Sea4u, חברת השכרת יאכטות במרינה הרצליה, עברו מזמן מענה של 4-6 שעות ל-2 דקות. קרא את סיפור ההצלחה המלא.</p>
-                        <div className="flex items-center gap-6 text-sm text-slate-500">
-                            <span className="flex items-center gap-2">
-                                <Icons.Clock />
-                                5 דקות
-                            </span>
-                            <span>ינואר 2025</span>
-                            <span>סיפורי הצלחה</span>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <div className="w-48 h-48 bg-white rounded-3xl flex items-center justify-center p-6">
-                            <img src="https://sea4u.co.il/wp-content/uploads/2025/07/Group-1-3.png" alt="Sea4u Logo" className="w-full h-full object-contain" />
-                        </div>
-                    </div>
-                </div>
-            </motion.article>
-
-            {/* Coming Soon Posts */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[
-                    { title: 'המדריך המלא: מהו בוט וואטסאפ', category: 'מדריכים', icon: '🤖' },
-                    { title: '5 דרכים לענות ללקוחות מהר יותר', category: 'טיפים', icon: '⚡' },
-                    { title: 'איך לבחור בוט לעסק שלך', category: 'מדריכים', icon: '🎯' }
-                ].map((post, i) => (
-                    <motion.article
-                        key={i}
-                        className="glass rounded-2xl p-6 opacity-60"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 0.6, y: 0 }}
-                        transition={{ delay: 0.3 + i * 0.1 }}
-                    >
-                        <div className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-3xl mb-4">
-                            {post.icon}
-                        </div>
-                        <span className="text-green-500 text-sm font-bold">{post.category}</span>
-                        <h3 className="text-xl font-bold mt-2 mb-3">{post.title}</h3>
-                        <span className="inline-block px-3 py-1 bg-slate-800 rounded-full text-xs text-slate-400">
-                            בקרוב...
-                        </span>
-                    </motion.article>
-                ))}
-            </div>
-        </div>
-    </section>
-);
-};
-
-// ============== SIGNUP MODAL ==============
-const SignupModal = ({ isOpen, onClose }) => {
-const [formData, setFormData] = useState({ name: '', phone: '', business: '', clientsPerDay: '' });
-const [isLoading, setIsLoading] = useState(false);
-const [isSuccess, setIsSuccess] = useState(false);
-const [errors, setErrors] = useState({});
-const [submitError, setSubmitError] = useState('');
-
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitError('');
-    
-    const newErrors = {};
-    if (!formData.name) newErrors.name = true;
-    if (!formData.phone) newErrors.phone = true;
-    if (!formData.business) newErrors.business = true;
-    
-    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
-
-    setIsLoading(true);
-    try {
-        const { error } = await supabase.from('help_leads').insert([{
-            name: formData.name, phone: formData.phone, business_type: formData.business, clients_per_day: formData.clientsPerDay || null
-        }]);
-        if (error) throw error;
-        setIsLoading(false);
-        setIsSuccess(true);
-        setFormData({ name: '', phone: '', business: '', clientsPerDay: '' });
-    } catch (error) {
-        console.error('Error:', error);
-        setIsLoading(false);
-        setSubmitError('אירעה שגיאה, נסה שוב');
-    }
-};
-
-useEffect(() => { if (!isOpen) setTimeout(() => { setIsSuccess(false); setSubmitError(''); }, 300); }, [isOpen]);
-
-if (!isOpen) return null;
-
-return (
-    <AnimatePresence>
-        <motion.div className="modal-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-            <motion.div className="modal-content" initial={{ opacity: 0, y: 100, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 100, scale: 0.9 }} onClick={(e) => e.stopPropagation()}>
-                <button onClick={onClose} className="absolute top-4 left-4 w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-green-500 hover:text-white transition-all">✕</button>
-                
-                {isSuccess ? (
-                    <div className="text-center py-10">
-                        <div className="success-check">✓</div>
-                        <h3 className="text-2xl font-black mb-2">ברוך הבא! 🎉</h3>
-                        <p className="text-slate-400">ניצור איתך קשר תוך 24 שעות</p>
-                    </div>
-                ) : (
-                    <>
-                        <h3 className="text-2xl font-black mb-2">בוא נתחיל! 🚀</h3>
-                        <p className="text-slate-400 mb-8">מלא את הפרטים ונחזור אליך תוך 24 שעות</p>
-                        {submitError && <div className="error-message">{submitError}</div>}
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4"><input className={`form-input ${errors.name ? 'error' : formData.name ? 'success' : ''}`} placeholder="שם מלא" value={formData.name} onChange={(e) => { setFormData(prev => ({...prev, name: e.target.value})); setErrors(prev => ({...prev, name: false})); }} /></div>
-                            <div className="mb-4"><input className={`form-input ${errors.phone ? 'error' : formData.phone ? 'success' : ''}`} placeholder="טלפון" type="tel" value={formData.phone} onChange={(e) => { setFormData(prev => ({...prev, phone: e.target.value})); setErrors(prev => ({...prev, phone: false})); }} /></div>
-                            <div className="mb-4"><input className={`form-input ${errors.business ? 'error' : formData.business ? 'success' : ''}`} placeholder="מה העסק שלך?" value={formData.business} onChange={(e) => { setFormData(prev => ({...prev, business: e.target.value})); setErrors(prev => ({...prev, business: false})); }} /></div>
-                            <div className="mb-6"><input className="form-input" placeholder="כמה לקוחות ביום? (אופציונלי)" value={formData.clientsPerDay} onChange={(e) => setFormData(prev => ({...prev, clientsPerDay: e.target.value}))} /></div>
-                            <button type="submit" className="btn-primary w-full" disabled={isLoading}>{isLoading ? <div className="spinner" /> : 'להתחיל עכשיו'}</button>
-                        </form>
-                    </>
-                )}
-            </motion.div>
-        </motion.div>
-    </AnimatePresence>
-);
-};
-
-// ============== MAIN APP ==============
-const App = () => {
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [currentPage, setCurrentPage] = useState('home');
-const [isLoading, setIsLoading] = useState(true);
-
-// Initial loading simulation
-useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-}, []);
-
-// Scroll to top on page change
-useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [currentPage]);
-
-const renderPage = () => {
-    switch(currentPage) {
-        case 'about':
-            return <AboutPage />;
-        case 'blog':
-            return <BlogPage setCurrentPage={setCurrentPage} onOpenModal={() => setIsModalOpen(true)} />;
-        case 'how-it-works':
-            return (
-                <>
-                    <div className="pt-32" />
-                    <HowItWorksSection onOpenModal={() => setIsModalOpen(true)} />
-                    <FeaturesSection />
-                    <CTASection onOpenModal={() => setIsModalOpen(true)} />
-                </>
-            );
-        default:
-            return (
-                <>
-                    <HeroSection onOpenModal={() => setIsModalOpen(true)} />
-                    <ClientLogos />
-                    <HowItWorksSection onOpenModal={() => setIsModalOpen(true)} />
-                    <FeaturesSection />
-                    <CaseStudySection setCurrentPage={setCurrentPage} />
-                    <ROICalculator onOpenModal={() => setIsModalOpen(true)} />
-                    <ConsultationSection onOpenModal={() => setIsModalOpen(true)} />
-                    <FAQSection />
-                    <CTASection onOpenModal={() => setIsModalOpen(true)} />
-                </>
-            );
-    }
-};
-
-// Loading screen
-if (isLoading) {
-    return (
-        <div className="fixed inset-0 bg-slate-950 flex items-center justify-center z-[100]">
-            <motion.div
-                className="flex flex-col items-center gap-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-            >
-                <motion.div
-                    className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                >
-                    <Icons.Message />
-                </motion.div>
-                <div className="flex gap-1">
-                    {[0, 1, 2].map((i) => (
-                        <motion.div
-                            key={i}
-                            className="w-2 h-2 bg-green-500 rounded-full"
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
-                        />
-                    ))}
-                </div>
-            </motion.div>
-        </div>
-    );
-}
-
-return (
-    <>
-        <ScrollProgressIndicator />
-        <BackgroundAnimation />
-        <Navbar onOpenModal={() => setIsModalOpen(true)} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        {renderPage()}
-        <Footer setCurrentPage={setCurrentPage} />
-        <SignupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-        <StickyCTA onOpenModal={() => setIsModalOpen(true)} />
-        <WhatsAppButton />
-    </>
-);
-};
-
-
-export default App
