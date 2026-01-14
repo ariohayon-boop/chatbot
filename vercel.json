@@ -3,6 +3,36 @@
   "outputDirectory": "easychat/dist",
   "framework": "vite",
   "rewrites": [
+    { 
+      "source": "/:path*", 
+      "has": [{ "type": "host", "value": "go.easychat.company" }],
+      "destination": "/vsl.html"
+    },
+    { 
+      "source": "/", 
+      "has": [{ "type": "host", "value": "app.easychat.company" }],
+      "destination": "/crm.html"
+    },
+    { 
+      "source": "/crm.html", 
+      "has": [{ "type": "host", "value": "app.easychat.company" }],
+      "destination": "/crm.html"
+    },
+    { 
+      "source": "/conversations.html", 
+      "has": [{ "type": "host", "value": "app.easychat.company" }],
+      "destination": "/conversations.html"
+    },
+    { 
+      "source": "/knowledge.html", 
+      "has": [{ "type": "host", "value": "app.easychat.company" }],
+      "destination": "/knowledge.html"
+    },
+    { 
+      "source": "/settings.html", 
+      "has": [{ "type": "host", "value": "app.easychat.company" }],
+      "destination": "/settings.html"
+    },
     { "source": "/vsl.html", "destination": "/vsl.html" },
     { "source": "/crm.html", "destination": "/crm.html" },
     { "source": "/conversations.html", "destination": "/conversations.html" },
