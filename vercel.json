@@ -2,5 +2,38 @@
   "buildCommand": "cd easychat && npm install && npm run build",
   "outputDirectory": "easychat/dist",
   "framework": "vite",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "routes": [
+    {
+      "src": "/vsl.html",
+      "dest": "/vsl.html"
+    },
+    {
+      "src": "/crm.html",
+      "dest": "/crm.html"
+    },
+    {
+      "src": "/conversations.html",
+      "dest": "/conversations.html"
+    },
+    {
+      "src": "/knowledge.html",
+      "dest": "/knowledge.html"
+    },
+    {
+      "src": "/settings.html",
+      "dest": "/settings.html"
+    },
+    {
+      "src": "/appointments.html",
+      "dest": "/appointments.html"
+    },
+    {
+      "src": "/blog.html",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
 }
