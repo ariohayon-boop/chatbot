@@ -1425,6 +1425,18 @@
                                         </span>
                                     </td>
                                     <td>
+    {lead.source === 'paid_ads' ? (
+        <span style={{ fontSize: '12px' }}>
+            📣 {lead.platform === 'facebook' ? 'פייסבוק' : 
+                lead.platform === 'instagram' ? 'אינסטגרם' : 'פרסום'}
+        </span>
+    ) : (
+        <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>
+            🌐 אורגני
+        </span>
+    )}
+</td>
+                                    <td>
                                         <div>{formatDate(lead.created_at)}</div>
                                         <div style={{ fontSize: '12px', color: 'var(--text-light)' }}>
                                             {formatTime(lead.created_at)}
