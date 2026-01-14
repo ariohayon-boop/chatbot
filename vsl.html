@@ -575,7 +575,7 @@
 
             try {
                 const { data, error } = await supabase
-                    .from('leads')
+                    .from('help_leads')
                     .insert([formData]);
 
                 if (error) throw error;
