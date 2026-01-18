@@ -4,29 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HELP CRM | מערכת ניהול לידים</title>
-    
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Supabase -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    
-    <!-- React -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-    
     <style>
         :root {
             --primary: #06D6A0;
             --primary-dark: #05B888;
             --secondary: #118AB2;
-            --accent: #06FFA5;
             --bg: #F8FAFB;
-            --bg-white: #FFFFFF;
             --text: #073B4C;
             --text-light: #6B7280;
             --navy: #073B4C;
@@ -35,1106 +26,242 @@
             --warning: #F59E0B;
             --danger: #EF4444;
             --purple: #8B5CF6;
-            
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
             --radius-sm: 6px;
             --radius-md: 10px;
             --radius-lg: 16px;
             --radius-xl: 24px;
-            
             --font-display: 'Rubik', sans-serif;
             --font-body: 'Heebo', sans-serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        /* Scrollbar */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
-
-        /* Layout */
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: var(--navy);
-            color: white;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-        }
-
-        .sidebar-logo {
-            font-family: var(--font-display);
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .sidebar-subtitle {
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 32px;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: var(--radius-md);
-            color: rgba(255,255,255,0.7);
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 4px;
-            font-size: 15px;
-        }
-
-        .nav-item:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .nav-item.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .nav-item-icon {
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
-        }
-
-        .nav-badge {
-            margin-right: auto;
-            background: var(--danger);
-            color: white;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .sidebar-user {
-            padding: 16px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-right: 260px;
-            padding: 24px 32px;
-        }
-
-        /* Header */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .page-title {
-            font-family: var(--font-display);
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 500;
-            border: none;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg);
-            border-color: var(--text-light);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-
-        .btn-icon {
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            border-radius: var(--radius-sm);
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-
-        .stat-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .stat-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .stat-card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        .stat-card-icon.blue { background: rgba(17, 138, 178, 0.1); }
-        .stat-card-icon.green { background: rgba(6, 214, 160, 0.1); }
-        .stat-card-icon.yellow { background: rgba(245, 158, 11, 0.1); }
-        .stat-card-icon.red { background: rgba(239, 68, 68, 0.1); }
-        .stat-card-icon.purple { background: rgba(139, 92, 246, 0.1); }
-
-        .stat-card-value {
-            font-family: var(--font-display);
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        .stat-card-label {
-            font-size: 14px;
-            color: var(--text-light);
-        }
-
-        .stat-card-change {
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 8px;
-        }
-
-        .stat-card-change.positive { color: var(--success); }
-        .stat-card-change.negative { color: var(--danger); }
-
-        /* Filters */
-        .filters-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 10px 16px;
-            padding-right: 40px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-family: var(--font-body);
-            font-size: 14px;
-            background: white;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.1);
-        }
-
-        .filter-select {
-            padding: 10px 16px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-family: var(--font-body);
-            font-size: 14px;
-            background: white;
-            cursor: pointer;
-            min-width: 150px;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        /* Table */
-        .table-container {
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            overflow: hidden;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th {
-            background: var(--bg);
-            padding: 14px 16px;
-            text-align: right;
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--text-light);
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
-
-        .table td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-        }
-
-        .table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .table tr:hover {
-            background: var(--bg);
-            cursor: pointer;
-        }
-
-        .table tr.selected {
-            background: rgba(6, 214, 160, 0.05);
-        }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status-badge.new {
-            background: rgba(139, 92, 246, 0.1);
-            color: #7C3AED;
-        }
-
-        .status-badge.followup_initial {
-            background: rgba(245, 158, 11, 0.1);
-            color: #D97706;
-        }
-
-        .status-badge.followup_qualified {
-            background: rgba(17, 138, 178, 0.1);
-            color: #0E7490;
-        }
-
-        .status-badge.interested {
-            background: rgba(6, 214, 160, 0.1);
-            color: #059669;
-        }
-
-        .status-badge.demo {
-            background: rgba(59, 130, 246, 0.1);
-            color: #2563EB;
-        }
-
-        .status-badge.closed_won {
-            background: rgba(16, 185, 129, 0.1);
-            color: #059669;
-        }
-
-        .status-badge.not_interested {
-            background: rgba(239, 68, 68, 0.1);
-            color: #DC2626;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        /* Lead Details Panel */
-        .lead-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 500px;
-            height: 100vh;
-            background: white;
-            box-shadow: var(--shadow-xl);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        .lead-panel.open {
-            transform: translateX(0);
-        }
-
-        .panel-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 199;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-
-        .panel-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .panel-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-title {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .panel-close {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sm);
-            border: none;
-            background: var(--bg);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: all 0.2s;
-        }
-
-        .panel-close:hover {
-            background: var(--border);
-        }
-
-        .panel-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-        }
-
-        .panel-section {
-            margin-bottom: 28px;
-        }
-
-        .panel-section-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .info-item {
-            background: var(--bg);
-            padding: 12px;
-            border-radius: var(--radius-md);
-        }
-
-        .info-label {
-            font-size: 11px;
-            color: var(--text-light);
-            margin-bottom: 4px;
-        }
-
-        .info-value {
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        /* Notes */
-        .notes-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .note-item {
-            background: var(--bg);
-            border-radius: var(--radius-md);
-            padding: 12px;
-            border-right: 3px solid var(--primary);
-        }
-
-        .note-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .note-author {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        .note-date {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-
-        .note-text {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .note-input-container {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .note-input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-family: var(--font-body);
-            font-size: 14px;
-            resize: none;
-        }
-
-        .note-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        /* Status Selector */
-        .status-selector {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        .status-option {
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .status-option:hover {
-            border-color: var(--primary);
-        }
-
-        .status-option.selected {
-            border-color: var(--primary);
-            background: rgba(6, 214, 160, 0.1);
-        }
-
-        /* Rejection Reason Modal */
-        .reason-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .reason-option {
-            padding: 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .reason-option:hover {
-            border-color: var(--primary);
-            background: var(--bg);
-        }
-
-        .reason-option.selected {
-            border-color: var(--primary);
-            background: rgba(6, 214, 160, 0.1);
-        }
-
-        .reason-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-sm);
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        /* Date Picker */
-        .date-picker {
-            margin-top: 12px;
-            padding: 12px;
-            background: var(--bg);
-            border-radius: var(--radius-md);
-        }
-
-        .date-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: var(--font-body);
-        }
-
-        /* Activity Timeline */
-        .activity-timeline {
-            position: relative;
-        }
-
-        .activity-timeline::before {
-            content: '';
-            position: absolute;
-            right: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border);
-        }
-
-        .activity-item {
-            position: relative;
-            padding-right: 40px;
-            padding-bottom: 20px;
-        }
-
-        .activity-dot {
-            position: absolute;
-            right: 8px;
-            top: 4px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: white;
-            border: 2px solid var(--primary);
-        }
-
-        .activity-content {
-            background: var(--bg);
-            padding: 12px;
-            border-radius: var(--radius-md);
-        }
-
-        .activity-title {
-            font-weight: 500;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .activity-time {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-
-        /* Notifications */
-        .notifications-badge {
-            position: relative;
-        }
-
-        .notifications-badge::after {
-            content: attr(data-count);
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 18px;
-            height: 18px;
-            background: var(--danger);
-            color: white;
-            font-size: 10px;
-            font-weight: 600;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .notifications-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 320px;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--border);
-            z-index: 300;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .notification-item {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .notification-item:hover {
-            background: var(--bg);
-        }
-
-        .notification-item.unread {
-            background: rgba(6, 214, 160, 0.05);
-        }
-
-        .notification-title {
-            font-weight: 500;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .notification-time {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        /* Reminders */
-        .reminder-card {
-            background: linear-gradient(135deg, var(--warning) 0%, #F97316 100%);
-            color: white;
-            padding: 16px;
-            border-radius: var(--radius-md);
-            margin-bottom: 12px;
-        }
-
-        .reminder-card h4 {
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .reminder-card p {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .empty-state-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .empty-state-text {
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 400;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal {
-            background: white;
-            border-radius: var(--radius-xl);
-            width: 100%;
-            max-width: 480px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-family: var(--font-display);
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .modal-body {
-            padding: 24px;
-        }
-
-        .modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        /* Form Groups */
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-family: var(--font-body);
-            font-size: 14px;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.1);
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            z-index: 500;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .toast {
-            background: var(--navy);
-            color: white;
-            padding: 14px 20px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 300px;
-        }
-
-        .toast.success {
-            border-right: 4px solid var(--success);
-        }
-
-        .toast.error {
-            border-right: 4px solid var(--danger);
-        }
-
-        .toast.warning {
-            border-right: 4px solid var(--warning);
-        }
-
-        /* Quick Actions */
-        .quick-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .quick-action-btn {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .quick-action-btn:hover {
-            border-color: var(--primary);
-            background: var(--bg);
-        }
-
-        .quick-action-btn span:first-child {
-            font-size: 20px;
-        }
-
-        .quick-action-btn span:last-child {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-
-        /* Loading */
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 600;
-        }
-
-        /* Responsive */
+        .app-container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: var(--navy); color: white; padding: 24px 16px; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; overflow-y: auto; }
+        .sidebar-logo { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+        .sidebar-subtitle { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
+        .sidebar-nav { flex: 1; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 15px; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .nav-item.active { background: var(--primary); color: white; }
+        .nav-item-icon { font-size: 20px; width: 24px; text-align: center; }
+        .nav-badge { margin-right: auto; background: var(--danger); color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+        .nav-submenu { margin-right: 20px; margin-top: 4px; margin-bottom: 8px; overflow: hidden; transition: max-height 0.3s ease; max-height: 500px; }
+        .nav-submenu.collapsed { max-height: 0; margin: 0; }
+        .nav-submenu-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: var(--radius-sm); color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.2s; font-size: 13px; margin-bottom: 2px; }
+        .nav-submenu-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .nav-submenu-item.active { background: rgba(6,214,160,0.2); color: var(--primary); }
+        .nav-submenu-item .count { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .nav-item-expandable { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .expand-icon { transition: transform 0.3s; font-size: 12px; }
+        .expand-icon.expanded { transform: rotate(180deg); }
+        .sidebar-user { padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .user-info { flex: 1; }
+        .user-name { font-weight: 600; font-size: 14px; }
+        .user-role { font-size: 12px; color: rgba(255,255,255,0.5); }
+        .main-content { flex: 1; margin-right: 280px; padding: 24px 32px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; }
+        .header-actions { display: flex; gap: 12px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; font-family: var(--font-body); font-size: 14px; font-weight: 500; border: none; border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--bg); border-color: var(--text-light); }
+        .btn-sm { padding: 6px 12px; font-size: 13px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: white; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: all 0.2s; }
+        .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .stat-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .stat-card-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .stat-card-icon.blue { background: rgba(17,138,178,0.1); }
+        .stat-card-icon.green { background: rgba(6,214,160,0.1); }
+        .stat-card-icon.yellow { background: rgba(245,158,11,0.1); }
+        .stat-card-icon.purple { background: rgba(139,92,246,0.1); }
+        .stat-card-value { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--text); }
+        .stat-card-label { font-size: 14px; color: var(--text-light); }
+        .filters-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .search-input { flex: 1; min-width: 200px; padding: 10px 16px; padding-right: 40px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat right 12px center / 20px; }
+        .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,214,160,0.1); }
+        .filter-select { padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; background: white; cursor: pointer; min-width: 150px; }
+        .filter-select:focus { outline: none; border-color: var(--primary); }
+        .table-container { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; }
+        .table { width: 100%; border-collapse: collapse; }
+        .table th { background: var(--bg); padding: 14px 16px; text-align: right; font-weight: 600; font-size: 13px; color: var(--text-light); border-bottom: 1px solid var(--border); white-space: nowrap; }
+        .table td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .table tr:last-child td { border-bottom: none; }
+        .table tr:hover { background: var(--bg); cursor: pointer; }
+        .lead-score { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+        .lead-score.hot { color: #EF4444; }
+        .lead-score.warm { color: #F59E0B; }
+        .lead-score.cold { color: #6B7280; }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-badge.new { background: rgba(139,92,246,0.1); color: #7C3AED; }
+        .status-badge.followup_initial { background: rgba(245,158,11,0.1); color: #D97706; }
+        .status-badge.followup_qualified { background: rgba(17,138,178,0.1); color: #0E7490; }
+        .status-badge.interested { background: rgba(6,214,160,0.1); color: #059669; }
+        .status-badge.demo { background: rgba(59,130,246,0.1); color: #2563EB; }
+        .status-badge.closed_won { background: rgba(16,185,129,0.1); color: #059669; }
+        .status-badge.not_interested { background: rgba(239,68,68,0.1); color: #DC2626; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+        .source-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .source-badge.facebook { background: rgba(24,119,242,0.1); color: #1877F2; }
+        .source-badge.instagram { background: rgba(225,48,108,0.1); color: #E1306C; }
+        .source-badge.google { background: rgba(66,133,244,0.1); color: #4285F4; }
+        .source-badge.website { background: rgba(6,214,160,0.1); color: #059669; }
+        .source-badge.referral { background: rgba(139,92,246,0.1); color: #7C3AED; }
+        .source-badge.organic { background: rgba(107,114,128,0.1); color: #6B7280; }
+        .lead-panel { position: fixed; top: 0; left: 0; width: 520px; height: 100vh; background: white; box-shadow: var(--shadow-xl); z-index: 200; display: flex; flex-direction: column; transform: translateX(-100%); transition: transform 0.3s ease; }
+        .lead-panel.open { transform: translateX(0); }
+        .panel-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); z-index: 199; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .panel-overlay.open { opacity: 1; visibility: visible; }
+        .panel-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .panel-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; }
+        .panel-close { width: 32px; height: 32px; border-radius: var(--radius-sm); border: none; background: var(--bg); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.2s; }
+        .panel-close:hover { background: var(--border); }
+        .panel-tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 24px; }
+        .panel-tab { padding: 12px 16px; font-size: 14px; font-weight: 500; color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .panel-tab:hover { color: var(--text); }
+        .panel-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .panel-content { flex: 1; overflow-y: auto; padding: 24px; }
+        .panel-section { margin-bottom: 28px; }
+        .panel-section-title { font-size: 12px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .info-item { background: var(--bg); padding: 12px; border-radius: var(--radius-md); }
+        .info-label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+        .info-value { font-weight: 500; font-size: 14px; }
+        .notes-list { display: flex; flex-direction: column; gap: 12px; }
+        .note-item { background: var(--bg); border-radius: var(--radius-md); padding: 12px; border-right: 3px solid var(--primary); }
+        .note-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .note-author { font-size: 12px; font-weight: 600; color: var(--secondary); }
+        .note-date { font-size: 11px; color: var(--text-light); }
+        .note-text { font-size: 14px; line-height: 1.5; }
+        .note-input-container { display: flex; gap: 8px; margin-top: 12px; }
+        .note-input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; resize: none; }
+        .note-input:focus { outline: none; border-color: var(--primary); }
+        .call-log-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border-radius: var(--radius-md); margin-bottom: 8px; }
+        .call-log-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .call-log-icon.call { background: rgba(16,185,129,0.1); }
+        .call-log-icon.whatsapp { background: rgba(37,211,102,0.1); }
+        .call-log-info { flex: 1; }
+        .call-log-type { font-weight: 500; font-size: 14px; }
+        .call-log-time { font-size: 12px; color: var(--text-light); }
+        .status-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .status-option { padding: 12px; border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; text-align: center; font-size: 13px; font-weight: 500; }
+        .status-option:hover { border-color: var(--primary); }
+        .status-option.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
+        .reason-selector { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .reason-option { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
+        .reason-option:hover { border-color: var(--primary); background: var(--bg); }
+        .reason-option.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
+        .reason-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .date-picker { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: var(--radius-md); }
+        .date-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-body); }
+        .template-card { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
+        .template-card:hover { border-color: var(--primary); background: var(--bg); }
+        .template-card.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
+        .template-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+        .template-preview { font-size: 13px; color: var(--text-light); line-height: 1.4; white-space: pre-line; }
+        .quick-actions { display: flex; gap: 8px; margin-top: 16px; }
+        .quick-action-btn { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .quick-action-btn:hover { border-color: var(--primary); background: var(--bg); }
+        .quick-action-btn span:first-child { font-size: 20px; }
+        .quick-action-btn span:last-child { font-size: 11px; color: var(--text-light); }
+        .kanban-container { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 20px; }
+        .kanban-column { min-width: 280px; max-width: 280px; background: var(--bg); border-radius: var(--radius-lg); padding: 16px; }
+        .kanban-column-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .kanban-column-title { font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .kanban-column-count { background: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+        .kanban-card { background: white; border-radius: var(--radius-md); padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.2s; border: 1px solid var(--border); }
+        .kanban-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .kanban-card-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+        .kanban-card-business { font-size: 12px; color: var(--text-light); margin-bottom: 10px; }
+        .kanban-card-footer { display: flex; justify-content: space-between; align-items: center; }
+        .kanban-card-date { font-size: 11px; color: var(--text-light); }
+        .task-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: var(--radius-md); margin-bottom: 10px; border: 1px solid var(--border); transition: all 0.2s; }
+        .task-item:hover { box-shadow: var(--shadow-sm); }
+        .task-item.completed { opacity: 0.6; background: var(--bg); }
+        .task-checkbox { width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+        .task-checkbox:hover { border-color: var(--primary); }
+        .task-checkbox.checked { background: var(--primary); border-color: var(--primary); color: white; }
+        .task-content { flex: 1; }
+        .task-title { font-weight: 500; font-size: 14px; }
+        .task-title.completed { text-decoration: line-through; color: var(--text-light); }
+        .task-meta { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+        .task-priority { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .task-priority.high { background: rgba(239,68,68,0.1); color: #DC2626; }
+        .task-priority.medium { background: rgba(245,158,11,0.1); color: #D97706; }
+        .task-priority.low { background: rgba(107,114,128,0.1); color: #6B7280; }
+        .report-card { background: white; border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .report-card-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; }
+        .chart-bar-container { display: flex; flex-direction: column; gap: 12px; }
+        .chart-bar-item { display: flex; align-items: center; gap: 12px; }
+        .chart-bar-label { width: 100px; font-size: 13px; }
+        .chart-bar-track { flex: 1; height: 24px; background: var(--bg); border-radius: var(--radius-sm); overflow: hidden; }
+        .chart-bar-fill { height: 100%; border-radius: var(--radius-sm); transition: width 0.5s ease; }
+        .chart-bar-value { width: 50px; text-align: left; font-weight: 600; font-size: 13px; }
+        .reminder-card { background: linear-gradient(135deg, var(--warning) 0%, #F97316 100%); color: white; padding: 16px; border-radius: var(--radius-md); margin-bottom: 12px; }
+        .reminder-card h4 { font-size: 14px; margin-bottom: 4px; }
+        .reminder-card p { font-size: 12px; opacity: 0.9; }
+        .empty-state { text-align: center; padding: 60px 20px; }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+        .empty-state-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .empty-state-text { color: var(--text-light); font-size: 14px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal { background: white; border-radius: var(--radius-xl); width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+        .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; }
+        .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,214,160,0.1); }
+        .toast-container { position: fixed; bottom: 24px; left: 24px; z-index: 500; display: flex; flex-direction: column; gap: 12px; }
+        .toast { background: var(--navy); color: white; padding: 14px 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; min-width: 300px; }
+        .toast.success { border-right: 4px solid var(--success); }
+        .toast.error { border-right: 4px solid var(--danger); }
+        .notification-item { padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+        .notification-item:hover { background: var(--bg); }
+        .notification-item.unread { background: rgba(6,214,160,0.05); }
+        .notification-title { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+        .notification-time { font-size: 12px; color: var(--text-light); }
+        .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; z-index: 600; }
         @media (max-width: 1024px) {
-            .sidebar {
-                width: 72px;
-                padding: 16px 8px;
-            }
-
-            .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info {
-                display: none;
-            }
-
-            .nav-item {
-                justify-content: center;
-                padding: 12px;
-            }
-
-            .main-content {
-                margin-right: 72px;
-            }
-
-            .lead-panel {
-                width: 100%;
-            }
+            .sidebar { width: 72px; padding: 16px 8px; }
+            .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info, .nav-submenu { display: none; }
+            .nav-item { justify-content: center; padding: 12px; }
+            .main-content { margin-right: 72px; }
+            .lead-panel { width: 100%; }
         }
-
         @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .main-content {
-                margin-right: 0;
-                padding: 16px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .filters-bar {
-                flex-direction: column;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .table-container {
-                overflow-x: auto;
-            }
-        }
-
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .slide-in {
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            .sidebar { display: none; }
+            .main-content { margin-right: 0; padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .kanban-container { flex-direction: column; }
+            .kanban-column { min-width: 100%; max-width: 100%; }
         }
     </style>
 </head>
 <body>
     <div id="root"></div>
-
     <script type="text/babel">
-        const { useState, useEffect, useRef, createContext, useContext } = React;
+        const { useState, useEffect, useMemo } = React;
         const { motion, AnimatePresence } = Motion;
 
-        // ==================== SUPABASE CONFIG ====================
         const SUPABASE_URL = 'https://tqxrahpbidlctyttpffc.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxeHJhaHBiaWRsY3R5dHRwZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTk3MzQsImV4cCI6MjA4MzQzNTczNH0.tmh9_GzWJhIcRoS3L6gpCX95_eZrkIR7hy3gOl9Qd2s';
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ==================== CONSTANTS ====================
         const STATUS_CONFIG = {
             new: { label: 'חדש', color: '#8B5CF6', icon: '✨' },
             followup_initial: { label: 'פולואפ ראשוני', color: '#F59E0B', icon: '📞' },
@@ -1151,89 +278,77 @@
             not_connected: { label: 'לא התחבר למוצר', icon: '🤷' }
         };
 
-        // ==================== CONTEXT ====================
-        const AppContext = createContext();
+        const SOURCE_CONFIG = {
+            facebook: { label: 'פייסבוק', icon: '📘', color: '#1877F2' },
+            instagram: { label: 'אינסטגרם', icon: '📸', color: '#E1306C' },
+            google: { label: 'גוגל', icon: '🔍', color: '#4285F4' },
+            website: { label: 'אתר', icon: '🌐', color: '#059669' },
+            referral: { label: 'המלצה', icon: '👥', color: '#7C3AED' },
+            organic: { label: 'אורגני', icon: '🌱', color: '#6B7280' }
+        };
 
-        // ==================== MOCK DATA (For demo - remove when connected to Supabase) ====================
-        const generateMockLeads = () => [
-            {
-                id: '1',
-                name: 'דני כהן',
-                phone: '054-1234567',
-                business_type: 'יועץ עסקי',
-                clients_per_day: '5-10',
-                status: 'new',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-                notes: [],
-                activities: [
-                    { type: 'created', text: 'ליד נוצר', created_at: new Date().toISOString() }
-                ]
-            },
-            {
-                id: '2',
-                name: 'מיכל לוי',
-                phone: '052-9876543',
-                business_type: 'מאמנת אישית',
-                clients_per_day: '3-5',
-                status: 'followup_initial',
-                created_at: new Date(Date.now() - 86400000).toISOString(),
-                updated_at: new Date().toISOString(),
-                notes: [
-                    { id: '1', text: 'דיברנו, ביקשה לחזור אליה בעוד שבוע', author: 'אריאל', created_at: new Date().toISOString() }
-                ],
-                activities: []
-            },
-            {
-                id: '3',
-                name: 'יוסי אברהם',
-                phone: '050-5555555',
-                business_type: 'צלם אירועים',
-                clients_per_day: '1-3',
-                status: 'followup_qualified',
-                created_at: new Date(Date.now() - 172800000).toISOString(),
-                updated_at: new Date().toISOString(),
-                notes: [
-                    { id: '1', text: 'מאוד מעוניין, מחכה להדגמה', author: 'אריאל', created_at: new Date().toISOString() }
-                ],
-                activities: []
-            },
-            {
-                id: '4',
-                name: 'שרה גולד',
-                phone: '053-1111111',
-                business_type: 'מעצבת פנים',
-                clients_per_day: '2-4',
-                status: 'interested',
-                created_at: new Date(Date.now() - 259200000).toISOString(),
-                updated_at: new Date().toISOString(),
-                notes: [],
-                activities: []
-            },
-            {
-                id: '5',
-                name: 'אבי רוזן',
-                phone: '058-2222222',
-                business_type: 'עורך דין',
-                clients_per_day: '10+',
-                status: 'not_interested',
-                rejection_reason: 'expensive',
-                created_at: new Date(Date.now() - 345600000).toISOString(),
-                updated_at: new Date().toISOString(),
-                notes: [
-                    { id: '1', text: 'אמר שזה יקר לו, אולי לחזור בעוד חודש', author: 'שותף', created_at: new Date().toISOString() }
-                ],
-                activities: []
-            }
+        const WHATSAPP_TEMPLATES = [
+            { id: 'intro', title: 'הודעת היכרות', message: 'היי [שם]! 👋\nאני מ-HELP, ראיתי שהתעניינת בשירות שלנו.\nאשמח לספר לך קצת יותר - מתי נוח לך לדבר?' },
+            { id: 'followup', title: 'פולואפ ראשון', message: 'היי [שם], מה שלומך? 😊\nרציתי לעקוב על השיחה שלנו.\nהיה לך זמן לחשוב על ההצעה?' },
+            { id: 'demo_invite', title: 'הזמנה להדגמה', message: 'היי [שם]! 🎯\nאשמח להראות לך בדיוק איך המערכת עובדת.\nמתי יהיה לך 15 דקות פנויות להדגמה קצרה?' },
+            { id: 'closing', title: 'לקראת סגירה', message: 'היי [שם]! 🎉\nשמח שאהבת את מה שראית!\nרוצה שנתקדם להרשמה?' },
+            { id: 'reengagement', title: 'חזרה ללקוח קר', message: 'היי [שם], מה נשמע? 👋\nעבר קצת זמן מאז שדיברנו...\nיש לנו עדכונים חדשים שחשבתי שיעניינו אותך!' }
         ];
 
-        // ==================== COMPONENTS ====================
+        const calculateLeadScore = (lead) => {
+            let score = 0;
+            const days = Math.floor((Date.now() - new Date(lead.created_at)) / 86400000);
+            if (days <= 1) score += 30; else if (days <= 3) score += 20; else if (days <= 7) score += 10;
+            if (lead.status === 'interested' || lead.status === 'demo') score += 40;
+            else if (lead.status === 'followup_qualified') score += 30;
+            else if (lead.status === 'followup_initial') score += 20;
+            else if (lead.status === 'new') score += 15;
+            if (lead.call_logs?.length) score += Math.min(lead.call_logs.length * 5, 20);
+            if (lead.notes?.length) score += Math.min(lead.notes.length * 3, 10);
+            return Math.min(score, 100);
+        };
 
-        // Sidebar
-        const Sidebar = ({ activeView, setActiveView, notifications }) => {
+        const getScoreLevel = (score) => {
+            if (score >= 60) return { level: 'hot', label: '🔥🔥🔥 חם' };
+            if (score >= 35) return { level: 'warm', label: '🔥🔥 פושר' };
+            return { level: 'cold', label: '🔥 קר' };
+        };
+
+        const getDaysSinceLastContact = (lead) => {
+            if (!lead.call_logs?.length) return Math.floor((Date.now() - new Date(lead.created_at)) / 86400000);
+            return Math.floor((Date.now() - new Date(lead.call_logs[lead.call_logs.length - 1].created_at)) / 86400000);
+        };
+
+        const generateMockLeads = () => [
+            { id: '1', name: 'דני כהן', phone: '054-1234567', business_type: 'יועץ עסקי', status: 'new', source: 'facebook', created_at: new Date().toISOString(), notes: [], call_logs: [] },
+            { id: '2', name: 'מיכל לוי', phone: '052-9876543', business_type: 'מאמנת אישית', status: 'followup_initial', source: 'instagram', created_at: new Date(Date.now() - 86400000).toISOString(), notes: [{ id: '1', text: 'ביקשה לחזור בעוד שבוע', author: 'אריאל', created_at: new Date().toISOString() }], call_logs: [{ id: '1', type: 'call', created_at: new Date(Date.now() - 86400000).toISOString() }] },
+            { id: '3', name: 'יוסי אברהם', phone: '050-5555555', business_type: 'צלם אירועים', status: 'followup_qualified', source: 'referral', created_at: new Date(Date.now() - 172800000).toISOString(), notes: [{ id: '1', text: 'מאוד מעוניין', author: 'אריאל', created_at: new Date().toISOString() }], call_logs: [{ id: '1', type: 'whatsapp', created_at: new Date(Date.now() - 172800000).toISOString() }] },
+            { id: '4', name: 'שרה גולד', phone: '053-1111111', business_type: 'מעצבת פנים', status: 'interested', source: 'google', created_at: new Date(Date.now() - 259200000).toISOString(), notes: [], call_logs: [] },
+            { id: '5', name: 'אבי רוזן', phone: '058-2222222', business_type: 'עורך דין', status: 'not_interested', source: 'website', rejection_reason: 'expensive', created_at: new Date(Date.now() - 345600000).toISOString(), notes: [], call_logs: [] },
+            { id: '6', name: 'רונית שמעון', phone: '054-3333333', business_type: 'מורה לפילאטיס', status: 'demo', source: 'instagram', created_at: new Date(Date.now() - 432000000).toISOString(), notes: [], call_logs: [] },
+            { id: '7', name: 'עמית ברק', phone: '050-4444444', business_type: 'יועץ משכנתאות', status: 'closed_won', source: 'referral', created_at: new Date(Date.now() - 604800000).toISOString(), notes: [{ id: '1', text: 'נסגר!', author: 'אריאל', created_at: new Date().toISOString() }], call_logs: [] }
+        ];
+
+        const generateMockTasks = () => [
+            { id: '1', title: 'להתקשר לדני כהן', lead_name: 'דני כהן', due_date: new Date().toISOString(), priority: 'high', completed: false },
+            { id: '2', title: 'לשלוח הצעת מחיר למיכל', lead_name: 'מיכל לוי', due_date: new Date().toISOString(), priority: 'medium', completed: false },
+            { id: '3', title: 'הדגמה עם רונית', lead_name: 'רונית שמעון', due_date: new Date().toISOString(), priority: 'high', completed: false }
+        ];
+
+        const Sidebar = ({ activeView, setActiveView, notifications, leads, statusFilter, setStatusFilter }) => {
+            const [leadsExpanded, setLeadsExpanded] = useState(true);
+            const statusCounts = useMemo(() => {
+                const counts = {};
+                Object.keys(STATUS_CONFIG).forEach(s => counts[s] = leads.filter(l => l.status === s).length);
+                return counts;
+            }, [leads]);
+
             const navItems = [
                 { id: 'dashboard', icon: '📊', label: 'דשבורד' },
-                { id: 'leads', icon: '👥', label: 'לידים' },
+                { id: 'leads', icon: '👥', label: 'לידים', expandable: true },
+                { id: 'pipeline', icon: '📋', label: 'Pipeline' },
+                { id: 'tasks', icon: '✅', label: 'משימות' },
+                { id: 'reports', icon: '📈', label: 'דוחות' },
                 { id: 'reminders', icon: '🔔', label: 'תזכורות', badge: notifications.filter(n => !n.read).length },
                 { id: 'settings', icon: '⚙️', label: 'הגדרות' }
             ];
@@ -1242,1040 +357,223 @@
                 <aside className="sidebar">
                     <div className="sidebar-logo">HELP</div>
                     <div className="sidebar-subtitle">מערכת ניהול לידים</div>
-                    
                     <nav className="sidebar-nav">
                         {navItems.map(item => (
-                            <div
-                                key={item.id}
-                                className={`nav-item ${activeView === item.id ? 'active' : ''}`}
-                                onClick={() => setActiveView(item.id)}
-                            >
-                                <span className="nav-item-icon">{item.icon}</span>
-                                <span>{item.label}</span>
-                                {item.badge > 0 && <span className="nav-badge">{item.badge}</span>}
+                            <div key={item.id}>
+                                <div className={`nav-item ${activeView === item.id ? 'active' : ''}`} onClick={() => { if (item.id === 'leads') { setLeadsExpanded(!leadsExpanded); setActiveView('leads'); setStatusFilter('all'); } else setActiveView(item.id); }}>
+                                    {item.expandable ? (
+                                        <div className="nav-item-expandable">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><span className="nav-item-icon">{item.icon}</span><span>{item.label}</span></div>
+                                            <span className={`expand-icon ${leadsExpanded ? 'expanded' : ''}`}>▼</span>
+                                        </div>
+                                    ) : (<><span className="nav-item-icon">{item.icon}</span><span>{item.label}</span>{item.badge > 0 && <span className="nav-badge">{item.badge}</span>}</>)}
+                                </div>
+                                {item.id === 'leads' && (
+                                    <div className={`nav-submenu ${leadsExpanded ? '' : 'collapsed'}`}>
+                                        <div className={`nav-submenu-item ${statusFilter === 'all' ? 'active' : ''}`} onClick={() => { setActiveView('leads'); setStatusFilter('all'); }}><span>📋 כל הלידים</span><span className="count">{leads.length}</span></div>
+                                        {Object.entries(STATUS_CONFIG).map(([status, config]) => (
+                                            <div key={status} className={`nav-submenu-item ${statusFilter === status ? 'active' : ''}`} onClick={() => { setActiveView('leads'); setStatusFilter(status); }}><span>{config.icon} {config.label}</span><span className="count">{statusCounts[status]}</span></div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </nav>
-
-                    <div className="sidebar-user">
-                        <div className="user-avatar">א</div>
-                        <div className="user-info">
-                            <div className="user-name">אריאל</div>
-                            <div className="user-role">מנהל</div>
-                        </div>
-                    </div>
+                    <div className="sidebar-user"><div className="user-avatar">א</div><div className="user-info"><div className="user-name">אריאל</div><div className="user-role">מנהל</div></div></div>
                 </aside>
             );
         };
 
-        // Stats Cards
         const StatsCards = ({ leads }) => {
             const stats = [
-                {
-                    label: 'סה״כ לידים',
-                    value: leads.length,
-                    icon: '👥',
-                    color: 'blue',
-                    change: '+12%'
-                },
-                {
-                    label: 'לידים חדשים',
-                    value: leads.filter(l => l.status === 'new').length,
-                    icon: '✨',
-                    color: 'purple'
-                },
-                {
-                    label: 'בפולואפ',
-                    value: leads.filter(l => l.status.includes('followup')).length,
-                    icon: '📞',
-                    color: 'yellow'
-                },
-                {
-                    label: 'מעוניינים',
-                    value: leads.filter(l => l.status === 'interested' || l.status === 'demo').length,
-                    icon: '⭐',
-                    color: 'green'
-                },
-                {
-                    label: 'נסגרו',
-                    value: leads.filter(l => l.status === 'closed_won').length,
-                    icon: '🎉',
-                    color: 'green'
-                },
-                {
-                    label: 'שיעור המרה',
-                    value: leads.length > 0 
-                        ? Math.round((leads.filter(l => l.status === 'closed_won').length / leads.length) * 100) + '%'
-                        : '0%',
-                    icon: '📈',
-                    color: 'blue'
-                }
+                { label: 'סה״כ לידים', value: leads.length, icon: '👥', color: 'blue' },
+                { label: 'לידים חדשים', value: leads.filter(l => l.status === 'new').length, icon: '✨', color: 'purple' },
+                { label: 'בפולואפ', value: leads.filter(l => l.status.includes('followup')).length, icon: '📞', color: 'yellow' },
+                { label: 'נסגרו', value: leads.filter(l => l.status === 'closed_won').length, icon: '🎉', color: 'green' },
+                { label: 'שיעור המרה', value: leads.length ? Math.round((leads.filter(l => l.status === 'closed_won').length / leads.length) * 100) + '%' : '0%', icon: '📈', color: 'blue' }
             ];
-
-            return (
-                <div className="stats-grid">
-                    {stats.map((stat, i) => (
-                        <motion.div
-                            key={i}
-                            className="stat-card"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.05 }}
-                        >
-                            <div className="stat-card-header">
-                                <span className="stat-card-label">{stat.label}</span>
-                                <div className={`stat-card-icon ${stat.color}`}>{stat.icon}</div>
-                            </div>
-                            <div className="stat-card-value">{stat.value}</div>
-                            {stat.change && (
-                                <div className="stat-card-change positive">
-                                    ↑ {stat.change} מהשבוע שעבר
-                                </div>
-                            )}
-                        </motion.div>
-                    ))}
-                </div>
-            );
+            return (<div className="stats-grid">{stats.map((s, i) => (<motion.div key={i} className="stat-card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}><div className="stat-card-header"><span className="stat-card-label">{s.label}</span><div className={`stat-card-icon ${s.color}`}>{s.icon}</div></div><div className="stat-card-value">{s.value}</div></motion.div>))}</div>);
         };
 
-        // Leads Table
-        const LeadsTable = ({ leads, onSelectLead, searchQuery, statusFilter, dateFilter }) => {
-            const filteredLeads = leads.filter(lead => {
-                // Search filter
-                if (searchQuery) {
-                    const query = searchQuery.toLowerCase();
-                    if (!lead.name.toLowerCase().includes(query) && 
-                        !lead.phone.includes(query) &&
-                        !lead.business_type.toLowerCase().includes(query)) {
-                        return false;
-                    }
-                }
-
-                // Status filter
-                if (statusFilter && statusFilter !== 'all') {
-                    if (lead.status !== statusFilter) return false;
-                }
-
-                // Date filter
-                if (dateFilter) {
-                    const leadDate = new Date(lead.created_at).toDateString();
-                    const filterDate = new Date(dateFilter).toDateString();
-                    if (leadDate !== filterDate) return false;
-                }
-
+        const LeadsTable = ({ leads, onSelectLead, searchQuery, statusFilter, sourceFilter }) => {
+            const filtered = leads.filter(l => {
+                if (searchQuery && !l.name.toLowerCase().includes(searchQuery.toLowerCase()) && !l.phone.includes(searchQuery)) return false;
+                if (statusFilter !== 'all' && l.status !== statusFilter) return false;
+                if (sourceFilter !== 'all' && l.source !== sourceFilter) return false;
                 return true;
             });
-
-            const formatDate = (dateStr) => {
-                const date = new Date(dateStr);
-                return date.toLocaleDateString('he-IL', { day: 'numeric', month: 'short' });
-            };
-
-            const formatTime = (dateStr) => {
-                const date = new Date(dateStr);
-                return date.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-            };
-
-            if (filteredLeads.length === 0) {
-                return (
-                    <div className="table-container">
-                        <div className="empty-state">
-                            <div className="empty-state-icon">🔍</div>
-                            <div className="empty-state-title">לא נמצאו לידים</div>
-                            <div className="empty-state-text">נסה לשנות את הסינון או להוסיף לידים חדשים</div>
-                        </div>
-                    </div>
-                );
-            }
-
+            const formatDate = d => new Date(d).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' });
+            if (!filtered.length) return (<div className="table-container"><div className="empty-state"><div className="empty-state-icon">🔍</div><div className="empty-state-title">לא נמצאו לידים</div></div></div>);
             return (
-                <div className="table-container">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>שם</th>
-                                <th>טלפון</th>
-                                <th>סוג עסק</th>
-                                <th>סטטוס</th>
-                                <th>מקור</th>
-                                <th>נוצר</th>
-                                <th>הערות</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredLeads.map((lead, i) => (
-                                <motion.tr
-                                    key={lead.id}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: i * 0.02 }}
-                                    onClick={() => onSelectLead(lead)}
-                                >
-                                    <td>
-                                        <strong>{lead.name}</strong>
-                                    </td>
-                                    <td style={{ direction: 'ltr', textAlign: 'right' }}>
-                                        {lead.phone}
-                                    </td>
-                                    <td>{lead.business_type}</td>
-                                    <td>
-                                        <span className={`status-badge ${lead.status}`}>
-                                            <span className="status-dot"></span>
-                                            {STATUS_CONFIG[lead.status]?.label}
-                                        </span>
-                                    </td>
-                                    <td>
-    {lead.source === 'paid_ads' ? (
-        <span style={{ fontSize: '12px' }}>
-            📣 {lead.platform === 'facebook' ? 'פייסבוק' : 
-                lead.platform === 'instagram' ? 'אינסטגרם' : 'פרסום'}
-        </span>
-    ) : (
-        <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>
-            🌐 אורגני
-        </span>
-    )}
-</td>
-                                    <td>
-                                        <div>{formatDate(lead.created_at)}</div>
-                                        <div style={{ fontSize: '12px', color: 'var(--text-light)' }}>
-                                            {formatTime(lead.created_at)}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {lead.notes?.length > 0 && (
-                                            <span style={{ 
-                                                background: 'var(--bg)', 
-                                                padding: '4px 8px', 
-                                                borderRadius: '12px',
-                                                fontSize: '12px'
-                                            }}>
-                                                📝 {lead.notes.length}
-                                            </span>
-                                        )}
-                                    </td>
-                                </motion.tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <div className="table-container"><table className="table"><thead><tr><th>שם</th><th>טלפון</th><th>סוג עסק</th><th>סטטוס</th><th>מקור</th><th>חום</th><th>נוצר</th></tr></thead><tbody>
+                    {filtered.map((lead, i) => { const score = calculateLeadScore(lead); const scoreInfo = getScoreLevel(score); return (
+                        <motion.tr key={lead.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.02 }} onClick={() => onSelectLead(lead)}>
+                            <td><strong>{lead.name}</strong></td><td style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</td><td>{lead.business_type}</td>
+                            <td><span className={`status-badge ${lead.status}`}><span className="status-dot"></span>{STATUS_CONFIG[lead.status]?.label}</span></td>
+                            <td><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source]?.icon} {SOURCE_CONFIG[lead.source]?.label}</span></td>
+                            <td><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span></td><td>{formatDate(lead.created_at)}</td>
+                        </motion.tr>
+                    ); })}
+                </tbody></table></div>
             );
         };
 
-        // Lead Panel
-        const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote }) => {
+        const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote, onLogCall }) => {
+            const [activeTab, setActiveTab] = useState('details');
             const [newNote, setNewNote] = useState('');
             const [selectedStatus, setSelectedStatus] = useState(lead?.status || 'new');
-            const [rejectionReason, setRejectionReason] = useState(lead?.rejection_reason || '');
-            const [reminderDate, setReminderDate] = useState('');
-            const [showRejectionOptions, setShowRejectionOptions] = useState(false);
+            const [selectedTemplate, setSelectedTemplate] = useState(null);
+            const [showRejection, setShowRejection] = useState(false);
 
-            useEffect(() => {
-                if (lead) {
-                    setSelectedStatus(lead.status);
-                    setRejectionReason(lead.rejection_reason || '');
-                }
-            }, [lead]);
+            useEffect(() => { if (lead) { setSelectedStatus(lead.status); setActiveTab('details'); } }, [lead]);
 
-            const handleStatusChange = (newStatus) => {
-                setSelectedStatus(newStatus);
-                if (newStatus === 'not_interested') {
-                    setShowRejectionOptions(true);
-                } else {
-                    setShowRejectionOptions(false);
-                    onUpdateLead(lead.id, { status: newStatus });
-                }
-            };
-
-            const handleRejectionReasonSelect = (reason) => {
-                setRejectionReason(reason);
-                if (reason === 'bad_timing') {
-                    // Show date picker
-                } else {
-                    onUpdateLead(lead.id, { 
-                        status: 'not_interested', 
-                        rejection_reason: reason 
-                    });
-                    setShowRejectionOptions(false);
-                }
-            };
-
-            const handleAddNote = () => {
-                if (!newNote.trim()) return;
-                onAddNote(lead.id, newNote);
-                setNewNote('');
-            };
-
-            const handleWhatsApp = () => {
+            const handleWhatsApp = (template = null) => {
                 const phone = lead.phone.replace(/\D/g, '');
-                window.open(`https://wa.me/972${phone.slice(1)}`, '_blank');
+                const phoneNumber = phone.startsWith('0') ? `972${phone.slice(1)}` : phone;
+                let url = `https://wa.me/${phoneNumber}`;
+                if (template) url += `?text=${encodeURIComponent(template.message.replace('[שם]', lead.name.split(' ')[0]))}`;
+                window.open(url, '_blank');
+                onLogCall(lead.id, 'whatsapp');
             };
 
-            const handleCall = () => {
-                window.location.href = `tel:${lead.phone}`;
+            const handleCall = () => { window.location.href = `tel:${lead.phone}`; onLogCall(lead.id, 'call'); };
+
+            const handleStatusChange = (status) => {
+                setSelectedStatus(status);
+                if (status === 'not_interested') setShowRejection(true);
+                else { setShowRejection(false); onUpdateLead(lead.id, { status }); }
             };
 
             if (!lead) return null;
-
-            const formatDate = (dateStr) => {
-                return new Date(dateStr).toLocaleDateString('he-IL', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            };
+            const score = calculateLeadScore(lead);
+            const scoreInfo = getScoreLevel(score);
+            const daysSince = getDaysSinceLastContact(lead);
+            const formatDate = d => new Date(d).toLocaleDateString('he-IL', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
 
             return (
-                <>
-                    <div className={`panel-overlay ${lead ? 'open' : ''}`} onClick={onClose} />
-                    <motion.aside
-                        className={`lead-panel ${lead ? 'open' : ''}`}
-                        initial={{ x: '-100%' }}
-                        animate={{ x: lead ? 0 : '-100%' }}
-                        transition={{ type: 'spring', damping: 25 }}
-                    >
-                        <div className="panel-header">
-                            <h2 className="panel-title">{lead.name}</h2>
-                            <button className="panel-close" onClick={onClose}>✕</button>
-                        </div>
-
-                        <div className="panel-content">
-                            {/* Quick Actions */}
-                            <div className="quick-actions">
-                                <button className="quick-action-btn" onClick={handleWhatsApp}>
-                                    <span>💬</span>
-                                    <span>WhatsApp</span>
-                                </button>
-                                <button className="quick-action-btn" onClick={handleCall}>
-                                    <span>📞</span>
-                                    <span>התקשר</span>
-                                </button>
-                                <button className="quick-action-btn">
-                                    <span>📅</span>
-                                    <span>תזכורת</span>
-                                </button>
+                <><div className={`panel-overlay ${lead ? 'open' : ''}`} onClick={onClose} />
+                <motion.aside className={`lead-panel ${lead ? 'open' : ''}`} initial={{ x: '-100%' }} animate={{ x: lead ? 0 : '-100%' }}>
+                    <div className="panel-header"><div><h2 className="panel-title">{lead.name}</h2><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span></div><button className="panel-close" onClick={onClose}>✕</button></div>
+                    <div className="panel-tabs"><div className={`panel-tab ${activeTab === 'details' ? 'active' : ''}`} onClick={() => setActiveTab('details')}>פרטים</div><div className={`panel-tab ${activeTab === 'activity' ? 'active' : ''}`} onClick={() => setActiveTab('activity')}>פעילות</div><div className={`panel-tab ${activeTab === 'templates' ? 'active' : ''}`} onClick={() => setActiveTab('templates')}>תבניות</div></div>
+                    <div className="panel-content">
+                        {daysSince >= 3 && lead.status !== 'closed_won' && lead.status !== 'not_interested' && <div className="reminder-card"><h4>⚠️ לא היה קשר {daysSince} ימים</h4><p>מומלץ ליצור קשר</p></div>}
+                        <div className="quick-actions"><button className="quick-action-btn" onClick={() => handleWhatsApp()}><span>💬</span><span>WhatsApp</span></button><button className="quick-action-btn" onClick={handleCall}><span>📞</span><span>התקשר</span></button><button className="quick-action-btn" onClick={() => setActiveTab('templates')}><span>📝</span><span>תבניות</span></button></div>
+                        
+                        {activeTab === 'details' && (<>
+                            <div className="panel-section" style={{ marginTop: 24 }}><div className="panel-section-title">פרטים</div><div className="info-grid"><div className="info-item"><div className="info-label">טלפון</div><div className="info-value" style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</div></div><div className="info-item"><div className="info-label">סוג עסק</div><div className="info-value">{lead.business_type}</div></div><div className="info-item"><div className="info-label">מקור</div><div className="info-value"><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source]?.icon} {SOURCE_CONFIG[lead.source]?.label}</span></div></div><div className="info-item"><div className="info-label">קשר אחרון</div><div className="info-value">{daysSince === 0 ? 'היום' : `לפני ${daysSince} ימים`}</div></div></div></div>
+                            <div className="panel-section"><div className="panel-section-title">סטטוס</div><div className="status-selector">{Object.entries(STATUS_CONFIG).map(([k, v]) => (<div key={k} className={`status-option ${selectedStatus === k ? 'selected' : ''}`} onClick={() => handleStatusChange(k)}>{v.icon} {v.label}</div>))}</div>
+                                {showRejection && <div className="reason-selector">{Object.entries(REJECTION_REASONS).map(([k, v]) => (<div key={k} className="reason-option" onClick={() => { onUpdateLead(lead.id, { status: 'not_interested', rejection_reason: k }); setShowRejection(false); }}><div className="reason-icon">{v.icon}</div><span>{v.label}</span></div>))}</div>}
                             </div>
+                            <div className="panel-section"><div className="panel-section-title">הערות</div><div className="notes-list">{lead.notes?.length ? lead.notes.map(n => (<div key={n.id} className="note-item"><div className="note-header"><span className="note-author">{n.author}</span><span className="note-date">{formatDate(n.created_at)}</span></div><div className="note-text">{n.text}</div></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין הערות</div>}</div><div className="note-input-container"><textarea className="note-input" placeholder="הוסף הערה..." rows={2} value={newNote} onChange={e => setNewNote(e.target.value)} /><button className="btn btn-primary" onClick={() => { if (newNote.trim()) { onAddNote(lead.id, newNote); setNewNote(''); } }} disabled={!newNote.trim()}>הוסף</button></div></div>
+                        </>)}
 
-                            {/* Info */}
-                            <div className="panel-section" style={{ marginTop: '24px' }}>
-                                <div className="panel-section-title">פרטים</div>
-                                <div className="info-grid">
-                                    <div className="info-item">
-                                        <div className="info-label">טלפון</div>
-                                        <div className="info-value" style={{ direction: 'ltr', textAlign: 'right' }}>
-                                            {lead.phone}
-                                        </div>
-                                    </div>
-                                    <div className="info-item">
-                                        <div className="info-label">סוג עסק</div>
-                                        <div className="info-value">{lead.business_type}</div>
-                                    </div>
-                                    <div className="info-item">
-                                        <div className="info-label">לקוחות ביום</div>
-                                        <div className="info-value">{lead.clients_per_day || 'לא צוין'}</div>
-                                    </div>
-                                    <div className="info-item">
-                                        <div className="info-label">נוצר</div>
-                                        <div className="info-value">{formatDate(lead.created_at)}</div>
-                                    </div>
-                                </div>
-                            </div>
+                        {activeTab === 'activity' && (<div className="panel-section"><div className="panel-section-title">היסטוריית קשר</div>{lead.call_logs?.length ? lead.call_logs.slice().reverse().map((l, i) => (<div key={i} className="call-log-item"><div className={`call-log-icon ${l.type}`}>{l.type === 'call' ? '📞' : '💬'}</div><div className="call-log-info"><div className="call-log-type">{l.type === 'call' ? 'שיחה' : 'WhatsApp'}</div><div className="call-log-time">{formatDate(l.created_at)}</div></div></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין היסטוריה</div>}</div>)}
 
-                            {/* Status */}
-                            <div className="panel-section">
-                                <div className="panel-section-title">סטטוס</div>
-                                <div className="status-selector">
-                                    {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                                        <div
-                                            key={key}
-                                            className={`status-option ${selectedStatus === key ? 'selected' : ''}`}
-                                            onClick={() => handleStatusChange(key)}
-                                        >
-                                            {config.icon} {config.label}
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Rejection Reason */}
-                                <AnimatePresence>
-                                    {showRejectionOptions && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: 'auto' }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            className="reason-selector"
-                                        >
-                                            <div className="panel-section-title" style={{ marginTop: '16px' }}>
-                                                סיבה
-                                            </div>
-                                            {Object.entries(REJECTION_REASONS).map(([key, config]) => (
-                                                <div
-                                                    key={key}
-                                                    className={`reason-option ${rejectionReason === key ? 'selected' : ''}`}
-                                                    onClick={() => handleRejectionReasonSelect(key)}
-                                                >
-                                                    <div className="reason-icon">{config.icon}</div>
-                                                    <span>{config.label}</span>
-                                                </div>
-                                            ))}
-
-                                            {rejectionReason === 'bad_timing' && (
-                                                <div className="date-picker">
-                                                    <label className="form-label">מתי לחזור?</label>
-                                                    <input
-                                                        type="date"
-                                                        className="date-input"
-                                                        value={reminderDate}
-                                                        onChange={(e) => setReminderDate(e.target.value)}
-                                                    />
-                                                    <button 
-                                                        className="btn btn-primary btn-sm"
-                                                        style={{ marginTop: '8px', width: '100%' }}
-                                                        onClick={() => {
-                                                            onUpdateLead(lead.id, {
-                                                                status: 'not_interested',
-                                                                rejection_reason: 'bad_timing',
-                                                                reminder_date: reminderDate
-                                                            });
-                                                            setShowRejectionOptions(false);
-                                                        }}
-                                                    >
-                                                        שמור תזכורת
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-
-                            {/* Notes */}
-                            <div className="panel-section">
-                                <div className="panel-section-title">הערות</div>
-                                <div className="notes-list">
-                                    {lead.notes?.length > 0 ? (
-                                        lead.notes.map(note => (
-                                            <div key={note.id} className="note-item">
-                                                <div className="note-header">
-                                                    <span className="note-author">{note.author}</span>
-                                                    <span className="note-date">
-                                                        {formatDate(note.created_at)}
-                                                    </span>
-                                                </div>
-                                                <div className="note-text">{note.text}</div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div style={{ 
-                                            color: 'var(--text-light)', 
-                                            fontSize: '14px',
-                                            textAlign: 'center',
-                                            padding: '20px'
-                                        }}>
-                                            אין הערות עדיין
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="note-input-container">
-                                    <textarea
-                                        className="note-input"
-                                        placeholder="הוסף הערה..."
-                                        rows={2}
-                                        value={newNote}
-                                        onChange={(e) => setNewNote(e.target.value)}
-                                    />
-                                    <button 
-                                        className="btn btn-primary"
-                                        onClick={handleAddNote}
-                                        disabled={!newNote.trim()}
-                                    >
-                                        הוסף
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Activity Timeline */}
-                            <div className="panel-section">
-                                <div className="panel-section-title">היסטוריית פעילות</div>
-                                <div className="activity-timeline">
-                                    {lead.activities?.map((activity, i) => (
-                                        <div key={i} className="activity-item">
-                                            <div className="activity-dot"></div>
-                                            <div className="activity-content">
-                                                <div className="activity-title">{activity.text}</div>
-                                                <div className="activity-time">
-                                                    {formatDate(activity.created_at)}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <div className="activity-item">
-                                        <div className="activity-dot"></div>
-                                        <div className="activity-content">
-                                            <div className="activity-title">ליד נוצר</div>
-                                            <div className="activity-time">
-                                                {formatDate(lead.created_at)}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.aside>
-                </>
+                        {activeTab === 'templates' && (<div className="panel-section"><div className="panel-section-title">תבניות WhatsApp</div><p style={{ fontSize: 13, color: 'var(--text-light)', marginBottom: 16 }}>בחר תבנית ושלח</p>{WHATSAPP_TEMPLATES.map(t => (<div key={t.id} className={`template-card ${selectedTemplate?.id === t.id ? 'selected' : ''}`} onClick={() => setSelectedTemplate(t)}><div className="template-title">{t.title}</div><div className="template-preview">{t.message.replace('[שם]', lead.name.split(' ')[0])}</div></div>))}{selectedTemplate && <button className="btn btn-primary" style={{ width: '100%', marginTop: 16 }} onClick={() => { handleWhatsApp(selectedTemplate); setSelectedTemplate(null); }}>💬 שלח</button>}</div>)}
+                    </div>
+                </motion.aside></>
             );
         };
 
-        // Reminders View
+        const PipelineView = ({ leads, onSelectLead }) => {
+            const columns = ['new', 'followup_initial', 'followup_qualified', 'interested', 'demo', 'closed_won'].map(s => ({ status: s, ...STATUS_CONFIG[s] }));
+            return (<div><div className="page-header"><h1 className="page-title">📋 Pipeline</h1></div><div className="kanban-container">{columns.map(col => { const items = leads.filter(l => l.status === col.status); return (<div key={col.status} className="kanban-column"><div className="kanban-column-header"><div className="kanban-column-title"><span>{col.icon}</span><span>{col.label}</span></div><span className="kanban-column-count">{items.length}</span></div>{items.map(lead => { const scoreInfo = getScoreLevel(calculateLeadScore(lead)); return (<motion.div key={lead.id} className="kanban-card" onClick={() => onSelectLead(lead)} whileHover={{ scale: 1.02 }}><div className="kanban-card-name">{lead.name}</div><div className="kanban-card-business">{lead.business_type}</div><div className="kanban-card-footer"><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span><span className="kanban-card-date">{new Date(lead.created_at).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' })}</span></div></motion.div>); })}{!items.length && <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)', fontSize: 13 }}>אין לידים</div>}</div>); })}</div></div>);
+        };
+
+        const TasksView = ({ tasks, setTasks, leads }) => {
+            const [newTitle, setNewTitle] = useState('');
+            const [newLeadId, setNewLeadId] = useState('');
+            const [newPriority, setNewPriority] = useState('medium');
+            const toggle = id => setTasks(p => p.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+            const add = () => { if (!newTitle.trim()) return; const lead = leads.find(l => l.id === newLeadId); setTasks(p => [{ id: Date.now().toString(), title: newTitle, lead_name: lead?.name, due_date: new Date().toISOString(), priority: newPriority, completed: false }, ...p]); setNewTitle(''); setNewLeadId(''); };
+            const today = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString());
+            return (<div><div className="page-header"><h1 className="page-title">✅ משימות</h1></div><div className="table-container" style={{ padding: 20, marginBottom: 24 }}><h3 style={{ marginBottom: 16 }}>➕ משימה חדשה</h3><div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}><input className="form-input" placeholder="תיאור המשימה..." value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{ flex: 2, minWidth: 200 }} /><select className="filter-select" value={newLeadId} onChange={e => setNewLeadId(e.target.value)}><option value="">ללא ליד</option>{leads.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}</select><select className="filter-select" value={newPriority} onChange={e => setNewPriority(e.target.value)}><option value="high">🔴 גבוהה</option><option value="medium">🟡 בינונית</option><option value="low">⚪ נמוכה</option></select><button className="btn btn-primary" onClick={add}>הוסף</button></div></div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>📅 היום ({today.filter(t => !t.completed).length})</h3>{today.length ? today.map(t => (<div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}><div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div><div className="task-content"><div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>{t.lead_name && <div className="task-meta">👤 {t.lead_name}</div>}</div><span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}</div></div>);
+        };
+
+        const ReportsView = ({ leads }) => {
+            const statusData = Object.entries(STATUS_CONFIG).map(([s, c]) => ({ status: s, label: c.label, count: leads.filter(l => l.status === s).length, color: c.color }));
+            const sourceData = Object.entries(SOURCE_CONFIG).map(([s, c]) => ({ source: s, label: c.label, count: leads.filter(l => l.source === s).length, color: c.color }));
+            const max1 = Math.max(...statusData.map(s => s.count), 1);
+            const max2 = Math.max(...sourceData.map(s => s.count), 1);
+            return (<div><div className="page-header"><h1 className="page-title">📈 דוחות</h1></div><StatsCards leads={leads} /><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}><div className="report-card"><div className="report-card-title">פירוט לפי סטטוס</div><div className="chart-bar-container">{statusData.map(i => (<div key={i.status} className="chart-bar-item"><div className="chart-bar-label">{i.label}</div><div className="chart-bar-track"><div className="chart-bar-fill" style={{ width: `${(i.count / max1) * 100}%`, background: i.color }} /></div><div className="chart-bar-value">{i.count}</div></div>))}</div></div><div className="report-card"><div className="report-card-title">פירוט לפי מקור</div><div className="chart-bar-container">{sourceData.map(i => (<div key={i.source} className="chart-bar-item"><div className="chart-bar-label">{i.label}</div><div className="chart-bar-track"><div className="chart-bar-fill" style={{ width: `${(i.count / max2) * 100}%`, background: i.color }} /></div><div className="chart-bar-value">{i.count}</div></div>))}</div></div></div></div>);
+        };
+
         const RemindersView = ({ leads, notifications, onMarkRead }) => {
-            const reminders = leads.filter(l => l.reminder_date);
-            const todayReminders = reminders.filter(l => {
-                const reminderDate = new Date(l.reminder_date).toDateString();
-                return reminderDate === new Date().toDateString();
-            });
-
-            return (
-                <div>
-                    <div className="page-header">
-                        <h1 className="page-title">🔔 תזכורות</h1>
-                    </div>
-
-                    {todayReminders.length > 0 && (
-                        <div style={{ marginBottom: '24px' }}>
-                            <h3 style={{ marginBottom: '12px', color: 'var(--warning)' }}>להיום</h3>
-                            {todayReminders.map(lead => (
-                                <div key={lead.id} className="reminder-card">
-                                    <h4>{lead.name}</h4>
-                                    <p>לחזור בנוגע ל: {REJECTION_REASONS[lead.rejection_reason]?.label}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    <h3 style={{ marginBottom: '12px' }}>התראות</h3>
-                    <div className="table-container">
-                        {notifications.length > 0 ? (
-                            notifications.map((notif, i) => (
-                                <div 
-                                    key={i} 
-                                    className={`notification-item ${!notif.read ? 'unread' : ''}`}
-                                    onClick={() => onMarkRead(i)}
-                                >
-                                    <div className="notification-title">{notif.title}</div>
-                                    <div className="notification-time">{notif.time}</div>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="empty-state">
-                                <div className="empty-state-icon">🔔</div>
-                                <div className="empty-state-title">אין התראות</div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
+            const needsAttention = leads.filter(l => getDaysSinceLastContact(l) >= 3 && l.status !== 'closed_won' && l.status !== 'not_interested');
+            return (<div><div className="page-header"><h1 className="page-title">🔔 תזכורות</h1></div>{needsAttention.length > 0 && <div style={{ marginBottom: 24 }}><h3 style={{ marginBottom: 12, color: 'var(--danger)' }}>⚠️ דורשים טיפול ({needsAttention.length})</h3><div className="table-container">{needsAttention.map(l => (<div key={l.id} className="notification-item"><div className="notification-title">{l.name} - {l.business_type}</div><div className="notification-time">לא היה קשר {getDaysSinceLastContact(l)} ימים</div></div>))}</div></div>}<h3 style={{ marginBottom: 12 }}>🔔 התראות</h3><div className="table-container">{notifications.length ? notifications.map((n, i) => (<div key={i} className={`notification-item ${!n.read ? 'unread' : ''}`} onClick={() => onMarkRead(i)}><div className="notification-title">{n.title}</div><div className="notification-time">{n.time}</div></div>)) : <div className="empty-state"><div className="empty-state-icon">🔔</div><div className="empty-state-title">אין התראות</div></div>}</div></div>);
         };
 
-        // Dashboard View
-        const DashboardView = ({ leads }) => {
-            const recentLeads = [...leads]
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                .slice(0, 5);
-
-            const statusCounts = Object.keys(STATUS_CONFIG).map(status => ({
-                status,
-                count: leads.filter(l => l.status === status).length,
-                ...STATUS_CONFIG[status]
-            }));
-
-            return (
-                <div>
-                    <div className="page-header">
-                        <h1 className="page-title">📊 דשבורד</h1>
-                    </div>
-
-                    <StatsCards leads={leads} />
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-                        {/* Status Breakdown */}
-                        <div className="table-container" style={{ padding: '20px' }}>
-                            <h3 style={{ marginBottom: '16px' }}>פירוט לפי סטטוס</h3>
-                            {statusCounts.map(item => (
-                                <div 
-                                    key={item.status}
-                                    style={{ 
-                                        display: 'flex', 
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        padding: '12px 0',
-                                        borderBottom: '1px solid var(--border)'
-                                    }}
-                                >
-                                    <span>
-                                        {item.icon} {item.label}
-                                    </span>
-                                    <strong>{item.count}</strong>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Recent Leads */}
-                        <div className="table-container" style={{ padding: '20px' }}>
-                            <h3 style={{ marginBottom: '16px' }}>לידים אחרונים</h3>
-                            {recentLeads.map(lead => (
-                                <div 
-                                    key={lead.id}
-                                    style={{ 
-                                        display: 'flex', 
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        padding: '12px 0',
-                                        borderBottom: '1px solid var(--border)'
-                                    }}
-                                >
-                                    <div>
-                                        <strong>{lead.name}</strong>
-                                        <div style={{ fontSize: '12px', color: 'var(--text-light)' }}>
-                                            {lead.business_type}
-                                        </div>
-                                    </div>
-                                    <span className={`status-badge ${lead.status}`}>
-                                        {STATUS_CONFIG[lead.status]?.label}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
+        const DashboardView = ({ leads, tasks }) => {
+            const recent = [...leads].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
+            const hot = leads.filter(l => l.status !== 'closed_won' && l.status !== 'not_interested').map(l => ({ ...l, score: calculateLeadScore(l) })).sort((a, b) => b.score - a.score).slice(0, 5);
+            const todayTasks = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString() && !t.completed);
+            return (<div><div className="page-header"><h1 className="page-title">📊 דשבורד</h1></div><StatsCards leads={leads} /><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🔥 לידים חמים</h3>{hot.map(l => { const si = getScoreLevel(l.score); return (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`lead-score ${si.level}`}>{si.label}</span></div>); })}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🆕 לידים אחרונים</h3>{recent.map(l => (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`status-badge ${l.status}`}>{STATUS_CONFIG[l.status]?.label}</span></div>))}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>📋 משימות להיום ({todayTasks.length})</h3>{todayTasks.length ? todayTasks.map(t => (<div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div style={{ fontWeight: 500 }}>{t.title}</div>{t.lead_name && <div style={{ fontSize: 12, color: 'var(--text-light)' }}>👤 {t.lead_name}</div>}</div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}</div></div></div>);
         };
 
-        // Leads View
-        const LeadsView = ({ leads, onSelectLead, onAddLead }) => {
-            const [searchQuery, setSearchQuery] = useState('');
-            const [statusFilter, setStatusFilter] = useState('all');
-            const [dateFilter, setDateFilter] = useState('');
-
-            return (
-                <div>
-                    <div className="page-header">
-                        <h1 className="page-title">👥 לידים</h1>
-                        <div className="header-actions">
-                            <button className="btn btn-secondary" onClick={() => window.location.reload()}>
-                                🔄 רענן
-                            </button>
-                            <button className="btn btn-primary" onClick={onAddLead}>
-                                + ליד חדש
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="filters-bar">
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="חפש לפי שם, טלפון או עסק..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <select 
-                            className="filter-select"
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                            <option value="all">כל הסטטוסים</option>
-                            {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                                <option key={key} value={key}>{config.label}</option>
-                            ))}
-                        </select>
-                        <input
-                            type="date"
-                            className="filter-select"
-                            value={dateFilter}
-                            onChange={(e) => setDateFilter(e.target.value)}
-                            style={{ minWidth: '160px' }}
-                        />
-                        {(searchQuery || statusFilter !== 'all' || dateFilter) && (
-                            <button 
-                                className="btn btn-secondary btn-sm"
-                                onClick={() => {
-                                    setSearchQuery('');
-                                    setStatusFilter('all');
-                                    setDateFilter('');
-                                }}
-                            >
-                                נקה פילטרים
-                            </button>
-                        )}
-                    </div>
-
-                    <LeadsTable 
-                        leads={leads}
-                        onSelectLead={onSelectLead}
-                        searchQuery={searchQuery}
-                        statusFilter={statusFilter}
-                        dateFilter={dateFilter}
-                    />
-                </div>
-            );
+        const LeadsView = ({ leads, onSelectLead, onAddLead, statusFilter, setStatusFilter }) => {
+            const [search, setSearch] = useState('');
+            const [sourceFilter, setSourceFilter] = useState('all');
+            return (<div><div className="page-header"><h1 className="page-title">👥 לידים {statusFilter !== 'all' && <span style={{ fontSize: 18, fontWeight: 400, marginRight: 8 }}>- {STATUS_CONFIG[statusFilter]?.icon} {STATUS_CONFIG[statusFilter]?.label}</span>}</h1><div className="header-actions"><button className="btn btn-secondary" onClick={() => window.location.reload()}>🔄 רענן</button><button className="btn btn-primary" onClick={onAddLead}>+ ליד חדש</button></div></div><div className="filters-bar"><input className="search-input" placeholder="חפש לפי שם או טלפון..." value={search} onChange={e => setSearch(e.target.value)} /><select className="filter-select" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}><option value="all">כל הסטטוסים</option>{Object.entries(STATUS_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select><select className="filter-select" value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}><option value="all">כל המקורות</option>{Object.entries(SOURCE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select>{(search || statusFilter !== 'all' || sourceFilter !== 'all') && <button className="btn btn-secondary btn-sm" onClick={() => { setSearch(''); setStatusFilter('all'); setSourceFilter('all'); }}>נקה</button>}</div><LeadsTable leads={leads} onSelectLead={onSelectLead} searchQuery={search} statusFilter={statusFilter} sourceFilter={sourceFilter} /></div>);
         };
 
-        // Add Lead Modal
         const AddLeadModal = ({ isOpen, onClose, onAdd }) => {
-            const [formData, setFormData] = useState({
-                name: '',
-                phone: '',
-                business_type: '',
-                clients_per_day: ''
-            });
-
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                onAdd(formData);
-                setFormData({ name: '', phone: '', business_type: '', clients_per_day: '' });
-                onClose();
-            };
-
+            const [form, setForm] = useState({ name: '', phone: '', business_type: '', source: 'organic' });
+            const submit = e => { e.preventDefault(); onAdd(form); setForm({ name: '', phone: '', business_type: '', source: 'organic' }); onClose(); };
             if (!isOpen) return null;
-
-            return (
-                <div className="modal-overlay" onClick={onClose}>
-                    <motion.div 
-                        className="modal"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="modal-header">
-                            <h3 className="modal-title">ליד חדש</h3>
-                            <button className="panel-close" onClick={onClose}>✕</button>
-                        </div>
-                        <form onSubmit={handleSubmit}>
-                            <div className="modal-body">
-                                <div className="form-group">
-                                    <label className="form-label">שם מלא *</label>
-                                    <input
-                                        className="form-input"
-                                        required
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">טלפון *</label>
-                                    <input
-                                        className="form-input"
-                                        required
-                                        type="tel"
-                                        value={formData.phone}
-                                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">סוג עסק *</label>
-                                    <input
-                                        className="form-input"
-                                        required
-                                        value={formData.business_type}
-                                        onChange={(e) => setFormData({...formData, business_type: e.target.value})}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">כמה לקוחות ביום?</label>
-                                    <input
-                                        className="form-input"
-                                        value={formData.clients_per_day}
-                                        onChange={(e) => setFormData({...formData, clients_per_day: e.target.value})}
-                                    />
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={onClose}>
-                                    ביטול
-                                </button>
-                                <button type="submit" className="btn btn-primary">
-                                    הוסף ליד
-                                </button>
-                            </div>
-                        </form>
-                    </motion.div>
-                </div>
-            );
+            return (<div className="modal-overlay" onClick={onClose}><motion.div className="modal" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} onClick={e => e.stopPropagation()}><div className="modal-header"><h3 className="modal-title">ליד חדש</h3><button className="panel-close" onClick={onClose}>✕</button></div><form onSubmit={submit}><div className="modal-body"><div className="form-group"><label className="form-label">שם מלא *</label><input className="form-input" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div><div className="form-group"><label className="form-label">טלפון *</label><input className="form-input" required type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div><div className="form-group"><label className="form-label">סוג עסק *</label><input className="form-input" required value={form.business_type} onChange={e => setForm({ ...form, business_type: e.target.value })} /></div><div className="form-group"><label className="form-label">מקור</label><select className="form-input" value={form.source} onChange={e => setForm({ ...form, source: e.target.value })}>{Object.entries(SOURCE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select></div></div><div className="modal-footer"><button type="button" className="btn btn-secondary" onClick={onClose}>ביטול</button><button type="submit" className="btn btn-primary">הוסף</button></div></form></motion.div></div>);
         };
 
-        // Toast Component
-        const Toast = ({ message, type, onClose }) => {
-            useEffect(() => {
-                const timer = setTimeout(onClose, 3000);
-                return () => clearTimeout(timer);
-            }, []);
+        const Toast = ({ message, type, onClose }) => { useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, []); return <motion.div className={`toast ${type}`} initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}><span>{type === 'success' ? '✓' : '✕'}</span><span>{message}</span></motion.div>; };
 
-            return (
-                <motion.div
-                    className={`toast ${type}`}
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                >
-                    <span>{type === 'success' ? '✓' : type === 'error' ? '✕' : '⚠'}</span>
-                    <span>{message}</span>
-                </motion.div>
-            );
-        };
-
-        // Main App
         const App = () => {
-            const [activeView, setActiveView] = useState('dashboard');
+            const [view, setView] = useState('dashboard');
             const [leads, setLeads] = useState(generateMockLeads());
+            const [tasks, setTasks] = useState(generateMockTasks());
             const [selectedLead, setSelectedLead] = useState(null);
-            const [showAddModal, setShowAddModal] = useState(false);
-            const [notifications, setNotifications] = useState([
-                { title: 'ליד חדש: דני כהן', time: 'לפני 5 דקות', read: false },
-                { title: 'תזכורת: לחזור למיכל לוי', time: 'לפני שעה', read: false }
-            ]);
+            const [showAdd, setShowAdd] = useState(false);
+            const [statusFilter, setStatusFilter] = useState('all');
+            const [notifications, setNotifications] = useState([{ title: 'ליד חדש: דני כהן', time: 'לפני 5 דקות', read: false }]);
             const [toasts, setToasts] = useState([]);
-            const [isLoading, setIsLoading] = useState(false);
+            const [loading, setLoading] = useState(false);
 
-            // Add toast
-            const addToast = (message, type = 'success') => {
-                const id = Date.now();
-                setToasts(prev => [...prev, { id, message, type }]);
-            };
+            const toast = (msg, type = 'success') => setToasts(p => [...p, { id: Date.now(), message: msg, type }]);
 
-            // Remove toast
-            const removeToast = (id) => {
-                setToasts(prev => prev.filter(t => t.id !== id));
-            };
-
-            // Load leads from Supabase
-            const loadLeads = async () => {
-                setIsLoading(true);
-                try {
-                    const { data, error } = await supabase
-                        .from('help_leads')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-
-                    if (error) throw error;
-                    if (data && data.length > 0) {
-                        setLeads(data);
-                    }
-                } catch (error) {
-                    console.error('Error loading leads:', error);
-                    // Keep mock data if Supabase fails
-                } finally {
-                    setIsLoading(false);
-                }
-            };
-
-            // Subscribe to realtime updates
             useEffect(() => {
-                loadLeads();
-
-                const subscription = supabase
-                    .channel('help_leads_changes')
-                    .on('postgres_changes', 
-                        { event: 'INSERT', schema: 'public', table: 'help_leads' },
-                        (payload) => {
-                            setLeads(prev => [payload.new, ...prev]);
-                            setNotifications(prev => [{
-                                title: `ליד חדש: ${payload.new.name}`,
-                                time: 'עכשיו',
-                                read: false
-                            }, ...prev]);
-                            addToast(`ליד חדש התקבל: ${payload.new.name}`);
-                        }
-                    )
-                    .subscribe();
-
-                return () => {
-                    subscription.unsubscribe();
-                };
+                (async () => {
+                    setLoading(true);
+                    try { const { data } = await supabase.from('help_leads').select('*').order('created_at', { ascending: false }); if (data?.length) setLeads(data); } catch (e) { console.error(e); }
+                    setLoading(false);
+                })();
+                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'help_leads' }, p => { setLeads(prev => [p.new, ...prev]); setNotifications(prev => [{ title: `ליד חדש: ${p.new.name}`, time: 'עכשיו', read: false }, ...prev]); toast(`ליד חדש: ${p.new.name}`); }).subscribe();
+                return () => sub.unsubscribe();
             }, []);
 
-            // Update lead
-            const handleUpdateLead = async (leadId, updates) => {
-                try {
-                    // Update locally first
-                    setLeads(prev => prev.map(l => 
-                        l.id === leadId ? { ...l, ...updates, updated_at: new Date().toISOString() } : l
-                    ));
-
-                    // Update selected lead if open
-                    if (selectedLead?.id === leadId) {
-                        setSelectedLead(prev => ({ ...prev, ...updates }));
-                    }
-
-                    // Update in Supabase
-                    const { error } = await supabase
-                        .from('help_leads')
-                        .update(updates)
-                        .eq('id', leadId);
-
-                    if (error) throw error;
-                    addToast('הליד עודכן בהצלחה');
-                } catch (error) {
-                    console.error('Error updating lead:', error);
-                    addToast('שגיאה בעדכון הליד', 'error');
-                }
-            };
-
-            // Add note
-            const handleAddNote = async (leadId, noteText) => {
-                const newNote = {
-                    id: Date.now().toString(),
-                    text: noteText,
-                    author: 'אריאל',
-                    created_at: new Date().toISOString()
-                };
-
-                const lead = leads.find(l => l.id === leadId);
-                const updatedNotes = [...(lead.notes || []), newNote];
-
-                try {
-                    setLeads(prev => prev.map(l => 
-                        l.id === leadId ? { ...l, notes: updatedNotes } : l
-                    ));
-
-                    if (selectedLead?.id === leadId) {
-                        setSelectedLead(prev => ({ ...prev, notes: updatedNotes }));
-                    }
-
-                    const { error } = await supabase
-                        .from('help_leads')
-                        .update({ notes: updatedNotes })
-                        .eq('id', leadId);
-
-                    if (error) throw error;
-                    addToast('הערה נוספה');
-                } catch (error) {
-                    console.error('Error adding note:', error);
-                    addToast('שגיאה בהוספת הערה', 'error');
-                }
-            };
-
-            // Add new lead
-            const handleAddLead = async (leadData) => {
-                const newLead = {
-                    id: Date.now().toString(),
-                    ...leadData,
-                    status: 'new',
-                    notes: [],
-                    activities: [],
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString()
-                };
-
-                try {
-                    setLeads(prev => [newLead, ...prev]);
-
-                    const { error } = await supabase
-                        .from('help_leads')
-                        .insert([leadData]);
-
-                    if (error) throw error;
-                    addToast('ליד נוסף בהצלחה');
-                } catch (error) {
-                    console.error('Error adding lead:', error);
-                }
-            };
-
-            // Mark notification as read
-            const handleMarkRead = (index) => {
-                setNotifications(prev => prev.map((n, i) => 
-                    i === index ? { ...n, read: true } : n
-                ));
-            };
+            const updateLead = async (id, updates) => { setLeads(p => p.map(l => l.id === id ? { ...l, ...updates } : l)); if (selectedLead?.id === id) setSelectedLead(p => ({ ...p, ...updates })); try { await supabase.from('help_leads').update(updates).eq('id', id); toast('עודכן'); } catch { toast('שגיאה', 'error'); } };
+            const addNote = async (id, text) => { const note = { id: Date.now().toString(), text, author: 'אריאל', created_at: new Date().toISOString() }; const lead = leads.find(l => l.id === id); const notes = [...(lead.notes || []), note]; setLeads(p => p.map(l => l.id === id ? { ...l, notes } : l)); if (selectedLead?.id === id) setSelectedLead(p => ({ ...p, notes })); try { await supabase.from('help_leads').update({ notes }).eq('id', id); toast('הערה נוספה'); } catch { toast('שגיאה', 'error'); } };
+            const logCall = async (id, type) => { const log = { id: Date.now().toString(), type, created_at: new Date().toISOString() }; const lead = leads.find(l => l.id === id); const logs = [...(lead.call_logs || []), log]; setLeads(p => p.map(l => l.id === id ? { ...l, call_logs: logs } : l)); if (selectedLead?.id === id) setSelectedLead(p => ({ ...p, call_logs: logs })); try { await supabase.from('help_leads').update({ call_logs: logs }).eq('id', id); } catch { } };
+            const addLead = async data => { const lead = { id: Date.now().toString(), ...data, status: 'new', notes: [], call_logs: [], created_at: new Date().toISOString() }; setLeads(p => [lead, ...p]); try { await supabase.from('help_leads').insert([data]); toast('ליד נוסף'); } catch { } };
 
             return (
                 <div className="app-container">
-                    <Sidebar 
-                        activeView={activeView} 
-                        setActiveView={setActiveView}
-                        notifications={notifications}
-                    />
-                    
+                    <Sidebar activeView={view} setActiveView={setView} notifications={notifications} leads={leads} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
                     <main className="main-content">
-                        {activeView === 'dashboard' && (
-                            <DashboardView leads={leads} />
-                        )}
-                        
-                        {activeView === 'leads' && (
-                            <LeadsView 
-                                leads={leads}
-                                onSelectLead={setSelectedLead}
-                                onAddLead={() => setShowAddModal(true)}
-                            />
-                        )}
-                        
-                        {activeView === 'reminders' && (
-                            <RemindersView 
-                                leads={leads}
-                                notifications={notifications}
-                                onMarkRead={handleMarkRead}
-                            />
-                        )}
-
-                        {activeView === 'settings' && (
-                            <div>
-                                <div className="page-header">
-                                    <h1 className="page-title">⚙️ הגדרות</h1>
-                                </div>
-                                <div className="table-container" style={{ padding: '40px', textAlign: 'center' }}>
-                                    <div className="empty-state-icon">🔧</div>
-                                    <div className="empty-state-title">בקרוב</div>
-                                    <div className="empty-state-text">
-                                        הגדרות המערכת יהיו זמינות בקרוב
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                        {view === 'dashboard' && <DashboardView leads={leads} tasks={tasks} />}
+                        {view === 'leads' && <LeadsView leads={leads} onSelectLead={setSelectedLead} onAddLead={() => setShowAdd(true)} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />}
+                        {view === 'pipeline' && <PipelineView leads={leads} onSelectLead={setSelectedLead} />}
+                        {view === 'tasks' && <TasksView tasks={tasks} setTasks={setTasks} leads={leads} />}
+                        {view === 'reports' && <ReportsView leads={leads} />}
+                        {view === 'reminders' && <RemindersView leads={leads} notifications={notifications} onMarkRead={i => setNotifications(p => p.map((n, j) => j === i ? { ...n, read: true } : n))} />}
+                        {view === 'settings' && <div><div className="page-header"><h1 className="page-title">⚙️ הגדרות</h1></div><div className="table-container" style={{ padding: 40, textAlign: 'center' }}><div className="empty-state-icon">🔧</div><div className="empty-state-title">בקרוב</div></div></div>}
                     </main>
-
-                    {/* Lead Panel */}
-                    <LeadPanel
-                        lead={selectedLead}
-                        onClose={() => setSelectedLead(null)}
-                        onUpdateLead={handleUpdateLead}
-                        onAddNote={handleAddNote}
-                    />
-
-                    {/* Add Lead Modal */}
-                    <AddLeadModal
-                        isOpen={showAddModal}
-                        onClose={() => setShowAddModal(false)}
-                        onAdd={handleAddLead}
-                    />
-
-                    {/* Toasts */}
-                    <div className="toast-container">
-                        <AnimatePresence>
-                            {toasts.map(toast => (
-                                <Toast
-                                    key={toast.id}
-                                    message={toast.message}
-                                    type={toast.type}
-                                    onClose={() => removeToast(toast.id)}
-                                />
-                            ))}
-                        </AnimatePresence>
-                    </div>
-
-                    {/* Loading Overlay */}
-                    {isLoading && (
-                        <div className="loading-overlay">
-                            <div className="loading-spinner"></div>
-                        </div>
-                    )}
+                    <LeadPanel lead={selectedLead} onClose={() => setSelectedLead(null)} onUpdateLead={updateLead} onAddNote={addNote} onLogCall={logCall} />
+                    <AddLeadModal isOpen={showAdd} onClose={() => setShowAdd(false)} onAdd={addLead} />
+                    <div className="toast-container"><AnimatePresence>{toasts.map(t => <Toast key={t.id} message={t.message} type={t.type} onClose={() => setToasts(p => p.filter(x => x.id !== t.id))} />)}</AnimatePresence></div>
+                    {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
                 </div>
             );
         };
 
-        // Render
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
 </html>
