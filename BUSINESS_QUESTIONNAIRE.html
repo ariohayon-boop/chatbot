@@ -1,810 +1,1051 @@
-# 📋 שאלון הכרת העסק - טמפלייט מקיף לבניית בוט חכם
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 שאלון בניית בוט - EasyChat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #4ade80;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 1em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            font-size: 0.9em;
+            color: #64748b;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .summary-container {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #667eea;
+        }
+
+        .summary-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .copy-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-right: 4px solid #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            color: #1e40af;
+            margin: 0;
+        }
+
+        .multi-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .multi-input-group input {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .multi-input-group {
+                flex-direction: column;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .header, .button-group, .copy-btn {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🤖 שאלון בניית הבוט</h1>
+        <p>מלא את הפרטים ותקבל סיכום מושלם למאגר הידע</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <form id="botForm">
+            
+            <!-- Section 1: Basic Info -->
+            <div class="section">
+                <div class="section-title">
+                    <span>1️⃣</span>
+                    <span>מידע בסיסי על העסק</span>
+                </div>
+                <p class="section-subtitle">בואו נכיר את העסק שלך</p>
+
+                <div class="form-group">
+                    <label class="form-label">שם העסק <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="businessName" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">תחום העיסוק <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="businessType" placeholder="לדוגמה: בר, מסעדה, מספרה, סטודיו..." required>
+                    <p class="form-hint">מה סוג העסק? (ברים, מסעדות, מספרות, חדרי כושר...)</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">תיאור העסק (2-3 משפטים) <span class="required">*</span></label>
+                    <textarea class="form-textarea" name="businessDescription" rows="4" required></textarea>
+                    <p class="form-hint">ספר בקצרה - מה אתה מציע? מה מיוחד בעסק שלך?</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה ייחודי בעסק שלך?</label>
+                    <textarea class="form-textarea" name="uniqueValue" rows="3" placeholder="למה לקוח צריך לבחור בכם?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">קהל יעד</label>
+                    <input type="text" class="form-input" name="targetAudience" placeholder="לדוגמה: צעירים 25-35, משפחות, מקצועיים...">
+                </div>
+            </div>
+
+            <!-- Section 2: Pricing -->
+            <div class="section">
+                <div class="section-title">
+                    <span>2️⃣</span>
+                    <span>מחירים ותשלומים</span>
+                </div>
+                <p class="section-subtitle">כמה עולה? מה כלול?</p>
+
+                <div class="info-box">
+                    <p>💡 רשום 3-5 שירותים עיקריים עם מחירים</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">שירות 1 <span class="required">*</span></label>
+                    <div class="multi-input-group">
+                        <input type="text" class="form-input" name="service1Name" placeholder="שם השירות" required>
+                        <input type="text" class="form-input" name="service1Price" placeholder="מחיר" required>
+                        <input type="text" class="form-input" name="service1Duration" placeholder="משך זמן">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">שירות 2</label>
+                    <div class="multi-input-group">
+                        <input type="text" class="form-input" name="service2Name" placeholder="שם השירות">
+                        <input type="text" class="form-input" name="service2Price" placeholder="מחיר">
+                        <input type="text" class="form-input" name="service2Duration" placeholder="משך זמן">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">שירות 3</label>
+                    <div class="multi-input-group">
+                        <input type="text" class="form-input" name="service3Name" placeholder="שם השירות">
+                        <input type="text" class="form-input" name="service3Price" placeholder="מחיר">
+                        <input type="text" class="form-input" name="service3Duration" placeholder="משך זמן">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">האם יש מבצעים או הנחות קבועים?</label>
+                    <textarea class="form-textarea" name="discounts" rows="3" placeholder="לדוגמה: 15% הנחה בימי חול, הנחה לקבוצות..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה כלול במחיר?</label>
+                    <textarea class="form-textarea" name="included" rows="3" placeholder="לדוגמה: חניה, ציוד, רענון..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה לא כלול במחיר?</label>
+                    <textarea class="form-textarea" name="notIncluded" rows="2" placeholder="תוספות תשלום..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">האם צריך מקדמה? כמה?</label>
+                    <input type="text" class="form-input" name="deposit" placeholder="לדוגמה: 30% בהזמנה">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">דרכי תשלום</label>
+                    <input type="text" class="form-input" name="paymentMethods" placeholder="מזומן, אשראי, ביט, PayBox...">
+                </div>
+            </div>
+
+            <!-- Section 3: Availability -->
+            <div class="section">
+                <div class="section-title">
+                    <span>3️⃣</span>
+                    <span>זמינות ושעות פעילות</span>
+                </div>
+                <p class="section-subtitle">מתי אתה פתוח?</p>
+
+                <div class="form-group">
+                    <label class="form-label">שעות פעילות <span class="required">*</span></label>
+                    <textarea class="form-textarea" name="openingHours" rows="7" required placeholder="לדוגמה:
+ראשון-חמישי: 08:00-20:00
+שישי: 08:00-15:00
+שבת: סגור"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ימים/תקופות שבהם סגורים</label>
+                    <input type="text" class="form-input" name="closedDays" placeholder="חגים, חורף...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">כמה זמן מראש צריך לקבוע?</label>
+                    <input type="text" class="form-input" name="advanceBooking" placeholder="לדוגמה: 24 שעות מראש, 3-7 ימים מראש...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מדיניות ביטולים</label>
+                    <textarea class="form-textarea" name="cancellationPolicy" rows="4" placeholder="לדוגמה:
+- עד 7 ימים לפני: החזר מלא
+- 3-7 ימים: 50% החזר
+- פחות מ-3 ימים: ללא החזר"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">אפשר להזמין באותו יום?</label>
+                    <select class="form-select" name="sameDayBooking">
+                        <option value="">בחר תשובה</option>
+                        <option value="כן">כן, בכפוף לזמינות</option>
+                        <option value="לא">לא, צריך לקבוע מראש</option>
+                        <option value="תלוי">תלוי בעונה/יום</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 4: Location -->
+            <div class="section">
+                <div class="section-title">
+                    <span>4️⃣</span>
+                    <span>מיקום והגעה</span>
+                </div>
+                <p class="section-subtitle">איפה אתם ואיך מגיעים?</p>
+
+                <div class="form-group">
+                    <label class="form-label">כתובת מדויקת <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">עיר</label>
+                    <input type="text" class="form-input" name="city">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">קישור Waze</label>
+                    <input type="url" class="form-input" name="wazeLink" placeholder="https://waze.com/ul/...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">קישור Google Maps</label>
+                    <input type="url" class="form-input" name="mapsLink" placeholder="https://goo.gl/maps/...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">הוראות הגעה</label>
+                    <textarea class="form-textarea" name="directions" rows="3" placeholder="איך מגיעים? יש נקודות ציון מיוחדות?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">חניה - איפה ובכמה?</label>
+                    <input type="text" class="form-input" name="parking" placeholder="לדוגמה: חניון מרינה - 10 ₪/שעה">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">נגישות לנכים?</label>
+                    <select class="form-select" name="accessibility">
+                        <option value="">בחר תשובה</option>
+                        <option value="כן">כן, נגיש לחלוטין</option>
+                        <option value="חלקי">נגיש חלקית</option>
+                        <option value="לא">לא נגיש</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">תחבורה ציבורית קרובה</label>
+                    <input type="text" class="form-input" name="publicTransport" placeholder="קווי אוטובוס, רכבת...">
+                </div>
+            </div>
+
+            <!-- Section 5: Contact -->
+            <div class="section">
+                <div class="section-title">
+                    <span>5️⃣</span>
+                    <span>יצירת קשר</span>
+                </div>
+                <p class="section-subtitle">איך ליצור איתך קשר?</p>
+
+                <div class="form-group">
+                    <label class="form-label">טלפון ראשי <span class="required">*</span></label>
+                    <input type="tel" class="form-input" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">WhatsApp עסקי</label>
+                    <input type="tel" class="form-input" name="whatsapp">
+                    <p class="form-hint">אם זהה לטלפון, אפשר להשאיר ריק</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">אימייל</label>
+                    <input type="email" class="form-input" name="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">אינסטגרם</label>
+                    <input type="text" class="form-input" name="instagram" placeholder="@username">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">פייסבוק</label>
+                    <input type="text" class="form-input" name="facebook">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">אתר אינטרנט</label>
+                    <input type="url" class="form-input" name="website" placeholder="https://...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">שעות מענה טלפוני</label>
+                    <input type="text" class="form-input" name="phoneHours" placeholder="08:00-20:00">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">דרך מומלצת להזמנה</label>
+                    <select class="form-select" name="preferredContact">
+                        <option value="">בחר</option>
+                        <option value="WhatsApp">WhatsApp (הכי מהיר)</option>
+                        <option value="טלפון">טלפון</option>
+                        <option value="אתר">דרך האתר</option>
+                        <option value="אימייל">אימייל</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 6: Services Detail -->
+            <div class="section">
+                <div class="section-title">
+                    <span>6️⃣</span>
+                    <span>השירותים בפירוט</span>
+                </div>
+                <p class="section-subtitle">מה בדיוק הלקוח מקבל?</p>
+
+                <div class="form-group">
+                    <label class="form-label">תיאור מפורט של השירות העיקרי</label>
+                    <textarea class="form-textarea" name="mainServiceDetail" rows="5" placeholder="תאר בפירוט - מה כלול? למי זה מתאים? כמה זמן זה לוקח?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">תוספות אופציונליות</label>
+                    <textarea class="form-textarea" name="addons" rows="4" placeholder="לדוגמה:
+🌹 זר ורדים: 300 ₪
+📸 צלם: 800 ₪"></textarea>
+                </div>
+            </div>
+
+            <!-- Section 7: FAQ -->
+            <div class="section">
+                <div class="section-title">
+                    <span>7️⃣</span>
+                    <span>שאלות נפוצות</span>
+                </div>
+                <p class="section-subtitle">מה הלקוחות תמיד שואלים?</p>
+
+                <div class="info-box">
+                    <p>💡 רשום 5-10 השאלות הכי נפוצות והתשובות שלהן</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">שאלות ותשובות נפוצות <span class="required">*</span></label>
+                    <textarea class="form-textarea" name="faq" rows="12" required placeholder="לדוגמה:
+
+שאלה: מה קורה אם מזג האוויר גרוע?
+תשובה: אנחנו עוקבים אחרי התחזית 48 שעות לפני.
+
+שאלה: אפשר להביא אוכל?
+תשובה: כן! אפשר להביא מה שאתם רוצים.
+
+[המשך...]"></textarea>
+                </div>
+            </div>
+
+            <!-- Section 8: Policies -->
+            <div class="section">
+                <div class="section-title">
+                    <span>8️⃣</span>
+                    <span>מדיניות ותנאים</span>
+                </div>
+                <p class="section-subtitle">מה חשוב שהלקוח ידע?</p>
+
+                <div class="form-group">
+                    <label class="form-label">מה קורה במקרה של איחור?</label>
+                    <textarea class="form-textarea" name="latePolicy" rows="3" placeholder="לדוגמה: עד 15 דקות - בסדר, מעל 30 דקות - השירות מתקצר"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מגבלות גיל</label>
+                    <input type="text" class="form-input" name="ageRestrictions" placeholder="לדוגמה: ילדים מגיל 3+...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה אסור להביא/לעשות?</label>
+                    <textarea class="form-textarea" name="prohibited" rows="3" placeholder="לדוגמה: כלי נשק, סמים, חיות מחמד..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">דרישות מיוחדות</label>
+                    <textarea class="form-textarea" name="requirements" rows="2" placeholder="הצהרת בריאות, ביטוח..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 9: About -->
+            <div class="section">
+                <div class="section-title">
+                    <span>9️⃣</span>
+                    <span>מי אנחנו?</span>
+                </div>
+                <p class="section-subtitle">הסיפור שלך</p>
+
+                <div class="form-group">
+                    <label class="form-label">מי ייסד את העסק? מתי?</label>
+                    <input type="text" class="form-input" name="founder">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">הסיפור מאחורי העסק</label>
+                    <textarea class="form-textarea" name="story" rows="4" placeholder="איך התחלת? מה הייתה המוטיבציה?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">כמה ניסיון יש לכם?</label>
+                    <input type="text" class="form-input" name="experience" placeholder="מספר שנים, ניסיון קודם...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">הצוות שלכם</label>
+                    <textarea class="form-textarea" name="team" rows="3" placeholder="מי עובד אצלכם? תפקידים?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">תעודות/הסמכות</label>
+                    <input type="text" class="form-input" name="certifications">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">פרסים/הוקרה</label>
+                    <input type="text" class="form-input" name="awards">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">הערכים שלכם כעסק</label>
+                    <textarea class="form-textarea" name="values" rows="3" placeholder="לדוגמה: בטיחות, שירות אישי, גמישות..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 10: Visual Content -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🔟</span>
+                    <span>תוכן ויזואלי</span>
+                </div>
+                <p class="section-subtitle">איפה אפשר לראות?</p>
+
+                <div class="form-group">
+                    <label class="form-label">גלריית תמונות באתר</label>
+                    <input type="url" class="form-input" name="gallery">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">אינסטגרם (תמונות)</label>
+                    <input type="text" class="form-input" name="instagramVisual" placeholder="@username">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">סרטונים (YouTube/TikTok)</label>
+                    <input type="text" class="form-input" name="videos">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">קישור לביקורות לקוחות</label>
+                    <input type="url" class="form-input" name="reviews" placeholder="Google Reviews, Facebook...">
+                </div>
+            </div>
+
+            <!-- Section 11: Conversion -->
+            <div class="section">
+                <div class="section-title">
+                    <span>1️⃣1️⃣</span>
+                    <span>תהליך הזמנה</span>
+                </div>
+                <p class="section-subtitle">איך לקוח מזמין?</p>
+
+                <div class="form-group">
+                    <label class="form-label">תהליך ההזמנה שלב אחר שלב</label>
+                    <textarea class="form-textarea" name="bookingProcess" rows="6" placeholder="לדוגמה:
+1. לקוח מתקשר/שולח הודעה
+2. אנחנו בודקים זמינות
+3. שולחים הצעת מחיר
+..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה הלקוח צריך לספק?</label>
+                    <input type="text" class="form-input" name="bookingRequirements" placeholder="שם, טלפון, תאריך מועדף...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה קורה אחרי ההזמנה?</label>
+                    <textarea class="form-textarea" name="afterBooking" rows="3" placeholder="מייל אישור, תזכורות, הודעות..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 12: Additional -->
+            <div class="section">
+                <div class="section-title">
+                    <span>1️⃣2️⃣</span>
+                    <span>מידע נוסף</span>
+                </div>
+                <p class="section-subtitle">עוד משהו חשוב?</p>
+
+                <div class="form-group">
+                    <label class="form-label">האם יש עונות שונות?</label>
+                    <input type="text" class="form-input" name="seasons" placeholder="עמוס/שקט">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ההמלצה הכי טובה ללקוח חדש</label>
+                    <textarea class="form-textarea" name="topRecommendation" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">מה חשוב שכל לקוח ידע לפני?</label>
+                    <textarea class="form-textarea" name="importantToKnow" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">שותפויות עם עסקים אחרים</label>
+                    <input type="text" class="form-input" name="partnerships">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">האם יש גיפט קארד?</label>
+                    <select class="form-select" name="giftCard">
+                        <option value="">בחר תשובה</option>
+                        <option value="כן">כן</option>
+                        <option value="לא">לא</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">עוד משהו שחשוב?</label>
+                    <textarea class="form-textarea" name="additionalInfo" rows="4"></textarea>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">
+                    <span>🚀</span>
+                    <span>צור סיכום למאגר הידע</span>
+                </button>
+            </div>
+
+        </form>
+
+        <div class="summary-container" id="summaryContainer">
+            <h2 class="summary-title">✅ הסיכום שלך מוכן!</h2>
+            <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
+                העתק את הטקסט למטה והדבק אותו במאגר הידע של הבוט
+            </p>
+            <div class="summary-content" id="summaryContent"></div>
+            <div class="button-group">
+                <button type="button" class="btn copy-btn" onclick="copySummary()">
+                    <span>📋</span>
+                    <span>העתק סיכום</span>
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">
+                    <span>🖨️</span>
+                    <span>הדפס</span>
+                </button>
+            </div>
+            <div class="success-message" id="successMessage">✅ הועתק ללוח!</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('botForm');
+    const summaryContainer = document.getElementById('summaryContainer');
+    const summaryContent = document.getElementById('summaryContent');
+    const successMessage = document.getElementById('successMessage');
+    const progressBar = document.getElementById('progressBar');
+
+    const formInputs = form.querySelectorAll('input, textarea, select');
+    formInputs.forEach(input => {
+        input.addEventListener('input', updateProgress);
+        
+        const saved = localStorage.getItem('botForm_' + input.name);
+        if (saved) {
+            input.value = saved;
+        }
+        
+        input.addEventListener('change', () => {
+            localStorage.setItem('botForm_' + input.name, input.value);
+        });
+    });
+
+    function updateProgress() {
+        const totalFields = formInputs.length;
+        let filledFields = 0;
+        
+        formInputs.forEach(input => {
+            if (input.value.trim() !== '') {
+                filledFields++;
+            }
+        });
+        
+        const progress = (filledFields / totalFields) * 100;
+        progressBar.style.width = progress + '%';
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = {};
+        
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        const summary = generateSummary(data);
+        summaryContent.textContent = summary;
+        summaryContainer.style.display = 'block';
+        summaryContainer.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    function generateSummary(data) {
+        return `═══════════════════════════════════════════════════════════════
+                    📋 מאגר ידע - ${data.businessName}
+═══════════════════════════════════════════════════════════════
+
+🏢 מידע בסיסי על העסק
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+שם העסק: ${data.businessName}
+תחום: ${data.businessType}
 
-## 🎯 מטרה
-שאלון זה נועד לאסוף את **כל** המידע הדרוש כדי שהבוט יוכל לענות על כל שאלה שלקוח עשוי לשאול.
-
----
-
-## 📝 הוראות למילוי
-
-✅ **ענו בפירוט מלא** - ככל שתענו יותר, הבוט יהיה חכם יותר  
-✅ **תנו דוגמאות** - עזרו לבוט להבין את הניואנסים  
-✅ **כתבו בשפה פשוטה** - כמו שהייתם מסבירים ללקוח פוטנציאלי  
-⏱️ **זמן משוער:** 30-45 דקות
-
----
-
-## 📁 חלק א': מידע בסיסי
-
-### 1️⃣ מהו העסק שלכם ומה הוא מציע?
-
-**מטרה:** שהבוט יוכל להציג את העסק בצורה ברורה ומקצועית.
-
-```
-שם העסק: _________________
-
-תחום העיסוק (למשל: בר, מסעדה, מספרה, קליניקה, סטודיו): _________________
-
-תיאור כללי (2-3 משפטים):
-_________________
-_________________
-_________________
-
-מה ייחודי בעסק שלכם? (למה לקוח צריך לבחור בכם?):
-_________________
-_________________
-
-קהל יעד (למי זה מתאים? לדוגמה: משפחות, צעירים, מקצועיים):
-_________________
-```
-
-**דוגמה טובה:**
-```
-שם העסק: Sea4u
-
-תחום העיסוק: השכרת יאכטות וספורט ימי
-
-תיאור כללי:
-Sea4u היא חברת השכרת יאכטות פרימיום במרינה הרצליה. אנחנו מתמחים בשייטים פרטיים עם קפטן מקצועי, מושלמים לאירועי חברה, ימי הולדת, או סתם יום כיף על הים.
-
-מה ייחודי בעסק שלכם:
-- צי יאכטות חדש ומטופח (2021-2023)
-- קפטנים עם 10+ שנות ניסיון
-- גמישות מלאה בשעות ובתפריט
-- אפשרות לקייטרינג ממסעדות מובילות
-
-קהל יעד:
-צעירים גילאי 25-45, משפחות, חברות היי-טק לאירועי team building
-```
-
----
-
-## 💰 חלק ב': מחירים ותשלומים
-
-### 2️⃣ מבנה התמחור
-
-**מטרה:** שהבוט יוכל לענות על "כמה זה עולה?" בצורה מדויקת.
-
-```
-רשימת שירותים/מוצרים עיקריים + מחירים:
-
-שירות 1: _________________ | מחיר: _________________ | משך זמן: _________________
-שירות 2: _________________ | מחיר: _________________ | משך זמן: _________________
-שירות 3: _________________ | מחיר: _________________ | משך זמן: _________________
-
-האם יש חבילות/מבצעים? (פרטו):
-_________________
-_________________
-
-האם יש הנחות? (תלמידים, קבוצות, לקוחות קבועים):
-_________________
-
-מה כלול במחיר? (לדוגמה: חניה, ציוד, רענון):
-_________________
-
-מה לא כלול במחיר? (תוספות תשלום):
-_________________
-
-האם צריך מקדמה? כמה?
-_________________
-
-דרכי תשלום (מזומן, אשראי, ביט, PayPal):
-_________________
-```
-
-**דוגמה טובה:**
-```
-יאכטה קטנה (עד 8 אנשים):
-- שעתיים: 2,500 ₪
-- שלוש שעות: 3,500 ₪
-- יום שלם (6 שעות): 5,500 ₪
-
-יאכטה בינונית (עד 15 אנשים):
-- שלוש שעות: 5,000 ₪
-- יום שלם: 7,500 ₪
-
-מבצעים:
-- מימי ראשון-חמישי (לא בחגים): 15% הנחה
-- קבוצה מעל 20 איש: יאכטה שנייה ב-50% הנחה
-
-כלול במחיר:
-✅ קפטן מקצועי
-✅ דלק
-✅ ציוד בטיחות
-✅ מערכת סאונד Bluetooth
-✅ מים וקרח
-
-לא כלול:
-❌ אוכל ושתייה (אפשר להביא או להזמין קייטרינג)
-❌ אלכוהול מעל בקבוקיים לאדם
-
-מקדמה: 30% בהזמנה, יתרה עד יומיים לפני
-תשלום: מזומן, כרטיס אשראי, ביט, PayBox
-```
-
----
-
-## 📅 חלק ג': זמינות ותזמון
-
-### 3️⃣ מתי אתם פתוחים וזמינים?
-
-**מטרה:** שהבוט יוכל לקבוע תורים ולענות על "מתי אתם פתוחים?"
-
-```
-שעות פעילות רגילות:
-
-יום ראשון: _________________ עד _________________
-יום שני: _________________ עד _________________
-יום שלישי: _________________ עד _________________
-יום רביעי: _________________ עד _________________
-יום חמישי: _________________ עד _________________
-יום שישי: _________________ עד _________________
-שבת: _________________ עד _________________
-
-האם יש ימים/תקופות שבהם אתם סגורים?
-_________________
-
-האם יש הבדל בין עונות (קיץ/חורף)?
-_________________
-
-כמה זמן מראש צריך לקבוע? (תור מינימלי):
-_________________
-
-מהו זמן הביטול האחרון ללא קנס?
-_________________
-
-האם אפשר להזמין באותו יום?
-_________________
-```
-
-**דוגמה טובה:**
-```
-שעות פעילות:
-ראשון-חמישי: 08:00-20:00 (שייט אחרון יוצא ב-18:00)
-שישי: 08:00-15:00 (שייט אחרון 13:00)
-שבת: סגור
-
-סגור בחגים: ראש השנה, יום כיפור, פסח, סוכות
-סגור בחורף (דצמבר-פברואר) אלא אם מזמינים מראש
-
-זמן הזמנה מומלץ: 3-7 ימים מראש
-הזמנה מינימום: 24 שעות מראש (בכפוף לזמינות)
-
-ביטול:
-- עד 7 ימים לפני: ביטול חינם + החזר מלא
-- 3-7 ימים לפני: 50% החזר
-- פחות מ-3 ימים: ללא החזר
-- מזג אויר קיצוני: ביטול מלא ללא קנס
-```
-
----
-
-## 📍 חלק ד': מיקום והגעה
-
-### 4️⃣ איפה אתם נמצאים ואיך מגיעים?
-
-**מטרה:** שהבוט יוכל לנווט לקוחות בקלות.
-
-```
-כתובת מדויקת:
-_________________
-
-עיר: _________________
-
-קישור Waze: _________________
-
-קישור Google Maps: _________________
-
-איך מגיעים? (נקודות ציון):
-_________________
-_________________
-
-האם יש חניה? איפה?
-_________________
-
-האם זה נגיש לנכים?
-_________________
-
-תחבורה ציבורית (אוטובוס/רכבת קרובה):
-_________________
-```
-
-**דוגמה טובה:**
-```
-כתובת: מרינה הרצליה, רציף מספר 3, הרצליה פיתוח
-
-Waze: https://waze.com/ul/hsv8zjmx5b
-Google Maps: https://goo.gl/maps/abc123
-
-איך מגיעים:
-מכביש 2 (איילון צפון): יציאה "הרצליה - ארנה", פנו שמאלה לרח' שקספיר, עקבו אחרי השלטים "מרינה". נמצאים בסוף רח' המרינה, רציף 3 (השלישי מימין).
-
-חניה: חניון מרינה - 10 ₪/שעה, 40 ₪/יום
-אפשרות 2: חניה חינם ברחוב יגאל אלון (5 דקות הליכה)
-
-נגישות: המרינה נגישה לכיסאות גלגלים, יש רמפה לרציף
-
-תחבורה ציבורית:
-🚌 קווים 90, 500, 501 - תחנה "מרינה הרצליה" (3 דקות הליכה)
-🚆 רכבת ישראל - תחנת "הרצליה" + מונית 15 דקות / אוטובוס 90
-```
-
----
-
-## 📞 חלק ה': יצירת קשר
-
-### 5️⃣ איך מתקשרים אתכם?
-
-**מטרה:** שהבוט יוכל להפנות לקוחות לאמצעי תקשורת הנכון.
-
-```
-טלפון ראשי: _________________
-
-WhatsApp עסקי: _________________
-
-אימייל: _________________
-
-פייסבוק: _________________
-
-אינסטגרם: _________________
-
-אתר אינטרנט: _________________
-
-שעות מענה טלפוני:
-_________________
-
-האם יש שעות שכדאי להתקשר/לא להתקשר?
-_________________
-
-עדיף לקבוע דרך: (WhatsApp / טלפון / אתר)?
-_________________
-```
-
-**דוגמה טובה:**
-```
-טלפון: 050-123-4567 (זמין 08:00-20:00)
-WhatsApp: 050-123-4567 (מגיבים תוך 5 דקות בשעות הפעילות)
-אימייל: info@sea4u.co.il (מענה תוך 24 שעות)
-
-Instagram: @sea4u_il (עדכונים יומיים, סטוריז מהשייטים)
-Facebook: Sea4u Yachts
-אתר: www.sea4u.co.il
-
-דרך מומלצת להזמנה: WhatsApp (הכי מהיר!)
-לשאלות כלליות: כל דרך בסדר
-לבעיות דחופות (ביום השייט): טלפון ישירות
-```
-
----
-
-## 🛠️ חלק ו': השירותים בפירוט
-
-### 6️⃣ מה בדיוק הלקוח מקבל?
-
-**מטרה:** שהבוט יוכל להסביר בדיוק מה כלול בשירות.
-
-```
-שירות עיקרי מספר 1:
-שם: _________________
-תיאור מפורט (3-5 שורות):
-_________________
-_________________
-
-מה כלול?
-✅ _________________
-✅ _________________
-✅ _________________
-
-למי זה מתאים?
-_________________
-
-כמה זמן זה לוקח?
-_________________
-
----
-
-שירות עיקרי מספר 2:
-[חזרו על הפורמט למעלה]
-
----
-
-שירות עיקרי מספר 3:
-[חזרו על הפורמט למעלה]
-
----
-
-תוספות אופציונליות:
-תוספת 1: _________________ | מחיר: _________________
-תוספת 2: _________________ | מחיר: _________________
-תוספת 3: _________________ | מחיר: _________________
-```
-
-**דוגמה טובה:**
-```
-שירות 1: שייט זוגי רומנטי
 תיאור:
-שייט פרטי זוגי של 2 שעות בים התיכון בשעות השקיעה. מתאים לחגיגות יום נישואין, הצעות נישואין, או סתם ערב רומנטי על המים. הקפטן ייתן לכם פרטיות מלאה ויתמרן את היאכטה לנקודות הנוף היפות ביותר.
+${data.businessDescription}
 
-מה כלול:
-✅ יאכטה פרטית VIP (עד 6 אנשים, אבל מומלץ ל-2)
-✅ קפטן מנוסה שנותן פרטיות
-✅ בקבוק יין לבן/אדום לבחירה
-✅ מגש פירות וגבינות מעוצב
-✅ רשימת השמעה רומנטית או מוזיקה שלכם
-✅ נרות בטוחים לשימוש על הסיפון
+${data.uniqueValue ? `מה ייחודי בנו:
+${data.uniqueValue}` : ''}
 
-למי זה מתאים:
-זוגות, הצעות נישואין, ימי נישואין, או מי שרוצה לרשום
+${data.targetAudience ? `קהל יעד: ${data.targetAudience}` : ''}
 
-זמן: 2 שעות (בדרך כלל 18:00-20:00)
 
----
+💰 מחירים ושירותים
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.service1Name ? `📌 ${data.service1Name}
+   מחיר: ${data.service1Price}
+   ${data.service1Duration ? `משך זמן: ${data.service1Duration}` : ''}
+` : ''}${data.service2Name ? `📌 ${data.service2Name}
+   מחיר: ${data.service2Price}
+   ${data.service2Duration ? `משך זמן: ${data.service2Duration}` : ''}
+` : ''}${data.service3Name ? `📌 ${data.service3Name}
+   מחיר: ${data.service3Price}
+   ${data.service3Duration ? `משך זמן: ${data.service3Duration}` : ''}
+` : ''}
+${data.discounts ? `מבצעים והנחות:
+${data.discounts}` : ''}
 
-תוספות:
-🌹 זר ורדים + עיטורים: 300 ₪
-📸 צלם מקצועי: 800 ₪ לשעה
-🍾 שמפניה פרימיום (ורב ווסט): 350 ₪
-🎂 עוגה מעוצבת: 250 ₪
-```
+${data.included ? `✅ כלול במחיר:
+${data.included}` : ''}
 
----
+${data.notIncluded ? `❌ לא כלול במחיר:
+${data.notIncluded}` : ''}
 
-## ❓ חלק ז': שאלות נפוצות
+${data.deposit ? `💳 מקדמה: ${data.deposit}` : ''}
+${data.paymentMethods ? `💵 דרכי תשלום: ${data.paymentMethods}` : ''}
 
-### 7️⃣ מה הלקוחות תמיד שואלים?
 
-**מטרה:** לחסוך זמן ולענות על שאלות חוזרות.
+📅 זמינות ושעות
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+שעות פעילות:
+${data.openingHours}
 
-```
-שאלה נפוצה 1:
-_________________
-תשובה:
-_________________
+${data.closedDays ? `ימים סגורים: ${data.closedDays}` : ''}
+${data.advanceBooking ? `הזמנה מראש: ${data.advanceBooking}` : ''}
+${data.sameDayBooking ? `הזמנה באותו יום: ${data.sameDayBooking}` : ''}
 
-שאלה נפוצה 2:
-_________________
-תשובה:
-_________________
+${data.cancellationPolicy ? `מדיניות ביטולים:
+${data.cancellationPolicy}` : ''}
 
-שאלה נפוצה 3:
-_________________
-תשובה:
-_________________
 
-[המשיכו עד 10 שאלות נפוצות]
-```
+📍 מיקום והגעה
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+כתובת: ${data.address}${data.city ? ', ' + data.city : ''}
 
-**דוגמה טובה:**
-```
-1. "מה קורה אם מזג האוויר גרוע?"
-אנחנו עוקבים אחרי התחזית 48 שעות לפני. אם יש סופה/גלים גבוהים/רוח חזקה - נציע לדחות (ללא קנס). אם אתם מתעקשים - נחזיר כסף מלא. בטיחות מעל הכל!
+${data.wazeLink ? `🚗 Waze: ${data.wazeLink}` : ''}
+${data.mapsLink ? `📍 Google Maps: ${data.mapsLink}` : ''}
 
-2. "אפשר להביא אוכל ומשקאות?"
-כן! אפשר להביא מה שאתם רוצים. יש לנו מקרר גדול על היאכטה. אפשר גם להזמין קייטרינג (יש לנו המלצות מעולות).
+${data.directions ? `איך מגיעים:
+${data.directions}` : ''}
 
-3. "צריך ניסיון בשייט?"
-בכלל לא! יש קפטן מקצועי שמנווט את הכל. אתם רק נהנים.
+${data.parking ? `🅿️ חניה: ${data.parking}` : ''}
+${data.accessibility ? `♿ נגישות: ${data.accessibility}` : ''}
+${data.publicTransport ? `🚌 תחבורה ציבורית: ${data.publicTransport}` : ''}
 
-4. "אפשר לשחות בים מהיאכטה?"
-כן! זה אחד הדברים הכי כיפיים. יש לנו סולם, מצופים, וציוד שנורקלינג.
 
-5. "יש מקום מוצל?"
-כן, כל היאכטות שלנו עם גג/סאנשייד מלא. אפשר להיות בשמש או בצל.
+📞 יצירת קשר
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 טלפון: ${data.phone}
+${data.whatsapp ? `💬 WhatsApp: ${data.whatsapp}` : ''}
+${data.email ? `📧 אימייל: ${data.email}` : ''}
+${data.instagram ? `📸 אינסטגרם: ${data.instagram}` : ''}
+${data.facebook ? `👥 פייסבוק: ${data.facebook}` : ''}
+${data.website ? `🌐 אתר: ${data.website}` : ''}
 
-6. "כמה אנשים נכנסים?"
-תלוי ביאכטה:
-- קטנה: עד 8 (נוח ל-6)
-- בינונית: עד 15 (נוח ל-12)
-- גדולה: עד 25 (נוח ל-20)
+${data.phoneHours ? `שעות מענה: ${data.phoneHours}` : ''}
+${data.preferredContact ? `דרך מומלצת להזמנה: ${data.preferredContact}` : ''}
 
-7. "מותר ילדים?"
-בטח! ילדים מגיל 3+ מוזמנים. יש לנו אפודי הצלה בכל המידות.
 
-8. "יש שירותים על היאכטה?"
-כן, כל היאכטות עם שירותים נקיים ומטופחים.
+🎯 פרטי השירותים
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.mainServiceDetail ? `השירות העיקרי:
+${data.mainServiceDetail}` : ''}
 
-9. "אפשר לעשן?"
-רק בחלק החיצוני של היאכטה (הסיפון). לא בפנים.
+${data.addons ? `תוספות אופציונליות:
+${data.addons}` : ''}
 
-10. "איך מבטלים?"
-WhatsApp / טלפון / אימייל. ראו מדיניות ביטולים בשאלה על תזמון.
-```
 
----
+❓ שאלות נפוצות
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.faq}
 
-## 🎁 חלק ח': מבצעים ומדיניות
 
-### 8️⃣ האם יש מבצעים/הנחות קבועים?
+📜 מדיניות ותנאים
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.latePolicy ? `איחור לקוח:
+${data.latePolicy}` : ''}
 
-**מטרה:** שהבוט יוכל להציע ערך מוסף ללקוחות.
+${data.ageRestrictions ? `מגבלות גיל: ${data.ageRestrictions}` : ''}
 
-```
-מבצעים קבועים:
-_________________
-_________________
+${data.prohibited ? `אסור להביא/לעשות:
+${data.prohibited}` : ''}
 
-כרטיס מועדון / לקוחות קבועים:
-_________________
+${data.requirements ? `דרישות מיוחדות:
+${data.requirements}` : ''}
 
-הנחה לקבוצות גדולות:
-_________________
 
-מבצעי חגים / עונות:
-_________________
+👥 עלינו
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.founder ? `מייסד: ${data.founder}` : ''}
 
-תוכנית הפניות (המלצה לחבר):
-_________________
+${data.story ? `הסיפור שלנו:
+${data.story}` : ''}
 
-קופון / קוד הנחה נוכחי:
-_________________
-```
+${data.experience ? `ניסיון: ${data.experience}` : ''}
+${data.team ? `הצוות:
+${data.team}` : ''}
+${data.certifications ? `הסמכות: ${data.certifications}` : ''}
+${data.awards ? `פרסים: ${data.awards}` : ''}
 
-**דוגמה טובה:**
-```
-מבצע קבוע - ימי חול:
-ראשון-חמישי (לא חגים): 15% הנחה אוטומטית
+${data.values ? `הערכים שלנו:
+${data.values}` : ''}
 
-מועדון VIP:
-לקוח שמזמין 3 שייטים = השייט הרביעי ב-30% הנחה
-דמי מנוי: 0 ₪ (הצטרפות אוטומטית)
 
-הנחת קבוצות:
-10-15 איש: 10% הנחה
-15-20 איש: 15% הנחה
-20+ איש: 20% הנחה + יאכטה נוספת חינם אם צריך
+📸 תוכן ויזואלי
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.gallery ? `גלריה: ${data.gallery}` : ''}
+${data.instagramVisual ? `אינסטגרם: ${data.instagramVisual}` : ''}
+${data.videos ? `סרטונים: ${data.videos}` : ''}
+${data.reviews ? `ביקורות: ${data.reviews}` : ''}
 
-מבצע קיץ (יוני-אוגוסט):
-שייט בוקר (06:00-10:00): 20% הנחה - "Sunrise Special"
 
-המלצה לחבר:
-תפנו חבר שמזמין → אתם מקבלים 200 ₪ קרדיט
-החבר מקבל 10% הנחה בהזמנה הראשונה
+🎫 תהליך הזמנה
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.bookingProcess ? `תהליך ההזמנה:
+${data.bookingProcess}` : ''}
 
-קוד נוכחי: SUMMER2024 → 10% הנחה על כל הזמנה
-```
+${data.bookingRequirements ? `מה צריך לספק: ${data.bookingRequirements}` : ''}
 
----
+${data.afterBooking ? `אחרי ההזמנה:
+${data.afterBooking}` : ''}
 
-## 🔒 חלק ט': מדיניות ותנאים
 
-### 9️⃣ מה חשוב שהלקוח ידע מראש?
+💡 מידע נוסף
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.seasons ? `עונות: ${data.seasons}` : ''}
 
-**מטרה:** לנהל ציפיות ולמנוע אכזבות.
+${data.topRecommendation ? `ההמלצה שלנו:
+${data.topRecommendation}` : ''}
 
-```
-מדיניות ביטולים (כבר צוין, אבל חזרו):
-_________________
+${data.importantToKnow ? `חשוב לדעת:
+${data.importantToKnow}` : ''}
 
-מה קורה במקרה של איחור של הלקוח?
-_________________
+${data.partnerships ? `שותפויות: ${data.partnerships}` : ''}
+${data.giftCard ? `שובר מתנה: ${data.giftCard}` : ''}
 
-האם יש מגבלות גיל?
-_________________
+${data.additionalInfo ? `מידע נוסף:
+${data.additionalInfo}` : ''}
 
-האם יש דרישות מיוחדות? (הצהרת בריאות, ביטוח):
-_________________
 
-מה אסור להביא/לעשות?
-_________________
+═══════════════════════════════════════════════════════════════
+             ✅ סיכום זה מוכן להעתקה למאגר הידע!
+═══════════════════════════════════════════════════════════════
+`;
+    }
 
-תנאי תשלום (מתי משלמים, קנסות):
-_________________
+    function copySummary() {
+        const text = summaryContent.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        });
+    }
 
-מה קורה במקרה חירום?
-_________________
-```
+    updateProgress();
+</script>
 
-**דוגמה טובה:**
-```
-איחור:
-- עד 15 דקות: בסדר גמור, נחכה
-- 15-30 דקות: השייט יתקצר באותה משך זמן
-- מעל 30 דקות: עלול להתבטל (נכנסת לסלוט הבא) ללא החזר
-
-מגבלות גיל:
-- ילדים מגיל 3+: מוזמנים עם הורה
-- מתחת לגיל 3: לא מומלץ (אבל אפשר, באחריות ההורים)
-- נוער עד 18: חייב מלווה בוגר
-
-דרישות מיוחדות:
-אף אחת! לא צריך להיות בריא מיוחד, אבל:
-- נשים בהריון מתקדם (7+ חודשים): לא מומלץ
-- מצב רפואי קיצוני: תתייעצו עם רופא
-
-אסור להביא:
-❌ כלי נשק
-❌ סמים
-❌ חיות מחמד (אלא אם תואם מראש)
-❌ זיקוקים או אש גלויה
-❌ ציוד דיג (אלא אם זה שייט דיג מיוחד)
-
-תשלום:
-30% מקדמה בהזמנה
-70% יתרה עד 48 שעות לפני
-תשלום באיחור: השייט עלול להתבטל
-
-מקרה חירום:
-יש ציוד בטיחות מלא, אפודי הצלה, מטף, רדיו חירום, מפקד בקשר עם משמר החופים. הקפטן שלנו מאומן בעזרה ראשונה.
-```
-
----
-
-## 👥 חלק י': מי אנחנו?
-
-### 🔟 ספרו על העסק מאחורי הקלעים
-
-**מטרה:** לבנות אמון ולתת "פרצוף" לעסק.
-
-```
-מי ייסד את העסק? מתי?
-_________________
-
-מה הסיפור מאחורי העסק?
-_________________
-_________________
-
-כמה ניסיון יש לכם?
-_________________
-
-מי הצוות? (תפקידים, ניסיון):
-_________________
-_________________
-
-האם יש תעודות/הסמכות?
-_________________
-
-פרסים/הוקרה שקיבלתם:
-_________________
-
-מה הערכים שלכם כעסק?
-_________________
-```
-
-**דוגמה טובה:**
-```
-הסיפור שלנו:
-Sea4u נוסדה ב-2019 על ידי יוסי כהן, קפטן עם 15 שנות ניסיון בים התיכון. יוסי החליט לעשות את התשוקה שלו למקצוע - להעניק לאנשים חוויות בלתי נשכחות על המים.
-
-הצוות:
-🧑‍✈️ יוסי כהן - מייסד וקפטן ראשי, רישיון קפטן מסחרי, 15+ שנים בים
-🧑‍✈️ רון לוי - קפטן בכיר, רישיון מסחרי, 10 שנות ניסיון
-👨‍💼 דנה שמיר - מנהלת שירות, תיאום שייטים והזמנות
-🔧 אלי גרין - טכנאי ימי, מטפל ביאכטות
-
-הסמכות:
-✅ רישיון עסק ממרינה הרצליה
-✅ רישיונות קפטן מסחרי למשרד התחבורה
-✅ ביטוח אחריות מקיף (עד 5 מיליון ₪)
-✅ אישור משמר החופים
-
-פרסים:
-🏆 2022: "חברת השייטים המומלצת" - מגזין TimeOut תל אביב
-⭐ 2023: ציון 4.9/5 ב-Google Reviews (200+ ביקורות)
-🎖️ 2024: תעודת מצוינות TripAdvisor
-
-הערכים שלנו:
-1. בטיחות מעל הכל - לא מתפשרים
-2. חוויה אישית - כל לקוח מקבל יחס VIP
-3. גמישות - אנחנו כאן בשבילכם
-4. שקיפות - מחיר סופי ללא הפתעות
-```
-
----
-
-## 📸 חלק י"א: תוכן ויזואלי
-
-### 1️⃣1️⃣ איפה אפשר לראות תמונות/סרטונים?
-
-**מטרה:** שהבוט יוכל להפנות לקוחות לראות דוגמאות.
-
-```
-גלריית תמונות באתר:
-_________________
-
-אינסטגרם (תמונות מעודכנות):
-_________________
-
-סרטונים ב-YouTube / TikTok:
-_________________
-
-ביקורות לקוחות (Google / Facebook):
-_________________
-
-האם יש תיק עבודות / לפני ואחרי?
-_________________
-```
-
-**דוגמה טובה:**
-```
-גלריה מלאה: www.sea4u.co.il/gallery
-(100+ תמונות מ-10 יאכטות שונות, שייטים, שקיעות)
-
-Instagram: @sea4u_il
-פוסטים יומיים מהשייטים, סטוריז של לקוחות, Reels משעשעים
-
-YouTube: Sea4u Yachts
-סרטון מודרכת 360° של כל יאכטה
-סרטון "יום בחיים של קפטן"
-מדריך "איך להכין את השייט המושלם"
-
-ביקורות:
-⭐ Google: 4.9/5 (200+ ביקורות) - https://g.page/sea4u
-⭐ Facebook: 4.8/5 (150+ ביקורות)
-⭐ TripAdvisor: תעודת מצוינות
-
-המלצות לקוחות:
-"שייט מהאגדות! יוסי היה מדהים" - שרה ל.
-"הצעת נישואין הכי רומנטית שיכולתי לדמיין" - דני כ.
-"team building הכי מוצלח שעשינו" - חברת XYZ
-```
-
----
-
-## 🎯 חלק י"ב: המרות ומכירות
-
-### 1️⃣2️⃣ איך ממירים עניין להזמנה?
-
-**מטרה:** לעזור לבוט לסגור עסקאות.
-
-```
-מה התהליך להזמנה? (שלב אחר שלב):
-1. _________________
-2. _________________
-3. _________________
-
-מה הלקוח צריך לספק כדי להזמין?
-_________________
-
-מה קורה אחרי שמזמינים? (מייל אישור, תזכורות):
-_________________
-
-האם יש חוזה/טופס להחתים?
-_________________
-
-איך מעודדים את הלקוח להחליט מהר? (FOMO, מלאי מוגבל):
-_________________
-
-מה עושים כשלקוח "אני אחשוב על זה"?
-_________________
-
-האם יש אפשרות לנסות לפני קנייה? (דמו, סיור):
-_________________
-```
-
-**דוגמה טובה:**
-```
-תהליך הזמנה (פשוט!):
-
-1️⃣ לקוח מתעניין (WhatsApp / טלפון / אתר)
-2️⃣ אנחנו בודקים זמינות לתאריך המבוקש
-3️⃣ שולחים הצעת מחיר + פרטים על היאכטה
-4️⃣ לקוח מאשר
-5️⃣ שולחים קישור לתשלום מקדמה (30%)
-6️⃣ מקדמה שולמה → השייט שמור! 🎉
-7️⃣ 48 שעות לפני → תזכורת + קישור ליתרת תשלום
-8️⃣ יום השייט → הודעה עם פרטי הגעה ומספר קפטן
-
-מה צריך מהלקוח:
-📝 שם מלא
-📱 טלפון
-📧 אימייל
-👥 מספר משתתפים
-📅 תאריך ושעה מועדפים
-
-אחרי ההזמנה:
-✅ מייל אישור עם כל הפרטים
-✅ הוספה ליומן + תזכורת אוטומטית
-✅ SMS יום לפני: "מחר נפגשים! 🚤"
-✅ מייל חוויה: "איך היה? נשמח לביקורת"
-
-מלאי מוגבל:
-"יש לנו רק 5 יאכטות, וסופי שבוע מתמלאים מהר מאוד. ברגע שתאשר נשמור לך את התאריך."
-
-"אם זה סתם לחשוב":
-"אין בעיה! קח את הזמן שלך. רוצה שנשמור לך את התאריך למשך 24 שעות?"
-"מה עוד אתה צריך כדי להחליט? אשמח לענות על שאלות"
-
-דמו / סיור:
-"אפשר לבוא לראות את היאכטות במרינה לפני שמזמינים (בתיאום מראש). או לעלות לשייט קצר של 30 דקות ב-500 ₪ שמנוכים מההזמנה אם מחליטים."
-```
-
----
-
-## ✅ חלק י"ג: בונוס - מה עוד חשוב?
-
-### 1️⃣3️⃣ מידע נוסף שחשוב שהבוט ידע
-
-```
-האם יש עונות שונות (עמוס/שקט)?
-_________________
-
-מה ההמלצה הכי טובה שלכם ללקוח מסופק?
-_________________
-
-מה אתם רוצים שכל לקוח ידע לפני שמגיע?
-_________________
-
-האם יש קהל שאתם לא מתאימים לו?
-_________________
-
-האם יש שותפויות/קשרים עם עסקים אחרים?
-_________________
-
-האם מקבלים קבוצות/אירועי חברה?
-_________________
-
-האם יש גיפט קארד / שובר מתנה?
-_________________
-
-המלצות להכנה לפני השירות:
-_________________
-```
-
-**דוגמה טובה:**
-```
-עונות:
-📈 עונת שיא: מאי-ספטמבר (מזג אוויר מושלם)
-📉 עונה שקטה: אוקטובר-אפריל (מחירים זולים יותר!)
-
-המלצה מספר 1:
-"תביאו בגד ים! כי ברגע שאתם על המים, אתם תרצו לקפוץ."
-
-מה לדעת לפני:
-🧴 תביאו קרם הגנה - השמש על המים חזקה
-🕶️ משקפי שמש חובה
-👟 נעליים נוחות (עדיף עם גומי)
-📱 הטלפון שלכם יעבוד בים (יש אות)
-💊 אם רגישים לסחרחורת - קחו טבליה לפני
-
-לא מתאימים:
-❌ מישהו עם פחד מים קיצוני (זה ים...)
-❌ מישהו שלא מוכן להירטב (אפשר להתיז)
-❌ מי שמחפש "שייט בירה זולה" - אנחנו מעל זה
-
-שותפויות:
-🍽️ מסעדת "נמל 24" - קייטרינג מעולה, 15% הנחה ללקוחות שלנו
-🎂 קונדיטוריה "שמש וים" - עוגות מעוצבות לאירועים
-📸 צלם "יוני כהן" - צילומי אירועים במחיר מיוחד
-
-אירועי חברה:
-בטח! מתמחים בזה. עד 50 איש (2-3 יאכטות). יש לנו חבילת Team Building מיוחדת עם משחקים ואתגרים.
-
-שובר מתנה:
-כן! מושלם למתנות. תקף לשנה. אפשר לקנות באתר או לקנות במרינה.
-
-המלצות:
-- הגיעו 15 דקות לפני (למצוא חניה)
-- תשאירו דברי ערך ברכב (המרינה בטוחה אבל...)
-- תצאו מוקדם בימי שישי (פקקים!)
-```
-
----
-
-## 🎉 סיכום והמשך
-
-### זהו! 🚀
-
-**השלמתם את השאלון!**
-
-עכשיו הבוט שלכם יודע **הכל** על העסק ויכול לענות על כל שאלה שלקוח עשוי לשאול.
-
----
-
-### 📤 מה הלאה?
-
-1. **שמרו את השאלון** - זה מסמך חי שצריך לעדכן מעת לעת
-2. **העבירו את המידע לבוט** - העלו לדשבורד "מאגר המידע"
-3. **בדקו ובצעו עדכונים** - אחרי כל שינוי במחירים/מדיניות
-
----
-
-### 💡 טיפים להצלחה
-
-✅ **עדכנו באופן קבוע** - מבצעים, מחירים, שעות  
-✅ **הוסיפו דוגמאות אמיתיות** - לקוחות אוהבים סיפורים  
-✅ **בדקו שהבוט עונה נכון** - שלחו לו הודעות ותראו אם הוא משיב מה שצריך  
-✅ **תנו פידבק** - אם הבוט לא עונה נכון, תקנו במידע
-
----
-
-**בהצלחה! 💪**
+</body>
+</html>
