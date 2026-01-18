@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd easychat && npm install && npm run build && cp ../vsl.html ../crm.html ../conversations.html ../knowledge.html ../settings.html ../appointments.html ../blog.html ./dist/ 2>/dev/null || true",
+  "buildCommand": "cd easychat && npm install && npm run build && cp ../vsl.html ../crm.html ../conversations.html ../knowledge.html ../settings.html ../appointments.html ../blog.html ../BUSINESS_QUESTIONNAIRE.html ./dist/ 2>/dev/null || true",
   "outputDirectory": "easychat/dist",
   "framework": "vite",
   "rewrites": [
@@ -40,6 +40,7 @@
     { "source": "/settings.html", "destination": "/settings.html" },
     { "source": "/appointments.html", "destination": "/appointments.html" },
     { "source": "/blog.html", "destination": "/blog.html" },
+    { "source": "/BUSINESS_QUESTIONNAIRE.html", "destination": "/BUSINESS_QUESTIONNAIRE.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
