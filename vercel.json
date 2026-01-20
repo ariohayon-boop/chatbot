@@ -40,5 +40,6 @@
     { "source": "/knowledge.html", "destination": "/knowledge.html" },
     { "source": "/settings.html", "destination": "/settings.html" },
     { "source": "/appointments.html", "destination": "/appointments.html" },
-    { "source": "/blog.html", "destination": "/blog.html" },
+    { "source": "/blog.html", "destination": "/blog.html" }
+  ]
 }
