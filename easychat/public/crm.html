@@ -300,23 +300,69 @@
                 return counts;
             }, [leads]);
 
+            const navItems = [
+                { id: 'dashboard', icon: '📊', label: 'דשבורד' },
+                { id: 'leads', icon: '👥', label: 'לידים', expandable: true },
+                { id: 'pipeline', icon: '📋', label: 'Pipeline' },
+                { id: 'tasks', icon: '✅', label: 'משימות' },
+                { id: 'reports', icon: '📈', label: 'דוחות' }
+            ];
+
             return (
                 <aside className="sidebar">
                     <div className="sidebar-logo">EasyChat</div>
                     <div className="sidebar-subtitle">מערכת ניהול לידים</div>
                     <nav className="sidebar-nav">
-                        {[
-                            { id: 'dashboard', icon: '📊', label: 'דשבורד' },
-                            { id: 'leads', icon: '👥', label: 'לידים', expandable: true },
-                            { id: 'pipeline', icon: '📋', label: 'Pipeline' },
-                            { id: 'tasks', icon: '✅', label: 'משימות' },
-                            { id: 'reports', icon: '📈', label: 'דוחות' }
-                        ].map(item => (
+                        {navItems.map(item => (
                             <div key={item.id}>
-                                <div className={`nav-item ${activeView === item.id ? 'active' : ''}`} onClick={() => { setActiveView(item.id); if (item.id === 'leads') setStatusFilter('all'); }}>
-                                    <span className="nav-item-icon">{item.icon}</span>
-                                    <span>{item.label}</span>
+                                <div 
+                                    className={`nav-item ${activeView === item.id ? 'active' : ''}`} 
+                                    onClick={() => { 
+                                        if (item.id === 'leads') { 
+                                            setLeadsExpanded(!leadsExpanded); 
+                                            setActiveView('leads'); 
+                                            setStatusFilter('all'); 
+                                        } else { 
+                                            setActiveView(item.id); 
+                                        } 
+                                    }}
+                                >
+                                    {item.expandable ? (
+                                        <div className="nav-item-expandable">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <span className="nav-item-icon">{item.icon}</span>
+                                                <span>{item.label}</span>
+                                            </div>
+                                            <span className={`expand-icon ${leadsExpanded ? 'expanded' : ''}`}>▼</span>
+                                        </div>
+                                    ) : (
+                                        <React.Fragment>
+                                            <span className="nav-item-icon">{item.icon}</span>
+                                            <span>{item.label}</span>
+                                        </React.Fragment>
+                                    )}
                                 </div>
+                                {item.id === 'leads' && (
+                                    <div className={`nav-submenu ${leadsExpanded ? '' : 'collapsed'}`}>
+                                        <div 
+                                            className={`nav-submenu-item ${statusFilter === 'all' ? 'active' : ''}`} 
+                                            onClick={() => { setActiveView('leads'); setStatusFilter('all'); }}
+                                        >
+                                            <span>📋 כל הלידים</span>
+                                            <span className="count">{leads.length}</span>
+                                        </div>
+                                        {Object.entries(STATUS_CONFIG).map(([status, config]) => (
+                                            <div 
+                                                key={status} 
+                                                className={`nav-submenu-item ${statusFilter === status ? 'active' : ''}`} 
+                                                onClick={() => { setActiveView('leads'); setStatusFilter(status); }}
+                                            >
+                                                <span>{config.icon} {config.label}</span>
+                                                <span className="count">{statusCounts[status]}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </nav>
@@ -891,12 +937,12 @@
                 (async () => {
                     setLoading(true);
                     try { 
-                        const { data } = await supabase.from('easychat_leads').select('*').order('created_at', { ascending: false }); 
+                        const { data } = await supabase.from('leads').select('*').order('created_at', { ascending: false }); 
                         if (data && data.length) setLeads(data); 
                     } catch (e) { console.error(e); }
                     setLoading(false);
                 })();
-                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'easychat_leads' }, p => { 
+                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, p => { 
                     setLeads(prev => [p.new, ...prev]); 
                     setNotifications(prev => [{ title: 'ליד חדש: ' + p.new.name, time: 'עכשיו', read: false }, ...prev]); 
                     toast('ליד חדש: ' + p.new.name); 
@@ -907,7 +953,7 @@
             const updateLead = async (id, updates) => { 
                 setLeads(p => p.map(l => l.id === id ? { ...l, ...updates } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, ...updates })); 
-                try { await supabase.from('easychat_leads').update(updates).eq('id', id); toast('עודכן'); } catch (e) { toast('שגיאה', 'error'); } 
+                try { await supabase.from('leads').update(updates).eq('id', id); toast('עודכן'); } catch (e) { toast('שגיאה', 'error'); } 
             };
             
             const addNote = async (id, text) => { 
@@ -916,7 +962,7 @@
                 const notes = [...(lead.notes || []), note]; 
                 setLeads(p => p.map(l => l.id === id ? { ...l, notes: notes } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, notes: notes })); 
-                try { await supabase.from('easychat_leads').update({ notes: notes }).eq('id', id); toast('הערה נוספה'); } catch (e) { toast('שגיאה', 'error'); } 
+                try { await supabase.from('leads').update({ notes: notes }).eq('id', id); toast('הערה נוספה'); } catch (e) { toast('שגיאה', 'error'); } 
             };
             
             const logCall = async (id, type) => { 
@@ -925,13 +971,13 @@
                 const logs = [...(lead.call_logs || []), log]; 
                 setLeads(p => p.map(l => l.id === id ? { ...l, call_logs: logs } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, call_logs: logs })); 
-                try { await supabase.from('easychat_leads').update({ call_logs: logs }).eq('id', id); } catch (e) { } 
+                try { await supabase.from('leads').update({ call_logs: logs }).eq('id', id); } catch (e) { } 
             };
             
             const addLead = async (data) => { 
                 const lead = { id: Date.now().toString(), ...data, status: 'new', notes: [], call_logs: [], created_at: new Date().toISOString() }; 
                 setLeads(p => [lead, ...p]); 
-                try { await supabase.from('easychat_leads').insert([data]); toast('ליד נוסף'); } catch (e) { } 
+                try { await supabase.from('leads').insert([data]); toast('ליד נוסף'); } catch (e) { } 
             };
             
             const addTask = (taskData) => { 
