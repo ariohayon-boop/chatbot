@@ -13,30 +13,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <style>
-        :root {
-            --primary: #06D6A0;
-            --primary-dark: #05B888;
-            --secondary: #118AB2;
-            --bg: #F8FAFB;
-            --text: #073B4C;
-            --text-light: #6B7280;
-            --navy: #073B4C;
-            --border: #E5E7EB;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --purple: #8B5CF6;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            --font-display: 'Rubik', sans-serif;
-            --font-body: 'Heebo', sans-serif;
-        }
+        :root { --primary: #06D6A0; --primary-dark: #05B888; --secondary: #118AB2; --bg: #F8FAFB; --text: #073B4C; --text-light: #6B7280; --navy: #073B4C; --border: #E5E7EB; --success: #10B981; --warning: #F59E0B; --danger: #EF4444; --purple: #8B5CF6; --shadow-sm: 0 1px 2px rgba(0,0,0,0.05); --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1); --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px; --font-display: 'Rubik', sans-serif; --font-body: 'Heebo', sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -88,7 +65,7 @@
         .stat-card-value { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--text); }
         .stat-card-label { font-size: 14px; color: var(--text-light); }
         .filters-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-        .search-input { flex: 1; min-width: 200px; padding: 10px 16px; padding-right: 40px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat right 12px center / 20px; }
+        .search-input { flex: 1; min-width: 200px; padding: 10px 16px; padding-right: 40px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; background: white; }
         .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,214,160,0.1); }
         .filter-select { padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; background: white; cursor: pointer; min-width: 150px; }
         .filter-select:focus { outline: none; border-color: var(--primary); }
@@ -146,13 +123,11 @@
         .note-input-container { display: flex; gap: 8px; margin-top: 12px; }
         .note-input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; resize: none; }
         .note-input:focus { outline: none; border-color: var(--primary); }
-        .call-log-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border-radius: var(--radius-md); margin-bottom: 8px; }
-        .call-log-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-        .call-log-icon.call { background: rgba(16,185,129,0.1); }
-        .call-log-icon.whatsapp { background: rgba(37,211,102,0.1); }
-        .call-log-info { flex: 1; }
-        .call-log-type { font-weight: 500; font-size: 14px; }
-        .call-log-time { font-size: 12px; color: var(--text-light); }
+        .quick-actions { display: flex; gap: 8px; margin-top: 16px; }
+        .quick-action-btn { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .quick-action-btn:hover { border-color: var(--primary); background: var(--bg); }
+        .quick-action-btn span:first-child { font-size: 20px; }
+        .quick-action-btn span:last-child { font-size: 11px; color: var(--text-light); }
         .status-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .status-option { padding: 12px; border: 2px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; text-align: center; font-size: 13px; font-weight: 500; }
         .status-option:hover { border-color: var(--primary); }
@@ -160,18 +135,19 @@
         .reason-selector { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
         .reason-option { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
         .reason-option:hover { border-color: var(--primary); background: var(--bg); }
-        .reason-option.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
         .reason-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .template-card { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
         .template-card:hover { border-color: var(--primary); background: var(--bg); }
         .template-card.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
         .template-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
         .template-preview { font-size: 13px; color: var(--text-light); line-height: 1.4; white-space: pre-line; }
-        .quick-actions { display: flex; gap: 8px; margin-top: 16px; }
-        .quick-action-btn { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .quick-action-btn:hover { border-color: var(--primary); background: var(--bg); }
-        .quick-action-btn span:first-child { font-size: 20px; }
-        .quick-action-btn span:last-child { font-size: 11px; color: var(--text-light); }
+        .call-log-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border-radius: var(--radius-md); margin-bottom: 8px; }
+        .call-log-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .call-log-icon.call { background: rgba(16,185,129,0.1); }
+        .call-log-icon.whatsapp { background: rgba(37,211,102,0.1); }
+        .call-log-info { flex: 1; }
+        .call-log-type { font-weight: 500; font-size: 14px; }
+        .call-log-time { font-size: 12px; color: var(--text-light); }
         .kanban-container { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 20px; }
         .kanban-column { min-width: 280px; max-width: 280px; background: var(--bg); border-radius: var(--radius-lg); padding: 16px; }
         .kanban-column-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
@@ -211,7 +187,6 @@
         .empty-state { text-align: center; padding: 60px 20px; }
         .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
         .empty-state-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-        .empty-state-text { color: var(--text-light); font-size: 14px; }
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .modal { background: white; border-radius: var(--radius-xl); width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
         .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -228,29 +203,18 @@
         .toast.success { border-right: 4px solid var(--success); }
         .toast.error { border-right: 4px solid var(--danger); }
         .add-task-section { background: var(--bg); border-radius: var(--radius-md); padding: 16px; margin-top: 16px; }
-        .add-task-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .add-task-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
         .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; z-index: 600; }
-        @media (max-width: 1024px) {
-            .sidebar { width: 72px; padding: 16px 8px; }
-            .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info, .nav-submenu { display: none; }
-            .nav-item { justify-content: center; padding: 12px; }
-            .main-content { margin-right: 72px; }
-            .lead-panel { width: 100%; }
-        }
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-right: 0; padding: 16px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .kanban-container { flex-direction: column; }
-            .kanban-column { min-width: 100%; max-width: 100%; }
-        }
+        @media (max-width: 1024px) { .sidebar { width: 72px; padding: 16px 8px; } .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info, .nav-submenu { display: none; } .nav-item { justify-content: center; padding: 12px; } .main-content { margin-right: 72px; } .lead-panel { width: 100%; } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-right: 0; padding: 16px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .kanban-container { flex-direction: column; } .kanban-column { min-width: 100%; max-width: 100%; } }
     </style>
 </head>
 <body>
     <div id="root"></div>
     <script type="text/babel">
+
         const { useState, useEffect, useMemo } = React;
         const { motion, AnimatePresence } = Motion;
 
@@ -299,8 +263,8 @@
             else if (lead.status === 'followup_qualified') score += 30;
             else if (lead.status === 'followup_initial') score += 20;
             else if (lead.status === 'new') score += 15;
-            if (lead.call_logs?.length) score += Math.min(lead.call_logs.length * 5, 20);
-            if (lead.notes?.length) score += Math.min(lead.notes.length * 3, 10);
+            if (lead.call_logs && lead.call_logs.length) score += Math.min(lead.call_logs.length * 5, 20);
+            if (lead.notes && lead.notes.length) score += Math.min(lead.notes.length * 3, 10);
             return Math.min(score, 100);
         };
 
@@ -311,24 +275,21 @@
         };
 
         const getDaysSinceLastContact = (lead) => {
-            if (!lead.call_logs?.length) return Math.floor((Date.now() - new Date(lead.created_at)) / 86400000);
+            if (!lead.call_logs || !lead.call_logs.length) return Math.floor((Date.now() - new Date(lead.created_at)) / 86400000);
             return Math.floor((Date.now() - new Date(lead.call_logs[lead.call_logs.length - 1].created_at)) / 86400000);
         };
 
         const generateMockLeads = () => [
             { id: '1', name: 'דני כהן', phone: '054-1234567', business_type: 'יועץ עסקי', status: 'new', source: 'facebook', created_at: new Date().toISOString(), notes: [], call_logs: [] },
-            { id: '2', name: 'מיכל לוי', phone: '052-9876543', business_type: 'מאמנת אישית', status: 'followup_initial', source: 'instagram', created_at: new Date(Date.now() - 86400000).toISOString(), notes: [{ id: '1', text: 'ביקשה לחזור בעוד שבוע', author: 'אריאל', created_at: new Date().toISOString() }], call_logs: [{ id: '1', type: 'call', created_at: new Date(Date.now() - 86400000).toISOString() }] },
-            { id: '3', name: 'יוסי אברהם', phone: '050-5555555', business_type: 'צלם אירועים', status: 'followup_qualified', source: 'referral', created_at: new Date(Date.now() - 172800000).toISOString(), notes: [{ id: '1', text: 'מאוד מעוניין', author: 'אריאל', created_at: new Date().toISOString() }], call_logs: [{ id: '1', type: 'whatsapp', created_at: new Date(Date.now() - 172800000).toISOString() }] },
+            { id: '2', name: 'מיכל לוי', phone: '052-9876543', business_type: 'מאמנת אישית', status: 'followup_initial', source: 'instagram', created_at: new Date(Date.now() - 86400000).toISOString(), notes: [], call_logs: [] },
+            { id: '3', name: 'יוסי אברהם', phone: '050-5555555', business_type: 'צלם אירועים', status: 'followup_qualified', source: 'referral', created_at: new Date(Date.now() - 172800000).toISOString(), notes: [], call_logs: [] },
             { id: '4', name: 'שרה גולד', phone: '053-1111111', business_type: 'מעצבת פנים', status: 'interested', source: 'google', created_at: new Date(Date.now() - 259200000).toISOString(), notes: [], call_logs: [] },
-            { id: '5', name: 'אבי רוזן', phone: '058-2222222', business_type: 'עורך דין', status: 'not_interested', source: 'website', rejection_reason: 'expensive', created_at: new Date(Date.now() - 345600000).toISOString(), notes: [], call_logs: [] },
-            { id: '6', name: 'רונית שמעון', phone: '054-3333333', business_type: 'מורה לפילאטיס', status: 'demo', source: 'instagram', created_at: new Date(Date.now() - 432000000).toISOString(), notes: [], call_logs: [] },
-            { id: '7', name: 'עמית ברק', phone: '050-4444444', business_type: 'יועץ משכנתאות', status: 'closed_won', source: 'referral', created_at: new Date(Date.now() - 604800000).toISOString(), notes: [{ id: '1', text: 'נסגר!', author: 'אריאל', created_at: new Date().toISOString() }], call_logs: [] }
+            { id: '5', name: 'אבי רוזן', phone: '058-2222222', business_type: 'עורך דין', status: 'not_interested', source: 'website', rejection_reason: 'expensive', created_at: new Date(Date.now() - 345600000).toISOString(), notes: [], call_logs: [] }
         ];
 
         const generateMockTasks = () => [
             { id: '1', title: 'להתקשר לדני כהן', lead_id: '1', lead_name: 'דני כהן', due_date: new Date().toISOString().split('T')[0], due_time: '10:00', priority: 'high', completed: false },
-            { id: '2', title: 'לשלוח הצעת מחיר למיכל', lead_id: '2', lead_name: 'מיכל לוי', due_date: new Date().toISOString().split('T')[0], due_time: '14:00', priority: 'medium', completed: false },
-            { id: '3', title: 'הדגמה עם רונית', lead_id: '6', lead_name: 'רונית שמעון', due_date: new Date().toISOString().split('T')[0], due_time: '16:30', priority: 'high', completed: false }
+            { id: '2', title: 'לשלוח הצעת מחיר למיכל', lead_id: '2', lead_name: 'מיכל לוי', due_date: new Date().toISOString().split('T')[0], due_time: '14:00', priority: 'medium', completed: false }
         ];
 
         const Sidebar = ({ activeView, setActiveView, notifications, leads, statusFilter, setStatusFilter }) => {
@@ -339,43 +300,33 @@
                 return counts;
             }, [leads]);
 
-            const navItems = [
-                { id: 'dashboard', icon: '📊', label: 'דשבורד' },
-                { id: 'leads', icon: '👥', label: 'לידים', expandable: true },
-                { id: 'pipeline', icon: '📋', label: 'Pipeline' },
-                { id: 'tasks', icon: '✅', label: 'משימות' },
-                { id: 'reports', icon: '📈', label: 'דוחות' },
-                { id: 'reminders', icon: '🔔', label: 'תזכורות', badge: notifications.filter(n => !n.read).length },
-                { id: 'settings', icon: '⚙️', label: 'הגדרות' }
-            ];
-
             return (
                 <aside className="sidebar">
                     <div className="sidebar-logo">EasyChat</div>
                     <div className="sidebar-subtitle">מערכת ניהול לידים</div>
                     <nav className="sidebar-nav">
-                        {navItems.map(item => (
+                        {[
+                            { id: 'dashboard', icon: '📊', label: 'דשבורד' },
+                            { id: 'leads', icon: '👥', label: 'לידים', expandable: true },
+                            { id: 'pipeline', icon: '📋', label: 'Pipeline' },
+                            { id: 'tasks', icon: '✅', label: 'משימות' },
+                            { id: 'reports', icon: '📈', label: 'דוחות' }
+                        ].map(item => (
                             <div key={item.id}>
-                                <div className={`nav-item ${activeView === item.id ? 'active' : ''}`} onClick={() => { if (item.id === 'leads') { setLeadsExpanded(!leadsExpanded); setActiveView('leads'); setStatusFilter('all'); } else setActiveView(item.id); }}>
-                                    {item.expandable ? (
-                                        <div className="nav-item-expandable">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><span className="nav-item-icon">{item.icon}</span><span>{item.label}</span></div>
-                                            <span className={`expand-icon ${leadsExpanded ? 'expanded' : ''}`}>▼</span>
-                                        </div>
-                                    ) : (<><span className="nav-item-icon">{item.icon}</span><span>{item.label}</span>{item.badge > 0 && <span className="nav-badge">{item.badge}</span>}</>)}
+                                <div className={`nav-item ${activeView === item.id ? 'active' : ''}`} onClick={() => { setActiveView(item.id); if (item.id === 'leads') setStatusFilter('all'); }}>
+                                    <span className="nav-item-icon">{item.icon}</span>
+                                    <span>{item.label}</span>
                                 </div>
-                                {item.id === 'leads' && (
-                                    <div className={`nav-submenu ${leadsExpanded ? '' : 'collapsed'}`}>
-                                        <div className={`nav-submenu-item ${statusFilter === 'all' ? 'active' : ''}`} onClick={() => { setActiveView('leads'); setStatusFilter('all'); }}><span>📋 כל הלידים</span><span className="count">{leads.length}</span></div>
-                                        {Object.entries(STATUS_CONFIG).map(([status, config]) => (
-                                            <div key={status} className={`nav-submenu-item ${statusFilter === status ? 'active' : ''}`} onClick={() => { setActiveView('leads'); setStatusFilter(status); }}><span>{config.icon} {config.label}</span><span className="count">{statusCounts[status]}</span></div>
-                                        ))}
-                                    </div>
-                                )}
                             </div>
                         ))}
                     </nav>
-                    <div className="sidebar-user"><div className="user-avatar">א</div><div className="user-info"><div className="user-name">אריאל</div><div className="user-role">מנהל</div></div></div>
+                    <div className="sidebar-user">
+                        <div className="user-avatar">א</div>
+                        <div className="user-info">
+                            <div className="user-name">אריאל</div>
+                            <div className="user-role">מנהל</div>
+                        </div>
+                    </div>
                 </aside>
             );
         };
@@ -384,11 +335,22 @@
             const stats = [
                 { label: 'סה״כ לידים', value: leads.length, icon: '👥', color: 'blue' },
                 { label: 'לידים חדשים', value: leads.filter(l => l.status === 'new').length, icon: '✨', color: 'purple' },
-                { label: 'בפולואפ', value: leads.filter(l => l.status.includes('followup')).length, icon: '📞', color: 'yellow' },
-                { label: 'נסגרו', value: leads.filter(l => l.status === 'closed_won').length, icon: '🎉', color: 'green' },
-                { label: 'שיעור המרה', value: leads.length ? Math.round((leads.filter(l => l.status === 'closed_won').length / leads.length) * 100) + '%' : '0%', icon: '📈', color: 'blue' }
+                { label: 'בפולואפ', value: leads.filter(l => l.status && l.status.includes('followup')).length, icon: '📞', color: 'yellow' },
+                { label: 'נסגרו', value: leads.filter(l => l.status === 'closed_won').length, icon: '🎉', color: 'green' }
             ];
-            return (<div className="stats-grid">{stats.map((s, i) => (<motion.div key={i} className="stat-card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}><div className="stat-card-header"><span className="stat-card-label">{s.label}</span><div className={`stat-card-icon ${s.color}`}>{s.icon}</div></div><div className="stat-card-value">{s.value}</div></motion.div>))}</div>);
+            return (
+                <div className="stats-grid">
+                    {stats.map((s, i) => (
+                        <motion.div key={i} className="stat-card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+                            <div className="stat-card-header">
+                                <span className="stat-card-label">{s.label}</span>
+                                <div className={`stat-card-icon ${s.color}`}>{s.icon}</div>
+                            </div>
+                            <div className="stat-card-value">{s.value}</div>
+                        </motion.div>
+                    ))}
+                </div>
+            );
         };
 
         const LeadsTable = ({ leads, onSelectLead, searchQuery, statusFilter, sourceFilter }) => {
@@ -398,48 +360,72 @@
                 if (sourceFilter !== 'all' && l.source !== sourceFilter) return false;
                 return true;
             });
-            const formatDate = d => new Date(d).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' });
-            if (!filtered.length) return (<div className="table-container"><div className="empty-state"><div className="empty-state-icon">🔍</div><div className="empty-state-title">לא נמצאו לידים</div></div></div>);
+            if (!filtered.length) return <div className="table-container"><div className="empty-state"><div className="empty-state-icon">🔍</div><div className="empty-state-title">לא נמצאו לידים</div></div></div>;
             return (
-                <div className="table-container"><table className="table"><thead><tr><th>שם</th><th>טלפון</th><th>סוג עסק</th><th>סטטוס</th><th>מקור</th><th>חום</th><th>נוצר</th></tr></thead><tbody>
-                    {filtered.map((lead, i) => { const score = calculateLeadScore(lead); const scoreInfo = getScoreLevel(score); return (
-                        <motion.tr key={lead.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.02 }} onClick={() => onSelectLead(lead)}>
-                            <td><strong>{lead.name}</strong></td><td style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</td><td>{lead.business_type}</td>
-                            <td><span className={`status-badge ${lead.status}`}><span className="status-dot"></span>{STATUS_CONFIG[lead.status]?.label}</span></td>
-                            <td><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source]?.icon} {SOURCE_CONFIG[lead.source]?.label}</span></td>
-                            <td><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span></td><td>{formatDate(lead.created_at)}</td>
-                        </motion.tr>
-                    ); })}
-                </tbody></table></div>
+                <div className="table-container">
+                    <table className="table">
+                        <thead>
+                            <tr><th>שם</th><th>טלפון</th><th>סוג עסק</th><th>סטטוס</th><th>מקור</th><th>חום</th></tr>
+                        </thead>
+                        <tbody>
+                            {filtered.map((lead, i) => {
+                                const score = calculateLeadScore(lead);
+                                const scoreInfo = getScoreLevel(score);
+                                return (
+                                    <motion.tr key={lead.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => onSelectLead(lead)}>
+                                        <td><strong>{lead.name}</strong></td>
+                                        <td style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</td>
+                                        <td>{lead.business_type}</td>
+                                        <td><span className={`status-badge ${lead.status}`}><span className="status-dot"></span>{STATUS_CONFIG[lead.status] && STATUS_CONFIG[lead.status].label}</span></td>
+                                        <td><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source] && SOURCE_CONFIG[lead.source].icon} {SOURCE_CONFIG[lead.source] && SOURCE_CONFIG[lead.source].label}</span></td>
+                                        <td><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span></td>
+                                    </motion.tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             );
         };
 
         const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote, onLogCall, onAddTask, tasks }) => {
             const [activeTab, setActiveTab] = useState('details');
             const [newNote, setNewNote] = useState('');
-            const [selectedStatus, setSelectedStatus] = useState(lead?.status || 'new');
+            const [selectedStatus, setSelectedStatus] = useState(lead ? lead.status : 'new');
             const [selectedTemplate, setSelectedTemplate] = useState(null);
             const [showRejection, setShowRejection] = useState(false);
             const [showAddTask, setShowAddTask] = useState(false);
             const [newTask, setNewTask] = useState({ title: '', date: '', time: '', priority: 'medium' });
 
-            useEffect(() => { if (lead) { setSelectedStatus(lead.status); setActiveTab('details'); setShowAddTask(false); setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium' }); } }, [lead]);
+            useEffect(() => { 
+                if (lead) { 
+                    setSelectedStatus(lead.status); 
+                    setActiveTab('details'); 
+                    setShowAddTask(false); 
+                    setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium' }); 
+                } 
+            }, [lead]);
 
-            const handleWhatsApp = (template = null) => {
+            const handleWhatsApp = (template) => {
+                if (!lead) return;
                 const phone = lead.phone.replace(/\D/g, '');
-                const phoneNumber = phone.startsWith('0') ? `972${phone.slice(1)}` : phone;
-                let url = `https://wa.me/${phoneNumber}`;
-                if (template) url += `?text=${encodeURIComponent(template.message.replace('[שם]', lead.name.split(' ')[0]))}`;
+                const phoneNumber = phone.startsWith('0') ? '972' + phone.slice(1) : phone;
+                let url = 'https://wa.me/' + phoneNumber;
+                if (template) url += '?text=' + encodeURIComponent(template.message.replace('[שם]', lead.name.split(' ')[0]));
                 window.open(url, '_blank');
                 onLogCall(lead.id, 'whatsapp');
             };
 
-            const handleCall = () => { window.location.href = `tel:${lead.phone}`; onLogCall(lead.id, 'call'); };
+            const handleCall = () => { 
+                if (!lead) return;
+                window.location.href = 'tel:' + lead.phone; 
+                onLogCall(lead.id, 'call'); 
+            };
 
             const handleStatusChange = (status) => {
                 setSelectedStatus(status);
                 if (status === 'not_interested') setShowRejection(true);
-                else { setShowRejection(false); onUpdateLead(lead.id, { status }); }
+                else { setShowRejection(false); onUpdateLead(lead.id, { status: status }); }
             };
 
             const handleAddTask = () => {
@@ -456,85 +442,213 @@
                 setShowAddTask(false);
             };
 
-            const leadTasks = tasks.filter(t => t.lead_id === lead?.id);
-
             if (!lead) return null;
             const score = calculateLeadScore(lead);
             const scoreInfo = getScoreLevel(score);
             const daysSince = getDaysSinceLastContact(lead);
-            const formatDate = d => new Date(d).toLocaleDateString('he-IL', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+            const leadTasks = tasks.filter(t => t.lead_id === lead.id);
 
             return (
-                <><div className={`panel-overlay ${lead ? 'open' : ''}`} onClick={onClose} />
-                <motion.aside className={`lead-panel ${lead ? 'open' : ''}`} initial={{ x: '-100%' }} animate={{ x: lead ? 0 : '-100%' }}>
-                    <div className="panel-header"><div><h2 className="panel-title">{lead.name}</h2><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span></div><button className="panel-close" onClick={onClose}>✕</button></div>
-                    <div className="panel-tabs"><div className={`panel-tab ${activeTab === 'details' ? 'active' : ''}`} onClick={() => setActiveTab('details')}>פרטים</div><div className={`panel-tab ${activeTab === 'activity' ? 'active' : ''}`} onClick={() => setActiveTab('activity')}>פעילות</div><div className={`panel-tab ${activeTab === 'templates' ? 'active' : ''}`} onClick={() => setActiveTab('templates')}>תבניות</div></div>
-                    <div className="panel-content">
-                        {daysSince >= 3 && lead.status !== 'closed_won' && lead.status !== 'not_interested' && <div className="reminder-card"><h4>⚠️ לא היה קשר {daysSince} ימים</h4><p>מומלץ ליצור קשר</p></div>}
-                        <div className="quick-actions"><button className="quick-action-btn" onClick={() => handleWhatsApp()}><span>💬</span><span>WhatsApp</span></button><button className="quick-action-btn" onClick={handleCall}><span>📞</span><span>התקשר</span></button><button className="quick-action-btn" onClick={() => setActiveTab('templates')}><span>📝</span><span>תבניות</span></button><button className="quick-action-btn" onClick={() => setShowAddTask(!showAddTask)}><span>📅</span><span>משימה</span></button></div>
-                        
-                        {activeTab === 'details' && (<>
-                            {showAddTask && (
-                                <div className="add-task-section">
-                                    <h4>📅 הוספת משימה חדשה</h4>
-                                    <div className="form-group">
-                                        <label className="form-label">תיאור המשימה</label>
-                                        <input className="form-input" placeholder="לדוגמה: לחזור אל הליד בשעה 13:00" value={newTask.title} onChange={e => setNewTask({...newTask, title: e.target.value})} />
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="form-group">
-                                            <label className="form-label">תאריך</label>
-                                            <input type="date" className="form-input" value={newTask.date} onChange={e => setNewTask({...newTask, date: e.target.value})} />
-                                        </div>
-                                        <div className="form-group">
-                                            <label className="form-label">שעה</label>
-                                            <input type="time" className="form-input" value={newTask.time} onChange={e => setNewTask({...newTask, time: e.target.value})} />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">עדיפות</label>
-                                        <select className="form-input" value={newTask.priority} onChange={e => setNewTask({...newTask, priority: e.target.value})}>
-                                            <option value="high">🔴 גבוהה</option>
-                                            <option value="medium">🟡 בינונית</option>
-                                            <option value="low">⚪ נמוכה</option>
-                                        </select>
-                                    </div>
-                                    <button className="btn btn-primary" style={{width: '100%'}} onClick={handleAddTask}>➕ הוסף משימה</button>
+                <React.Fragment>
+                    <div className={`panel-overlay ${lead ? 'open' : ''}`} onClick={onClose} />
+                    <motion.aside className={`lead-panel ${lead ? 'open' : ''}`} initial={{ x: '-100%' }} animate={{ x: lead ? 0 : '-100%' }}>
+                        <div className="panel-header">
+                            <div>
+                                <h2 className="panel-title">{lead.name}</h2>
+                                <span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span>
+                            </div>
+                            <button className="panel-close" onClick={onClose}>✕</button>
+                        </div>
+                        <div className="panel-tabs">
+                            <div className={`panel-tab ${activeTab === 'details' ? 'active' : ''}`} onClick={() => setActiveTab('details')}>פרטים</div>
+                            <div className={`panel-tab ${activeTab === 'activity' ? 'active' : ''}`} onClick={() => setActiveTab('activity')}>פעילות</div>
+                            <div className={`panel-tab ${activeTab === 'templates' ? 'active' : ''}`} onClick={() => setActiveTab('templates')}>תבניות</div>
+                        </div>
+                        <div className="panel-content">
+                            {daysSince >= 3 && lead.status !== 'closed_won' && lead.status !== 'not_interested' && (
+                                <div className="reminder-card">
+                                    <h4>⚠️ לא היה קשר {daysSince} ימים</h4>
+                                    <p>מומלץ ליצור קשר</p>
                                 </div>
                             )}
+                            <div className="quick-actions">
+                                <button className="quick-action-btn" onClick={() => handleWhatsApp(null)}>
+                                    <span>💬</span><span>WhatsApp</span>
+                                </button>
+                                <button className="quick-action-btn" onClick={handleCall}>
+                                    <span>📞</span><span>התקשר</span>
+                                </button>
+                                <button className="quick-action-btn" onClick={() => setActiveTab('templates')}>
+                                    <span>📝</span><span>תבניות</span>
+                                </button>
+                                <button className="quick-action-btn" onClick={() => setShowAddTask(!showAddTask)}>
+                                    <span>📅</span><span>משימה</span>
+                                </button>
+                            </div>
+                            
+                            {activeTab === 'details' && (
+                                <React.Fragment>
+                                    {showAddTask && (
+                                        <div className="add-task-section">
+                                            <h4>📅 הוספת משימה חדשה</h4>
+                                            <div className="form-group">
+                                                <label className="form-label">תיאור המשימה</label>
+                                                <input className="form-input" placeholder="לדוגמה: לחזור אל הליד בשעה 13:00" value={newTask.title} onChange={e => setNewTask({...newTask, title: e.target.value})} />
+                                            </div>
+                                            <div className="form-row">
+                                                <div className="form-group">
+                                                    <label className="form-label">תאריך</label>
+                                                    <input type="date" className="form-input" value={newTask.date} onChange={e => setNewTask({...newTask, date: e.target.value})} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="form-label">שעה</label>
+                                                    <input type="time" className="form-input" value={newTask.time} onChange={e => setNewTask({...newTask, time: e.target.value})} />
+                                                </div>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="form-label">עדיפות</label>
+                                                <select className="form-input" value={newTask.priority} onChange={e => setNewTask({...newTask, priority: e.target.value})}>
+                                                    <option value="high">🔴 גבוהה</option>
+                                                    <option value="medium">🟡 בינונית</option>
+                                                    <option value="low">⚪ נמוכה</option>
+                                                </select>
+                                            </div>
+                                            <button className="btn btn-primary" style={{width: '100%'}} onClick={handleAddTask}>➕ הוסף משימה</button>
+                                        </div>
+                                    )}
 
-                            {leadTasks.length > 0 && (
-                                <div className="panel-section" style={{ marginTop: 16 }}>
-                                    <div className="panel-section-title">משימות לליד זה ({leadTasks.length})</div>
-                                    {leadTasks.map(task => (
-                                        <div key={task.id} style={{ background: 'var(--bg)', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px', borderRight: `3px solid ${task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#6B7280'}` }}>
-                                            <div style={{ fontWeight: 500, fontSize: '14px' }}>{task.title}</div>
-                                            <div style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px' }}>
-                                                📅 {new Date(task.due_date).toLocaleDateString('he-IL')} {task.due_time && `⏰ ${task.due_time}`}
+                                    {leadTasks.length > 0 && (
+                                        <div className="panel-section" style={{ marginTop: 16 }}>
+                                            <div className="panel-section-title">משימות לליד זה ({leadTasks.length})</div>
+                                            {leadTasks.map(task => (
+                                                <div key={task.id} style={{ background: 'var(--bg)', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px', borderRight: '3px solid ' + (task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#6B7280') }}>
+                                                    <div style={{ fontWeight: 500, fontSize: '14px' }}>{task.title}</div>
+                                                    <div style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px' }}>
+                                                        📅 {new Date(task.due_date).toLocaleDateString('he-IL')} {task.due_time && ('⏰ ' + task.due_time)}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    <div className="panel-section" style={{ marginTop: 24 }}>
+                                        <div className="panel-section-title">פרטים</div>
+                                        <div className="info-grid">
+                                            <div className="info-item"><div className="info-label">טלפון</div><div className="info-value" style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</div></div>
+                                            <div className="info-item"><div className="info-label">סוג עסק</div><div className="info-value">{lead.business_type}</div></div>
+                                            <div className="info-item"><div className="info-label">מקור</div><div className="info-value"><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source] && SOURCE_CONFIG[lead.source].icon} {SOURCE_CONFIG[lead.source] && SOURCE_CONFIG[lead.source].label}</span></div></div>
+                                            <div className="info-item"><div className="info-label">קשר אחרון</div><div className="info-value">{daysSince === 0 ? 'היום' : 'לפני ' + daysSince + ' ימים'}</div></div>
+                                        </div>
+                                    </div>
+                                    <div className="panel-section">
+                                        <div className="panel-section-title">סטטוס</div>
+                                        <div className="status-selector">
+                                            {Object.entries(STATUS_CONFIG).map(([k, v]) => (
+                                                <div key={k} className={`status-option ${selectedStatus === k ? 'selected' : ''}`} onClick={() => handleStatusChange(k)}>
+                                                    {v.icon} {v.label}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {showRejection && (
+                                            <div className="reason-selector">
+                                                {Object.entries(REJECTION_REASONS).map(([k, v]) => (
+                                                    <div key={k} className="reason-option" onClick={() => { onUpdateLead(lead.id, { status: 'not_interested', rejection_reason: k }); setShowRejection(false); }}>
+                                                        <div className="reason-icon">{v.icon}</div>
+                                                        <span>{v.label}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="panel-section">
+                                        <div className="panel-section-title">הערות</div>
+                                        <div className="notes-list">
+                                            {lead.notes && lead.notes.length > 0 ? lead.notes.map(n => (
+                                                <div key={n.id} className="note-item">
+                                                    <div className="note-header">
+                                                        <span className="note-author">{n.author}</span>
+                                                        <span className="note-date">{new Date(n.created_at).toLocaleDateString('he-IL')}</span>
+                                                    </div>
+                                                    <div className="note-text">{n.text}</div>
+                                                </div>
+                                            )) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין הערות</div>}
+                                        </div>
+                                        <div className="note-input-container">
+                                            <textarea className="note-input" placeholder="הוסף הערה..." rows={2} value={newNote} onChange={e => setNewNote(e.target.value)} />
+                                            <button className="btn btn-primary" onClick={() => { if (newNote.trim()) { onAddNote(lead.id, newNote); setNewNote(''); } }} disabled={!newNote.trim()}>הוסף</button>
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {activeTab === 'activity' && (
+                                <div className="panel-section">
+                                    <div className="panel-section-title">היסטוריית קשר</div>
+                                    {lead.call_logs && lead.call_logs.length > 0 ? lead.call_logs.slice().reverse().map((l, i) => (
+                                        <div key={i} className="call-log-item">
+                                            <div className={`call-log-icon ${l.type}`}>{l.type === 'call' ? '📞' : '💬'}</div>
+                                            <div className="call-log-info">
+                                                <div className="call-log-type">{l.type === 'call' ? 'שיחה' : 'WhatsApp'}</div>
+                                                <div className="call-log-time">{new Date(l.created_at).toLocaleDateString('he-IL')}</div>
                                             </div>
                                         </div>
-                                    ))}
+                                    )) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין היסטוריה</div>}
                                 </div>
                             )}
 
-                            <div className="panel-section" style={{ marginTop: 24 }}><div className="panel-section-title">פרטים</div><div className="info-grid"><div className="info-item"><div className="info-label">טלפון</div><div className="info-value" style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</div></div><div className="info-item"><div className="info-label">סוג עסק</div><div className="info-value">{lead.business_type}</div></div><div className="info-item"><div className="info-label">מקור</div><div className="info-value"><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source]?.icon} {SOURCE_CONFIG[lead.source]?.label}</span></div></div><div className="info-item"><div className="info-label">קשר אחרון</div><div className="info-value">{daysSince === 0 ? 'היום' : `לפני ${daysSince} ימים`}</div></div></div></div>
-                            <div className="panel-section"><div className="panel-section-title">סטטוס</div><div className="status-selector">{Object.entries(STATUS_CONFIG).map(([k, v]) => (<div key={k} className={`status-option ${selectedStatus === k ? 'selected' : ''}`} onClick={() => handleStatusChange(k)}>{v.icon} {v.label}</div>))}</div>
-                                {showRejection && <div className="reason-selector">{Object.entries(REJECTION_REASONS).map(([k, v]) => (<div key={k} className="reason-option" onClick={() => { onUpdateLead(lead.id, { status: 'not_interested', rejection_reason: k }); setShowRejection(false); }}><div className="reason-icon">{v.icon}</div><span>{v.label}</span></div>))}</div>}
-                            </div>
-                            <div className="panel-section"><div className="panel-section-title">הערות</div><div className="notes-list">{lead.notes?.length ? lead.notes.map(n => (<div key={n.id} className="note-item"><div className="note-header"><span className="note-author">{n.author}</span><span className="note-date">{formatDate(n.created_at)}</span></div><div className="note-text">{n.text}</div></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין הערות</div>}</div><div className="note-input-container"><textarea className="note-input" placeholder="הוסף הערה..." rows={2} value={newNote} onChange={e => setNewNote(e.target.value)} /><button className="btn btn-primary" onClick={() => { if (newNote.trim()) { onAddNote(lead.id, newNote); setNewNote(''); } }} disabled={!newNote.trim()}>הוסף</button></div></div>
-                        </>)}
-
-                        {activeTab === 'activity' && (<div className="panel-section"><div className="panel-section-title">היסטוריית קשר</div>{lead.call_logs?.length ? lead.call_logs.slice().reverse().map((l, i) => (<div key={i} className="call-log-item"><div className={`call-log-icon ${l.type}`}>{l.type === 'call' ? '📞' : '💬'}</div><div className="call-log-info"><div className="call-log-type">{l.type === 'call' ? 'שיחה' : 'WhatsApp'}</div><div className="call-log-time">{formatDate(l.created_at)}</div></div></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין היסטוריה</div>}</div>)}
-
-                        {activeTab === 'templates' && (<div className="panel-section"><div className="panel-section-title">תבניות WhatsApp</div><p style={{ fontSize: 13, color: 'var(--text-light)', marginBottom: 16 }}>בחר תבנית ושלח</p>{WHATSAPP_TEMPLATES.map(t => (<div key={t.id} className={`template-card ${selectedTemplate?.id === t.id ? 'selected' : ''}`} onClick={() => setSelectedTemplate(t)}><div className="template-title">{t.title}</div><div className="template-preview">{t.message.replace('[שם]', lead.name.split(' ')[0])}</div></div>))}{selectedTemplate && <button className="btn btn-primary" style={{ width: '100%', marginTop: 16 }} onClick={() => { handleWhatsApp(selectedTemplate); setSelectedTemplate(null); }}>💬 שלח</button>}</div>)}
-                    </div>
-                </motion.aside></>
+                            {activeTab === 'templates' && (
+                                <div className="panel-section">
+                                    <div className="panel-section-title">תבניות WhatsApp</div>
+                                    <p style={{ fontSize: 13, color: 'var(--text-light)', marginBottom: 16 }}>בחר תבנית ושלח</p>
+                                    {WHATSAPP_TEMPLATES.map(t => (
+                                        <div key={t.id} className={`template-card ${selectedTemplate && selectedTemplate.id === t.id ? 'selected' : ''}`} onClick={() => setSelectedTemplate(t)}>
+                                            <div className="template-title">{t.title}</div>
+                                            <div className="template-preview">{t.message.replace('[שם]', lead.name.split(' ')[0])}</div>
+                                        </div>
+                                    ))}
+                                    {selectedTemplate && <button className="btn btn-primary" style={{ width: '100%', marginTop: 16 }} onClick={() => { handleWhatsApp(selectedTemplate); setSelectedTemplate(null); }}>💬 שלח</button>}
+                                </div>
+                            )}
+                        </div>
+                    </motion.aside>
+                </React.Fragment>
             );
         };
 
         const PipelineView = ({ leads, onSelectLead }) => {
-            const columns = ['new', 'followup_initial', 'followup_qualified', 'interested', 'demo', 'closed_won'].map(s => ({ status: s, ...STATUS_CONFIG[s] }));
-            return (<div><div className="page-header"><h1 className="page-title">📋 Pipeline</h1></div><div className="kanban-container">{columns.map(col => { const items = leads.filter(l => l.status === col.status); return (<div key={col.status} className="kanban-column"><div className="kanban-column-header"><div className="kanban-column-title"><span>{col.icon}</span><span>{col.label}</span></div><span className="kanban-column-count">{items.length}</span></div>{items.map(lead => { const scoreInfo = getScoreLevel(calculateLeadScore(lead)); return (<motion.div key={lead.id} className="kanban-card" onClick={() => onSelectLead(lead)} whileHover={{ scale: 1.02 }}><div className="kanban-card-name">{lead.name}</div><div className="kanban-card-business">{lead.business_type}</div><div className="kanban-card-footer"><span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span><span className="kanban-card-date">{new Date(lead.created_at).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' })}</span></div></motion.div>); })}{!items.length && <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)', fontSize: 13 }}>אין לידים</div>}</div>); })}</div></div>);
+            const columns = ['new', 'followup_initial', 'followup_qualified', 'interested', 'demo', 'closed_won'].map(s => ({ status: s, label: STATUS_CONFIG[s].label, icon: STATUS_CONFIG[s].icon }));
+            return (
+                <div>
+                    <div className="page-header"><h1 className="page-title">📋 Pipeline</h1></div>
+                    <div className="kanban-container">
+                        {columns.map(col => {
+                            const items = leads.filter(l => l.status === col.status);
+                            return (
+                                <div key={col.status} className="kanban-column">
+                                    <div className="kanban-column-header">
+                                        <div className="kanban-column-title"><span>{col.icon}</span><span>{col.label}</span></div>
+                                        <span className="kanban-column-count">{items.length}</span>
+                                    </div>
+                                    {items.map(lead => {
+                                        const scoreInfo = getScoreLevel(calculateLeadScore(lead));
+                                        return (
+                                            <motion.div key={lead.id} className="kanban-card" onClick={() => onSelectLead(lead)} whileHover={{ scale: 1.02 }}>
+                                                <div className="kanban-card-name">{lead.name}</div>
+                                                <div className="kanban-card-business">{lead.business_type}</div>
+                                                <div className="kanban-card-footer">
+                                                    <span className={`lead-score ${scoreInfo.level}`}>{scoreInfo.label}</span>
+                                                    <span className="kanban-card-date">{new Date(lead.created_at).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' })}</span>
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })}
+                                    {!items.length && <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)', fontSize: 13 }}>אין לידים</div>}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
         };
 
         const TasksView = ({ tasks, setTasks, leads }) => {
@@ -543,11 +657,71 @@
             const [newPriority, setNewPriority] = useState('medium');
             const [newDate, setNewDate] = useState(new Date().toISOString().split('T')[0]);
             const [newTime, setNewTime] = useState('10:00');
-            const toggle = id => setTasks(p => p.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
-            const add = () => { if (!newTitle.trim()) return; const lead = leads.find(l => l.id === newLeadId); setTasks(p => [{ id: Date.now().toString(), title: newTitle, lead_id: newLeadId, lead_name: lead?.name, due_date: newDate, due_time: newTime, priority: newPriority, completed: false }, ...p]); setNewTitle(''); setNewLeadId(''); };
+            
+            const toggle = (id) => setTasks(p => p.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+            
+            const add = () => { 
+                if (!newTitle.trim()) return; 
+                const lead = leads.find(l => l.id === newLeadId); 
+                setTasks(p => [{ id: Date.now().toString(), title: newTitle, lead_id: newLeadId, lead_name: lead ? lead.name : null, due_date: newDate, due_time: newTime, priority: newPriority, completed: false }, ...p]); 
+                setNewTitle(''); 
+                setNewLeadId(''); 
+            };
+            
             const today = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString());
             const upcoming = tasks.filter(t => new Date(t.due_date) > new Date() && new Date(t.due_date).toDateString() !== new Date().toDateString());
-            return (<div><div className="page-header"><h1 className="page-title">✅ משימות</h1></div><div className="table-container" style={{ padding: 20, marginBottom: 24 }}><h3 style={{ marginBottom: 16 }}>➕ משימה חדשה</h3><div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}><input className="form-input" placeholder="תיאור המשימה..." value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{ flex: 2, minWidth: 200 }} /><select className="filter-select" value={newLeadId} onChange={e => setNewLeadId(e.target.value)}><option value="">ללא ליד</option>{leads.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}</select><input type="date" className="form-input" value={newDate} onChange={e => setNewDate(e.target.value)} style={{ width: 150 }} /><input type="time" className="form-input" value={newTime} onChange={e => setNewTime(e.target.value)} style={{ width: 120 }} /><select className="filter-select" value={newPriority} onChange={e => setNewPriority(e.target.value)}><option value="high">🔴 גבוהה</option><option value="medium">🟡 בינונית</option><option value="low">⚪ נמוכה</option></select><button className="btn btn-primary" onClick={add}>הוסף</button></div></div><div className="table-container" style={{ padding: 20, marginBottom: 24 }}><h3 style={{ marginBottom: 16 }}>📅 היום ({today.filter(t => !t.completed).length})</h3>{today.length ? today.map(t => (<div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}><div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div><div className="task-content"><div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div><div className="task-meta">{t.lead_name && `👤 ${t.lead_name} • `}{t.due_time && `⏰ ${t.due_time}`}</div></div><span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}</div>{upcoming.length > 0 && <div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🗓️ קרובות ({upcoming.length})</h3>{upcoming.slice(0, 5).map(t => (<div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}><div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div><div className="task-content"><div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div><div className="task-meta">{t.lead_name && `👤 ${t.lead_name} • `}📅 {new Date(t.due_date).toLocaleDateString('he-IL')} {t.due_time && `⏰ ${t.due_time}`}</div></div><span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span></div>))}</div>}</div>);
+            
+            return (
+                <div>
+                    <div className="page-header"><h1 className="page-title">✅ משימות</h1></div>
+                    <div className="table-container" style={{ padding: 20, marginBottom: 24 }}>
+                        <h3 style={{ marginBottom: 16 }}>➕ משימה חדשה</h3>
+                        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                            <input className="form-input" placeholder="תיאור המשימה..." value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{ flex: 2, minWidth: 200 }} />
+                            <select className="filter-select" value={newLeadId} onChange={e => setNewLeadId(e.target.value)}>
+                                <option value="">ללא ליד</option>
+                                {leads.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+                            </select>
+                            <input type="date" className="form-input" value={newDate} onChange={e => setNewDate(e.target.value)} style={{ width: 150 }} />
+                            <input type="time" className="form-input" value={newTime} onChange={e => setNewTime(e.target.value)} style={{ width: 120 }} />
+                            <select className="filter-select" value={newPriority} onChange={e => setNewPriority(e.target.value)}>
+                                <option value="high">🔴 גבוהה</option>
+                                <option value="medium">🟡 בינונית</option>
+                                <option value="low">⚪ נמוכה</option>
+                            </select>
+                            <button className="btn btn-primary" onClick={add}>הוסף</button>
+                        </div>
+                    </div>
+                    <div className="table-container" style={{ padding: 20, marginBottom: 24 }}>
+                        <h3 style={{ marginBottom: 16 }}>📅 היום ({today.filter(t => !t.completed).length})</h3>
+                        {today.length ? today.map(t => (
+                            <div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}>
+                                <div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div>
+                                <div className="task-content">
+                                    <div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>
+                                    <div className="task-meta">{t.lead_name && ('👤 ' + t.lead_name + ' • ')}{t.due_time && ('⏰ ' + t.due_time)}</div>
+                                </div>
+                                <span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span>
+                            </div>
+                        )) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}
+                    </div>
+                    {upcoming.length > 0 && (
+                        <div className="table-container" style={{ padding: 20 }}>
+                            <h3 style={{ marginBottom: 16 }}>🗓️ קרובות ({upcoming.length})</h3>
+                            {upcoming.slice(0, 5).map(t => (
+                                <div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}>
+                                    <div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div>
+                                    <div className="task-content">
+                                        <div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>
+                                        <div className="task-meta">{t.lead_name && ('👤 ' + t.lead_name + ' • ')}📅 {new Date(t.due_date).toLocaleDateString('he-IL')} {t.due_time && ('⏰ ' + t.due_time)}</div>
+                                    </div>
+                                    <span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
         };
 
         const ReportsView = ({ leads }) => {
@@ -555,36 +729,235 @@
             const sourceData = Object.entries(SOURCE_CONFIG).map(([s, c]) => ({ source: s, label: c.label, count: leads.filter(l => l.source === s).length, color: c.color }));
             const max1 = Math.max(...statusData.map(s => s.count), 1);
             const max2 = Math.max(...sourceData.map(s => s.count), 1);
-            return (<div><div className="page-header"><h1 className="page-title">📈 דוחות</h1></div><StatsCards leads={leads} /><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}><div className="report-card"><div className="report-card-title">פירוט לפי סטטוס</div><div className="chart-bar-container">{statusData.map(i => (<div key={i.status} className="chart-bar-item"><div className="chart-bar-label">{i.label}</div><div className="chart-bar-track"><div className="chart-bar-fill" style={{ width: `${(i.count / max1) * 100}%`, background: i.color }} /></div><div className="chart-bar-value">{i.count}</div></div>))}</div></div><div className="report-card"><div className="report-card-title">פירוט לפי מקור</div><div className="chart-bar-container">{sourceData.map(i => (<div key={i.source} className="chart-bar-item"><div className="chart-bar-label">{i.label}</div><div className="chart-bar-track"><div className="chart-bar-fill" style={{ width: `${(i.count / max2) * 100}%`, background: i.color }} /></div><div className="chart-bar-value">{i.count}</div></div>))}</div></div></div></div>);
-        };
-
-        const RemindersView = ({ leads, notifications, onMarkRead }) => {
-            const needsAttention = leads.filter(l => getDaysSinceLastContact(l) >= 3 && l.status !== 'closed_won' && l.status !== 'not_interested');
-            return (<div><div className="page-header"><h1 className="page-title">🔔 תזכורות</h1></div>{needsAttention.length > 0 && <div style={{ marginBottom: 24 }}><h3 style={{ marginBottom: 12, color: 'var(--danger)' }}>⚠️ דורשים טיפול ({needsAttention.length})</h3><div className="table-container">{needsAttention.map(l => (<div key={l.id} className="notification-item"><div className="notification-title">{l.name} - {l.business_type}</div><div className="notification-time">לא היה קשר {getDaysSinceLastContact(l)} ימים</div></div>))}</div></div>}<h3 style={{ marginBottom: 12 }}>🔔 התראות</h3><div className="table-container">{notifications.length ? notifications.map((n, i) => (<div key={i} className={`notification-item ${!n.read ? 'unread' : ''}`} onClick={() => onMarkRead(i)}><div className="notification-title">{n.title}</div><div className="notification-time">{n.time}</div></div>)) : <div className="empty-state"><div className="empty-state-icon">🔔</div><div className="empty-state-title">אין התראות</div></div>}</div></div>);
+            return (
+                <div>
+                    <div className="page-header"><h1 className="page-title">📈 דוחות</h1></div>
+                    <StatsCards leads={leads} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                        <div className="report-card">
+                            <div className="report-card-title">פירוט לפי סטטוס</div>
+                            <div className="chart-bar-container">
+                                {statusData.map(i => (
+                                    <div key={i.status} className="chart-bar-item">
+                                        <div className="chart-bar-label">{i.label}</div>
+                                        <div className="chart-bar-track"><div className="chart-bar-fill" style={{ width: ((i.count / max1) * 100) + '%', background: i.color }} /></div>
+                                        <div className="chart-bar-value">{i.count}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="report-card">
+                            <div className="report-card-title">פירוט לפי מקור</div>
+                            <div className="chart-bar-container">
+                                {sourceData.map(i => (
+                                    <div key={i.source} className="chart-bar-item">
+                                        <div className="chart-bar-label">{i.label}</div>
+                                        <div className="chart-bar-track"><div className="chart-bar-fill" style={{ width: ((i.count / max2) * 100) + '%', background: i.color }} /></div>
+                                        <div className="chart-bar-value">{i.count}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         };
 
         const DashboardView = ({ leads, tasks }) => {
             const recent = [...leads].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
             const hot = leads.filter(l => l.status !== 'closed_won' && l.status !== 'not_interested').map(l => ({ ...l, score: calculateLeadScore(l) })).sort((a, b) => b.score - a.score).slice(0, 5);
             const todayTasks = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString() && !t.completed);
-            return (<div><div className="page-header"><h1 className="page-title">📊 דשבורד</h1></div><StatsCards leads={leads} /><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🔥 לידים חמים</h3>{hot.map(l => { const si = getScoreLevel(l.score); return (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`lead-score ${si.level}`}>{si.label}</span></div>); })}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🆕 לידים אחרונים</h3>{recent.map(l => (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`status-badge ${l.status}`}>{STATUS_CONFIG[l.status]?.label}</span></div>))}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>📋 משימות להיום ({todayTasks.length})</h3>{todayTasks.length ? todayTasks.map(t => (<div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div style={{ fontWeight: 500 }}>{t.title}</div><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{t.lead_name && `👤 ${t.lead_name}`} {t.due_time && `⏰ ${t.due_time}`}</div></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}</div></div></div>);
+            return (
+                <div>
+                    <div className="page-header"><h1 className="page-title">📊 דשבורד</h1></div>
+                    <StatsCards leads={leads} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}>
+                        <div className="table-container" style={{ padding: 20 }}>
+                            <h3 style={{ marginBottom: 16 }}>🔥 לידים חמים</h3>
+                            {hot.map(l => {
+                                const si = getScoreLevel(l.score);
+                                return (
+                                    <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+                                        <div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div>
+                                        <span className={`lead-score ${si.level}`}>{si.label}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className="table-container" style={{ padding: 20 }}>
+                            <h3 style={{ marginBottom: 16 }}>🆕 לידים אחרונים</h3>
+                            {recent.map(l => (
+                                <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+                                    <div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div>
+                                    <span className={`status-badge ${l.status}`}>{STATUS_CONFIG[l.status] && STATUS_CONFIG[l.status].label}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="table-container" style={{ padding: 20 }}>
+                            <h3 style={{ marginBottom: 16 }}>📋 משימות להיום ({todayTasks.length})</h3>
+                            {todayTasks.length ? todayTasks.map(t => (
+                                <div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+                                    <div style={{ fontWeight: 500 }}>{t.title}</div>
+                                    <div style={{ fontSize: 12, color: 'var(--text-light)' }}>{t.lead_name && ('👤 ' + t.lead_name)} {t.due_time && ('⏰ ' + t.due_time)}</div>
+                                </div>
+                            )) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}
+                        </div>
+                    </div>
+                </div>
+            );
         };
 
         const LeadsView = ({ leads, onSelectLead, onAddLead, statusFilter, setStatusFilter }) => {
             const [search, setSearch] = useState('');
             const [sourceFilter, setSourceFilter] = useState('all');
-            return (<div><div className="page-header"><h1 className="page-title">👥 לידים {statusFilter !== 'all' && <span style={{ fontSize: 18, fontWeight: 400, marginRight: 8 }}>- {STATUS_CONFIG[statusFilter]?.icon} {STATUS_CONFIG[statusFilter]?.label}</span>}</h1><div className="header-actions"><button className="btn btn-secondary" onClick={() => window.location.reload()}>🔄 רענן</button><button className="btn btn-primary" onClick={onAddLead}>+ ליד חדש</button></div></div><div className="filters-bar"><input className="search-input" placeholder="חפש לפי שם או טלפון..." value={search} onChange={e => setSearch(e.target.value)} /><select className="filter-select" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}><option value="all">כל הסטטוסים</option>{Object.entries(STATUS_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select><select className="filter-select" value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}><option value="all">כל המקורות</option>{Object.entries(SOURCE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select>{(search || statusFilter !== 'all' || sourceFilter !== 'all') && <button className="btn btn-secondary btn-sm" onClick={() => { setSearch(''); setStatusFilter('all'); setSourceFilter('all'); }}>נקה</button>}</div><LeadsTable leads={leads} onSelectLead={onSelectLead} searchQuery={search} statusFilter={statusFilter} sourceFilter={sourceFilter} /></div>);
+            return (
+                <div>
+                    <div className="page-header">
+                        <h1 className="page-title">👥 לידים {statusFilter !== 'all' && <span style={{ fontSize: 18, fontWeight: 400, marginRight: 8 }}>- {STATUS_CONFIG[statusFilter] && STATUS_CONFIG[statusFilter].icon} {STATUS_CONFIG[statusFilter] && STATUS_CONFIG[statusFilter].label}</span>}</h1>
+                        <div className="header-actions">
+                            <button className="btn btn-secondary" onClick={() => window.location.reload()}>🔄 רענן</button>
+                            <button className="btn btn-primary" onClick={onAddLead}>+ ליד חדש</button>
+                        </div>
+                    </div>
+                    <div className="filters-bar">
+                        <input className="search-input" placeholder="חפש לפי שם או טלפון..." value={search} onChange={e => setSearch(e.target.value)} />
+                        <select className="filter-select" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+                            <option value="all">כל הסטטוסים</option>
+                            {Object.entries(STATUS_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+                        </select>
+                        <select className="filter-select" value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}>
+                            <option value="all">כל המקורות</option>
+                            {Object.entries(SOURCE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+                        </select>
+                        {(search || statusFilter !== 'all' || sourceFilter !== 'all') && <button className="btn btn-secondary btn-sm" onClick={() => { setSearch(''); setStatusFilter('all'); setSourceFilter('all'); }}>נקה</button>}
+                    </div>
+                    <LeadsTable leads={leads} onSelectLead={onSelectLead} searchQuery={search} statusFilter={statusFilter} sourceFilter={sourceFilter} />
+                </div>
+            );
         };
 
         const AddLeadModal = ({ isOpen, onClose, onAdd }) => {
             const [form, setForm] = useState({ name: '', phone: '', business_type: '', source: 'organic' });
-            const submit = e => { e.preventDefault(); onAdd(form); setForm({ name: '', phone: '', business_type: '', source: 'organic' }); onClose(); };
+            const submit = (e) => { e.preventDefault(); onAdd(form); setForm({ name: '', phone: '', business_type: '', source: 'organic' }); onClose(); };
             if (!isOpen) return null;
-            return (<div className="modal-overlay" onClick={onClose}><motion.div className="modal" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} onClick={e => e.stopPropagation()}><div className="modal-header"><h3 className="modal-title">ליד חדש</h3><button className="panel-close" onClick={onClose}>✕</button></div><form onSubmit={submit}><div className="modal-body"><div className="form-group"><label className="form-label">שם מלא *</label><input className="form-input" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div><div className="form-group"><label className="form-label">טלפון *</label><input className="form-input" required type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div><div className="form-group"><label className="form-label">סוג עסק *</label><input className="form-input" required value={form.business_type} onChange={e => setForm({ ...form, business_type: e.target.value })} /></div><div className="form-group"><label className="form-label">מקור</label><select className="form-input" value={form.source} onChange={e => setForm({ ...form, source: e.target.value })}>{Object.entries(SOURCE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select></div></div><div className="modal-footer"><button type="button" className="btn btn-secondary" onClick={onClose}>ביטול</button><button type="submit" className="btn btn-primary">הוסף</button></div></form></motion.div></div>);
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <motion.div className="modal" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} onClick={e => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3 className="modal-title">ליד חדש</h3>
+                            <button className="panel-close" onClick={onClose}>✕</button>
+                        </div>
+                        <form onSubmit={submit}>
+                            <div className="modal-body">
+                                <div className="form-group"><label className="form-label">שם מלא *</label><input className="form-input" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
+                                <div className="form-group"><label className="form-label">טלפון *</label><input className="form-input" required type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
+                                <div className="form-group"><label className="form-label">סוג עסק *</label><input className="form-input" required value={form.business_type} onChange={e => setForm({ ...form, business_type: e.target.value })} /></div>
+                                <div className="form-group"><label className="form-label">מקור</label><select className="form-input" value={form.source} onChange={e => setForm({ ...form, source: e.target.value })}>{Object.entries(SOURCE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}</select></div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={onClose}>ביטול</button>
+                                <button type="submit" className="btn btn-primary">הוסף</button>
+                            </div>
+                        </form>
+                    </motion.div>
+                </div>
+            );
         };
 
-        const Toast = ({ message, type, onClose }) => { useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, []); return <motion.div className={`toast ${type}`} initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}><span>{type === 'success' ? '✓' : '✕'}</span><span>{message}</span></motion.div>; };
- <div className="loading-overlay"><div className="loading-spinner"></div></div>}
+        const Toast = ({ message, type, onClose }) => {
+            useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, []);
+            return (
+                <motion.div className={`toast ${type}`} initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
+                    <span>{type === 'success' ? '✓' : '✕'}</span>
+                    <span>{message}</span>
+                </motion.div>
+            );
+        };
+
+        const App = () => {
+            const [view, setView] = useState('dashboard');
+            const [leads, setLeads] = useState(generateMockLeads());
+            const [tasks, setTasks] = useState(generateMockTasks());
+            const [selectedLead, setSelectedLead] = useState(null);
+            const [showAdd, setShowAdd] = useState(false);
+            const [statusFilter, setStatusFilter] = useState('all');
+            const [notifications, setNotifications] = useState([{ title: 'ליד חדש: דני כהן', time: 'לפני 5 דקות', read: false }]);
+            const [toasts, setToasts] = useState([]);
+            const [loading, setLoading] = useState(false);
+
+            const toast = (msg, type) => setToasts(p => [...p, { id: Date.now(), message: msg, type: type || 'success' }]);
+
+            useEffect(() => {
+                (async () => {
+                    setLoading(true);
+                    try { 
+                        const { data } = await supabase.from('easychat_leads').select('*').order('created_at', { ascending: false }); 
+                        if (data && data.length) setLeads(data); 
+                    } catch (e) { console.error(e); }
+                    setLoading(false);
+                })();
+                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'easychat_leads' }, p => { 
+                    setLeads(prev => [p.new, ...prev]); 
+                    setNotifications(prev => [{ title: 'ליד חדש: ' + p.new.name, time: 'עכשיו', read: false }, ...prev]); 
+                    toast('ליד חדש: ' + p.new.name); 
+                }).subscribe();
+                return () => sub.unsubscribe();
+            }, []);
+
+            const updateLead = async (id, updates) => { 
+                setLeads(p => p.map(l => l.id === id ? { ...l, ...updates } : l)); 
+                if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, ...updates })); 
+                try { await supabase.from('easychat_leads').update(updates).eq('id', id); toast('עודכן'); } catch (e) { toast('שגיאה', 'error'); } 
+            };
+            
+            const addNote = async (id, text) => { 
+                const note = { id: Date.now().toString(), text: text, author: 'אריאל', created_at: new Date().toISOString() }; 
+                const lead = leads.find(l => l.id === id); 
+                const notes = [...(lead.notes || []), note]; 
+                setLeads(p => p.map(l => l.id === id ? { ...l, notes: notes } : l)); 
+                if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, notes: notes })); 
+                try { await supabase.from('easychat_leads').update({ notes: notes }).eq('id', id); toast('הערה נוספה'); } catch (e) { toast('שגיאה', 'error'); } 
+            };
+            
+            const logCall = async (id, type) => { 
+                const log = { id: Date.now().toString(), type: type, created_at: new Date().toISOString() }; 
+                const lead = leads.find(l => l.id === id); 
+                const logs = [...(lead.call_logs || []), log]; 
+                setLeads(p => p.map(l => l.id === id ? { ...l, call_logs: logs } : l)); 
+                if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, call_logs: logs })); 
+                try { await supabase.from('easychat_leads').update({ call_logs: logs }).eq('id', id); } catch (e) { } 
+            };
+            
+            const addLead = async (data) => { 
+                const lead = { id: Date.now().toString(), ...data, status: 'new', notes: [], call_logs: [], created_at: new Date().toISOString() }; 
+                setLeads(p => [lead, ...p]); 
+                try { await supabase.from('easychat_leads').insert([data]); toast('ליד נוסף'); } catch (e) { } 
+            };
+            
+            const addTask = (taskData) => { 
+                const task = { id: Date.now().toString(), ...taskData, completed: false }; 
+                setTasks(p => [task, ...p]); 
+                toast('משימה נוספה'); 
+            };
+
+            return (
+                <div className="app-container">
+                    <Sidebar activeView={view} setActiveView={setView} notifications={notifications} leads={leads} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
+                    <main className="main-content">
+                        {view === 'dashboard' && <DashboardView leads={leads} tasks={tasks} />}
+                        {view === 'leads' && <LeadsView leads={leads} onSelectLead={setSelectedLead} onAddLead={() => setShowAdd(true)} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />}
+                        {view === 'pipeline' && <PipelineView leads={leads} onSelectLead={setSelectedLead} />}
+                        {view === 'tasks' && <TasksView tasks={tasks} setTasks={setTasks} leads={leads} />}
+                        {view === 'reports' && <ReportsView leads={leads} />}
+                    </main>
+                    <LeadPanel lead={selectedLead} onClose={() => setSelectedLead(null)} onUpdateLead={updateLead} onAddNote={addNote} onLogCall={logCall} onAddTask={addTask} tasks={tasks} />
+                    <AddLeadModal isOpen={showAdd} onClose={() => setShowAdd(false)} onAdd={addLead} />
+                    <div className="toast-container">
+                        <AnimatePresence>
+                            {toasts.map(t => <Toast key={t.id} message={t.message} type={t.type} onClose={() => setToasts(p => p.filter(x => x.id !== t.id))} />)}
+                        </AnimatePresence>
+                    </div>
+                    {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
                 </div>
             );
         };
