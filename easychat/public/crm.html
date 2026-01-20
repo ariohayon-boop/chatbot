@@ -975,9 +975,24 @@
             };
             
             const addLead = async (data) => { 
-                const lead = { id: Date.now().toString(), ...data, status: 'new', notes: [], call_logs: [], created_at: new Date().toISOString() }; 
-                setLeads(p => [lead, ...p]); 
-                try { await supabase.from('leads').insert([data]); toast('ליד נוסף'); } catch (e) { } 
+                const leadData = { 
+                    ...data, 
+                    status: 'new', 
+                    notes: [], 
+                    call_logs: [], 
+                    created_at: new Date().toISOString() 
+                };
+                try { 
+                    const { data: newLead, error } = await supabase.from('leads').insert([leadData]).select().single();
+                    if (error) throw error;
+                    setLeads(p => [newLead, ...p]); 
+                    toast('ליד נוסף בהצלחה ✅'); 
+                } catch (e) { 
+                    console.error('Error adding lead:', e);
+                    const tempLead = { id: Date.now().toString(), ...leadData };
+                    setLeads(p => [tempLead, ...p]); 
+                    toast('שגיאה בשמירה - הליד נשמר מקומית בלבד', 'error'); 
+                } 
             };
             
             const addTask = (taskData) => { 
