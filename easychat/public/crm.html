@@ -937,12 +937,23 @@
                 (async () => {
                     setLoading(true);
                     try { 
-                        const { data } = await supabase.from('leads').select('*').order('created_at', { ascending: false }); 
-                        if (data && data.length) setLeads(data); 
-                    } catch (e) { console.error(e); }
+                        const { data, error } = await supabase.from('help_leads').select('*').order('created_at', { ascending: false }); 
+                        if (error) {
+                            console.error('Supabase error loading leads:', error);
+                            toast('שגיאה בטעינת לידים: ' + error.message, 'error');
+                        } else if (data && data.length) {
+                            setLeads(data);
+                            console.log('Loaded', data.length, 'leads from Supabase');
+                        } else {
+                            console.log('No leads found in database, using mock data');
+                        }
+                    } catch (e) { 
+                        console.error('Error loading leads:', e); 
+                        toast('שגיאה בטעינת לידים', 'error');
+                    }
                     setLoading(false);
                 })();
-                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, p => { 
+                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'help_leads' }, p => { 
                     setLeads(prev => [p.new, ...prev]); 
                     setNotifications(prev => [{ title: 'ליד חדש: ' + p.new.name, time: 'עכשיו', read: false }, ...prev]); 
                     toast('ליד חדש: ' + p.new.name); 
@@ -953,7 +964,7 @@
             const updateLead = async (id, updates) => { 
                 setLeads(p => p.map(l => l.id === id ? { ...l, ...updates } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, ...updates })); 
-                try { await supabase.from('leads').update(updates).eq('id', id); toast('עודכן'); } catch (e) { toast('שגיאה', 'error'); } 
+                try { await supabase.from('help_leads').update(updates).eq('id', id); toast('עודכן'); } catch (e) { toast('שגיאה', 'error'); } 
             };
             
             const addNote = async (id, text) => { 
@@ -962,7 +973,7 @@
                 const notes = [...(lead.notes || []), note]; 
                 setLeads(p => p.map(l => l.id === id ? { ...l, notes: notes } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, notes: notes })); 
-                try { await supabase.from('leads').update({ notes: notes }).eq('id', id); toast('הערה נוספה'); } catch (e) { toast('שגיאה', 'error'); } 
+                try { await supabase.from('help_leads').update({ notes: notes }).eq('id', id); toast('הערה נוספה'); } catch (e) { toast('שגיאה', 'error'); } 
             };
             
             const logCall = async (id, type) => { 
@@ -971,7 +982,7 @@
                 const logs = [...(lead.call_logs || []), log]; 
                 setLeads(p => p.map(l => l.id === id ? { ...l, call_logs: logs } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, call_logs: logs })); 
-                try { await supabase.from('leads').update({ call_logs: logs }).eq('id', id); } catch (e) { } 
+                try { await supabase.from('help_leads').update({ call_logs: logs }).eq('id', id); } catch (e) { } 
             };
             
             const addLead = async (data) => { 
@@ -982,16 +993,16 @@
                     call_logs: [], 
                     created_at: new Date().toISOString() 
                 };
+                const tempId = Date.now().toString();
+                const tempLead = { id: tempId, ...leadData };
+                setLeads(p => [tempLead, ...p]); 
                 try { 
-                    const { data: newLead, error } = await supabase.from('leads').insert([leadData]).select().single();
+                    const { error } = await supabase.from('help_leads').insert([leadData]);
                     if (error) throw error;
-                    setLeads(p => [newLead, ...p]); 
                     toast('ליד נוסף בהצלחה ✅'); 
                 } catch (e) { 
                     console.error('Error adding lead:', e);
-                    const tempLead = { id: Date.now().toString(), ...leadData };
-                    setLeads(p => [tempLead, ...p]); 
-                    toast('שגיאה בשמירה - הליד נשמר מקומית בלבד', 'error'); 
+                    toast('שגיאה בשמירה ל-Supabase', 'error'); 
                 } 
             };
             
