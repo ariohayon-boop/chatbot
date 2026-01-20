@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HELP CRM | מערכת ניהול לידים</title>
+    <title>EasyChat CRM | מערכת ניהול לידים</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -162,8 +162,6 @@
         .reason-option:hover { border-color: var(--primary); background: var(--bg); }
         .reason-option.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
         .reason-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .date-picker { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: var(--radius-md); }
-        .date-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-body); }
         .template-card { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
         .template-card:hover { border-color: var(--primary); background: var(--bg); }
         .template-card.selected { border-color: var(--primary); background: rgba(6,214,160,0.1); }
@@ -224,15 +222,13 @@
         .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
         .form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 14px; }
         .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,214,160,0.1); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .toast-container { position: fixed; bottom: 24px; left: 24px; z-index: 500; display: flex; flex-direction: column; gap: 12px; }
         .toast { background: var(--navy); color: white; padding: 14px 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; min-width: 300px; }
         .toast.success { border-right: 4px solid var(--success); }
         .toast.error { border-right: 4px solid var(--danger); }
-        .notification-item { padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
-        .notification-item:hover { background: var(--bg); }
-        .notification-item.unread { background: rgba(6,214,160,0.05); }
-        .notification-title { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
-        .notification-time { font-size: 12px; color: var(--text-light); }
+        .add-task-section { background: var(--bg); border-radius: var(--radius-md); padding: 16px; margin-top: 16px; }
+        .add-task-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; z-index: 600; }
@@ -288,7 +284,7 @@
         };
 
         const WHATSAPP_TEMPLATES = [
-            { id: 'intro', title: 'הודעת היכרות', message: 'היי [שם]! 👋\nאני מ-HELP, ראיתי שהתעניינת בשירות שלנו.\nאשמח לספר לך קצת יותר - מתי נוח לך לדבר?' },
+            { id: 'intro', title: 'הודעת היכרות', message: 'היי [שם]! 👋\nאני מ-EasyChat, ראיתי שהתעניינת בשירות שלנו.\nאשמח לספר לך קצת יותר - מתי נוח לך לדבר?' },
             { id: 'followup', title: 'פולואפ ראשון', message: 'היי [שם], מה שלומך? 😊\nרציתי לעקוב על השיחה שלנו.\nהיה לך זמן לחשוב על ההצעה?' },
             { id: 'demo_invite', title: 'הזמנה להדגמה', message: 'היי [שם]! 🎯\nאשמח להראות לך בדיוק איך המערכת עובדת.\nמתי יהיה לך 15 דקות פנויות להדגמה קצרה?' },
             { id: 'closing', title: 'לקראת סגירה', message: 'היי [שם]! 🎉\nשמח שאהבת את מה שראית!\nרוצה שנתקדם להרשמה?' },
@@ -330,9 +326,9 @@
         ];
 
         const generateMockTasks = () => [
-            { id: '1', title: 'להתקשר לדני כהן', lead_name: 'דני כהן', due_date: new Date().toISOString(), priority: 'high', completed: false },
-            { id: '2', title: 'לשלוח הצעת מחיר למיכל', lead_name: 'מיכל לוי', due_date: new Date().toISOString(), priority: 'medium', completed: false },
-            { id: '3', title: 'הדגמה עם רונית', lead_name: 'רונית שמעון', due_date: new Date().toISOString(), priority: 'high', completed: false }
+            { id: '1', title: 'להתקשר לדני כהן', lead_id: '1', lead_name: 'דני כהן', due_date: new Date().toISOString().split('T')[0], due_time: '10:00', priority: 'high', completed: false },
+            { id: '2', title: 'לשלוח הצעת מחיר למיכל', lead_id: '2', lead_name: 'מיכל לוי', due_date: new Date().toISOString().split('T')[0], due_time: '14:00', priority: 'medium', completed: false },
+            { id: '3', title: 'הדגמה עם רונית', lead_id: '6', lead_name: 'רונית שמעון', due_date: new Date().toISOString().split('T')[0], due_time: '16:30', priority: 'high', completed: false }
         ];
 
         const Sidebar = ({ activeView, setActiveView, notifications, leads, statusFilter, setStatusFilter }) => {
@@ -355,7 +351,7 @@
 
             return (
                 <aside className="sidebar">
-                    <div className="sidebar-logo">HELP</div>
+                    <div className="sidebar-logo">EasyChat</div>
                     <div className="sidebar-subtitle">מערכת ניהול לידים</div>
                     <nav className="sidebar-nav">
                         {navItems.map(item => (
@@ -418,14 +414,16 @@
             );
         };
 
-        const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote, onLogCall }) => {
+        const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote, onLogCall, onAddTask, tasks }) => {
             const [activeTab, setActiveTab] = useState('details');
             const [newNote, setNewNote] = useState('');
             const [selectedStatus, setSelectedStatus] = useState(lead?.status || 'new');
             const [selectedTemplate, setSelectedTemplate] = useState(null);
             const [showRejection, setShowRejection] = useState(false);
+            const [showAddTask, setShowAddTask] = useState(false);
+            const [newTask, setNewTask] = useState({ title: '', date: '', time: '', priority: 'medium' });
 
-            useEffect(() => { if (lead) { setSelectedStatus(lead.status); setActiveTab('details'); } }, [lead]);
+            useEffect(() => { if (lead) { setSelectedStatus(lead.status); setActiveTab('details'); setShowAddTask(false); setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium' }); } }, [lead]);
 
             const handleWhatsApp = (template = null) => {
                 const phone = lead.phone.replace(/\D/g, '');
@@ -444,6 +442,22 @@
                 else { setShowRejection(false); onUpdateLead(lead.id, { status }); }
             };
 
+            const handleAddTask = () => {
+                if (!newTask.title.trim() || !newTask.date) return;
+                onAddTask({
+                    title: newTask.title,
+                    lead_id: lead.id,
+                    lead_name: lead.name,
+                    due_date: newTask.date,
+                    due_time: newTask.time,
+                    priority: newTask.priority
+                });
+                setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium' });
+                setShowAddTask(false);
+            };
+
+            const leadTasks = tasks.filter(t => t.lead_id === lead?.id);
+
             if (!lead) return null;
             const score = calculateLeadScore(lead);
             const scoreInfo = getScoreLevel(score);
@@ -457,9 +471,52 @@
                     <div className="panel-tabs"><div className={`panel-tab ${activeTab === 'details' ? 'active' : ''}`} onClick={() => setActiveTab('details')}>פרטים</div><div className={`panel-tab ${activeTab === 'activity' ? 'active' : ''}`} onClick={() => setActiveTab('activity')}>פעילות</div><div className={`panel-tab ${activeTab === 'templates' ? 'active' : ''}`} onClick={() => setActiveTab('templates')}>תבניות</div></div>
                     <div className="panel-content">
                         {daysSince >= 3 && lead.status !== 'closed_won' && lead.status !== 'not_interested' && <div className="reminder-card"><h4>⚠️ לא היה קשר {daysSince} ימים</h4><p>מומלץ ליצור קשר</p></div>}
-                        <div className="quick-actions"><button className="quick-action-btn" onClick={() => handleWhatsApp()}><span>💬</span><span>WhatsApp</span></button><button className="quick-action-btn" onClick={handleCall}><span>📞</span><span>התקשר</span></button><button className="quick-action-btn" onClick={() => setActiveTab('templates')}><span>📝</span><span>תבניות</span></button></div>
+                        <div className="quick-actions"><button className="quick-action-btn" onClick={() => handleWhatsApp()}><span>💬</span><span>WhatsApp</span></button><button className="quick-action-btn" onClick={handleCall}><span>📞</span><span>התקשר</span></button><button className="quick-action-btn" onClick={() => setActiveTab('templates')}><span>📝</span><span>תבניות</span></button><button className="quick-action-btn" onClick={() => setShowAddTask(!showAddTask)}><span>📅</span><span>משימה</span></button></div>
                         
                         {activeTab === 'details' && (<>
+                            {showAddTask && (
+                                <div className="add-task-section">
+                                    <h4>📅 הוספת משימה חדשה</h4>
+                                    <div className="form-group">
+                                        <label className="form-label">תיאור המשימה</label>
+                                        <input className="form-input" placeholder="לדוגמה: לחזור אל הליד בשעה 13:00" value={newTask.title} onChange={e => setNewTask({...newTask, title: e.target.value})} />
+                                    </div>
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label className="form-label">תאריך</label>
+                                            <input type="date" className="form-input" value={newTask.date} onChange={e => setNewTask({...newTask, date: e.target.value})} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">שעה</label>
+                                            <input type="time" className="form-input" value={newTask.time} onChange={e => setNewTask({...newTask, time: e.target.value})} />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">עדיפות</label>
+                                        <select className="form-input" value={newTask.priority} onChange={e => setNewTask({...newTask, priority: e.target.value})}>
+                                            <option value="high">🔴 גבוהה</option>
+                                            <option value="medium">🟡 בינונית</option>
+                                            <option value="low">⚪ נמוכה</option>
+                                        </select>
+                                    </div>
+                                    <button className="btn btn-primary" style={{width: '100%'}} onClick={handleAddTask}>➕ הוסף משימה</button>
+                                </div>
+                            )}
+
+                            {leadTasks.length > 0 && (
+                                <div className="panel-section" style={{ marginTop: 16 }}>
+                                    <div className="panel-section-title">משימות לליד זה ({leadTasks.length})</div>
+                                    {leadTasks.map(task => (
+                                        <div key={task.id} style={{ background: 'var(--bg)', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px', borderRight: `3px solid ${task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#6B7280'}` }}>
+                                            <div style={{ fontWeight: 500, fontSize: '14px' }}>{task.title}</div>
+                                            <div style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px' }}>
+                                                📅 {new Date(task.due_date).toLocaleDateString('he-IL')} {task.due_time && `⏰ ${task.due_time}`}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
                             <div className="panel-section" style={{ marginTop: 24 }}><div className="panel-section-title">פרטים</div><div className="info-grid"><div className="info-item"><div className="info-label">טלפון</div><div className="info-value" style={{ direction: 'ltr', textAlign: 'right' }}>{lead.phone}</div></div><div className="info-item"><div className="info-label">סוג עסק</div><div className="info-value">{lead.business_type}</div></div><div className="info-item"><div className="info-label">מקור</div><div className="info-value"><span className={`source-badge ${lead.source}`}>{SOURCE_CONFIG[lead.source]?.icon} {SOURCE_CONFIG[lead.source]?.label}</span></div></div><div className="info-item"><div className="info-label">קשר אחרון</div><div className="info-value">{daysSince === 0 ? 'היום' : `לפני ${daysSince} ימים`}</div></div></div></div>
                             <div className="panel-section"><div className="panel-section-title">סטטוס</div><div className="status-selector">{Object.entries(STATUS_CONFIG).map(([k, v]) => (<div key={k} className={`status-option ${selectedStatus === k ? 'selected' : ''}`} onClick={() => handleStatusChange(k)}>{v.icon} {v.label}</div>))}</div>
                                 {showRejection && <div className="reason-selector">{Object.entries(REJECTION_REASONS).map(([k, v]) => (<div key={k} className="reason-option" onClick={() => { onUpdateLead(lead.id, { status: 'not_interested', rejection_reason: k }); setShowRejection(false); }}><div className="reason-icon">{v.icon}</div><span>{v.label}</span></div>))}</div>}
@@ -484,10 +541,13 @@
             const [newTitle, setNewTitle] = useState('');
             const [newLeadId, setNewLeadId] = useState('');
             const [newPriority, setNewPriority] = useState('medium');
+            const [newDate, setNewDate] = useState(new Date().toISOString().split('T')[0]);
+            const [newTime, setNewTime] = useState('10:00');
             const toggle = id => setTasks(p => p.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
-            const add = () => { if (!newTitle.trim()) return; const lead = leads.find(l => l.id === newLeadId); setTasks(p => [{ id: Date.now().toString(), title: newTitle, lead_name: lead?.name, due_date: new Date().toISOString(), priority: newPriority, completed: false }, ...p]); setNewTitle(''); setNewLeadId(''); };
+            const add = () => { if (!newTitle.trim()) return; const lead = leads.find(l => l.id === newLeadId); setTasks(p => [{ id: Date.now().toString(), title: newTitle, lead_id: newLeadId, lead_name: lead?.name, due_date: newDate, due_time: newTime, priority: newPriority, completed: false }, ...p]); setNewTitle(''); setNewLeadId(''); };
             const today = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString());
-            return (<div><div className="page-header"><h1 className="page-title">✅ משימות</h1></div><div className="table-container" style={{ padding: 20, marginBottom: 24 }}><h3 style={{ marginBottom: 16 }}>➕ משימה חדשה</h3><div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}><input className="form-input" placeholder="תיאור המשימה..." value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{ flex: 2, minWidth: 200 }} /><select className="filter-select" value={newLeadId} onChange={e => setNewLeadId(e.target.value)}><option value="">ללא ליד</option>{leads.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}</select><select className="filter-select" value={newPriority} onChange={e => setNewPriority(e.target.value)}><option value="high">🔴 גבוהה</option><option value="medium">🟡 בינונית</option><option value="low">⚪ נמוכה</option></select><button className="btn btn-primary" onClick={add}>הוסף</button></div></div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>📅 היום ({today.filter(t => !t.completed).length})</h3>{today.length ? today.map(t => (<div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}><div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div><div className="task-content"><div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>{t.lead_name && <div className="task-meta">👤 {t.lead_name}</div>}</div><span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}</div></div>);
+            const upcoming = tasks.filter(t => new Date(t.due_date) > new Date() && new Date(t.due_date).toDateString() !== new Date().toDateString());
+            return (<div><div className="page-header"><h1 className="page-title">✅ משימות</h1></div><div className="table-container" style={{ padding: 20, marginBottom: 24 }}><h3 style={{ marginBottom: 16 }}>➕ משימה חדשה</h3><div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}><input className="form-input" placeholder="תיאור המשימה..." value={newTitle} onChange={e => setNewTitle(e.target.value)} style={{ flex: 2, minWidth: 200 }} /><select className="filter-select" value={newLeadId} onChange={e => setNewLeadId(e.target.value)}><option value="">ללא ליד</option>{leads.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}</select><input type="date" className="form-input" value={newDate} onChange={e => setNewDate(e.target.value)} style={{ width: 150 }} /><input type="time" className="form-input" value={newTime} onChange={e => setNewTime(e.target.value)} style={{ width: 120 }} /><select className="filter-select" value={newPriority} onChange={e => setNewPriority(e.target.value)}><option value="high">🔴 גבוהה</option><option value="medium">🟡 בינונית</option><option value="low">⚪ נמוכה</option></select><button className="btn btn-primary" onClick={add}>הוסף</button></div></div><div className="table-container" style={{ padding: 20, marginBottom: 24 }}><h3 style={{ marginBottom: 16 }}>📅 היום ({today.filter(t => !t.completed).length})</h3>{today.length ? today.map(t => (<div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}><div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div><div className="task-content"><div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div><div className="task-meta">{t.lead_name && `👤 ${t.lead_name} • `}{t.due_time && `⏰ ${t.due_time}`}</div></div><span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}</div>{upcoming.length > 0 && <div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🗓️ קרובות ({upcoming.length})</h3>{upcoming.slice(0, 5).map(t => (<div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}><div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div><div className="task-content"><div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div><div className="task-meta">{t.lead_name && `👤 ${t.lead_name} • `}📅 {new Date(t.due_date).toLocaleDateString('he-IL')} {t.due_time && `⏰ ${t.due_time}`}</div></div><span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span></div>))}</div>}</div>);
         };
 
         const ReportsView = ({ leads }) => {
@@ -507,7 +567,7 @@
             const recent = [...leads].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
             const hot = leads.filter(l => l.status !== 'closed_won' && l.status !== 'not_interested').map(l => ({ ...l, score: calculateLeadScore(l) })).sort((a, b) => b.score - a.score).slice(0, 5);
             const todayTasks = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString() && !t.completed);
-            return (<div><div className="page-header"><h1 className="page-title">📊 דשבורד</h1></div><StatsCards leads={leads} /><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🔥 לידים חמים</h3>{hot.map(l => { const si = getScoreLevel(l.score); return (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`lead-score ${si.level}`}>{si.label}</span></div>); })}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🆕 לידים אחרונים</h3>{recent.map(l => (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`status-badge ${l.status}`}>{STATUS_CONFIG[l.status]?.label}</span></div>))}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>📋 משימות להיום ({todayTasks.length})</h3>{todayTasks.length ? todayTasks.map(t => (<div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div style={{ fontWeight: 500 }}>{t.title}</div>{t.lead_name && <div style={{ fontSize: 12, color: 'var(--text-light)' }}>👤 {t.lead_name}</div>}</div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}</div></div></div>);
+            return (<div><div className="page-header"><h1 className="page-title">📊 דשבורד</h1></div><StatsCards leads={leads} /><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24 }}><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🔥 לידים חמים</h3>{hot.map(l => { const si = getScoreLevel(l.score); return (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`lead-score ${si.level}`}>{si.label}</span></div>); })}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>🆕 לידים אחרונים</h3>{recent.map(l => (<div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div><strong>{l.name}</strong><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{l.business_type}</div></div><span className={`status-badge ${l.status}`}>{STATUS_CONFIG[l.status]?.label}</span></div>))}</div><div className="table-container" style={{ padding: 20 }}><h3 style={{ marginBottom: 16 }}>📋 משימות להיום ({todayTasks.length})</h3>{todayTasks.length ? todayTasks.map(t => (<div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}><div style={{ fontWeight: 500 }}>{t.title}</div><div style={{ fontSize: 12, color: 'var(--text-light)' }}>{t.lead_name && `👤 ${t.lead_name}`} {t.due_time && `⏰ ${t.due_time}`}</div></div>)) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}</div></div></div>);
         };
 
         const LeadsView = ({ leads, onSelectLead, onAddLead, statusFilter, setStatusFilter }) => {
@@ -524,51 +584,7 @@
         };
 
         const Toast = ({ message, type, onClose }) => { useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, []); return <motion.div className={`toast ${type}`} initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}><span>{type === 'success' ? '✓' : '✕'}</span><span>{message}</span></motion.div>; };
-
-        const App = () => {
-            const [view, setView] = useState('dashboard');
-            const [leads, setLeads] = useState(generateMockLeads());
-            const [tasks, setTasks] = useState(generateMockTasks());
-            const [selectedLead, setSelectedLead] = useState(null);
-            const [showAdd, setShowAdd] = useState(false);
-            const [statusFilter, setStatusFilter] = useState('all');
-            const [notifications, setNotifications] = useState([{ title: 'ליד חדש: דני כהן', time: 'לפני 5 דקות', read: false }]);
-            const [toasts, setToasts] = useState([]);
-            const [loading, setLoading] = useState(false);
-
-            const toast = (msg, type = 'success') => setToasts(p => [...p, { id: Date.now(), message: msg, type }]);
-
-            useEffect(() => {
-                (async () => {
-                    setLoading(true);
-                    try { const { data } = await supabase.from('help_leads').select('*').order('created_at', { ascending: false }); if (data?.length) setLeads(data); } catch (e) { console.error(e); }
-                    setLoading(false);
-                })();
-                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'help_leads' }, p => { setLeads(prev => [p.new, ...prev]); setNotifications(prev => [{ title: `ליד חדש: ${p.new.name}`, time: 'עכשיו', read: false }, ...prev]); toast(`ליד חדש: ${p.new.name}`); }).subscribe();
-                return () => sub.unsubscribe();
-            }, []);
-
-            const updateLead = async (id, updates) => { setLeads(p => p.map(l => l.id === id ? { ...l, ...updates } : l)); if (selectedLead?.id === id) setSelectedLead(p => ({ ...p, ...updates })); try { await supabase.from('help_leads').update(updates).eq('id', id); toast('עודכן'); } catch { toast('שגיאה', 'error'); } };
-            const addNote = async (id, text) => { const note = { id: Date.now().toString(), text, author: 'אריאל', created_at: new Date().toISOString() }; const lead = leads.find(l => l.id === id); const notes = [...(lead.notes || []), note]; setLeads(p => p.map(l => l.id === id ? { ...l, notes } : l)); if (selectedLead?.id === id) setSelectedLead(p => ({ ...p, notes })); try { await supabase.from('help_leads').update({ notes }).eq('id', id); toast('הערה נוספה'); } catch { toast('שגיאה', 'error'); } };
-            const logCall = async (id, type) => { const log = { id: Date.now().toString(), type, created_at: new Date().toISOString() }; const lead = leads.find(l => l.id === id); const logs = [...(lead.call_logs || []), log]; setLeads(p => p.map(l => l.id === id ? { ...l, call_logs: logs } : l)); if (selectedLead?.id === id) setSelectedLead(p => ({ ...p, call_logs: logs })); try { await supabase.from('help_leads').update({ call_logs: logs }).eq('id', id); } catch { } };
-            const addLead = async data => { const lead = { id: Date.now().toString(), ...data, status: 'new', notes: [], call_logs: [], created_at: new Date().toISOString() }; setLeads(p => [lead, ...p]); try { await supabase.from('help_leads').insert([data]); toast('ליד נוסף'); } catch { } };
-
-            return (
-                <div className="app-container">
-                    <Sidebar activeView={view} setActiveView={setView} notifications={notifications} leads={leads} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
-                    <main className="main-content">
-                        {view === 'dashboard' && <DashboardView leads={leads} tasks={tasks} />}
-                        {view === 'leads' && <LeadsView leads={leads} onSelectLead={setSelectedLead} onAddLead={() => setShowAdd(true)} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />}
-                        {view === 'pipeline' && <PipelineView leads={leads} onSelectLead={setSelectedLead} />}
-                        {view === 'tasks' && <TasksView tasks={tasks} setTasks={setTasks} leads={leads} />}
-                        {view === 'reports' && <ReportsView leads={leads} />}
-                        {view === 'reminders' && <RemindersView leads={leads} notifications={notifications} onMarkRead={i => setNotifications(p => p.map((n, j) => j === i ? { ...n, read: true } : n))} />}
-                        {view === 'settings' && <div><div className="page-header"><h1 className="page-title">⚙️ הגדרות</h1></div><div className="table-container" style={{ padding: 40, textAlign: 'center' }}><div className="empty-state-icon">🔧</div><div className="empty-state-title">בקרוב</div></div></div>}
-                    </main>
-                    <LeadPanel lead={selectedLead} onClose={() => setSelectedLead(null)} onUpdateLead={updateLead} onAddNote={addNote} onLogCall={logCall} />
-                    <AddLeadModal isOpen={showAdd} onClose={() => setShowAdd(false)} onAdd={addLead} />
-                    <div className="toast-container"><AnimatePresence>{toasts.map(t => <Toast key={t.id} message={t.message} type={t.type} onClose={() => setToasts(p => p.filter(x => x.id !== t.id))} />)}</AnimatePresence></div>
-                    {loading && <div className="loading-overlay"><div className="loading-spinner"></div></div>}
+ <div className="loading-overlay"><div className="loading-spinner"></div></div>}
                 </div>
             );
         };
