@@ -393,8 +393,7 @@ if (!currentUser) {
         <div className="user-name">{currentUser ? currentUser.username : 'משתמש'}</div>
         <div className="user-role">מנהל</div>
     </div>
-    <button onClick={() => logout()} style={{background:'none',border:'none',cursor:'pointer',fontSize:'18px',padding:'8px'}} title="התנתק">🚪</button>
-</div>
+<button className="logout-btn" onClick={logout} title="התנתק">🚪</button></div>
                 </aside>
             );
         };
