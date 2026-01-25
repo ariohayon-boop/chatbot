@@ -1,1051 +1,239 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📋 שאלון בניית בוט - EasyChat</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-            margin-bottom: 40px;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 8px;
-            border-radius: 10px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: #4ade80;
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .section {
-            margin-bottom: 40px;
-            padding: 30px;
-            background: #f8fafc;
-            border-radius: 15px;
-            border: 2px solid #e2e8f0;
-        }
-
-        .section-title {
-            font-size: 1.8em;
-            color: #667eea;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-subtitle {
-            color: #64748b;
-            margin-bottom: 25px;
-            font-size: 1em;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-
-        .form-input,
-        .form-textarea,
-        .form-select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1em;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus,
-        .form-select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-hint {
-            font-size: 0.9em;
-            color: #64748b;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 40px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 18px 40px;
-            font-size: 1.1em;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #334155;
-        }
-
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-
-        .summary-container {
-            display: none;
-            margin-top: 40px;
-            padding: 30px;
-            background: #f8fafc;
-            border-radius: 15px;
-            border: 2px solid #667eea;
-        }
-
-        .summary-title {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .summary-content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            max-height: 600px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-
-        .copy-btn {
-            background: #10b981;
-            color: white;
-        }
-
-        .copy-btn:hover {
-            background: #059669;
-        }
-
-        .success-message {
-            display: none;
-            background: #10b981;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 15px;
-            font-weight: 600;
-        }
-
-        .required {
-            color: #ef4444;
-        }
-
-        .info-box {
-            background: #dbeafe;
-            border-right: 4px solid #3b82f6;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .info-box p {
-            color: #1e40af;
-            margin: 0;
-        }
-
-        .multi-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .multi-input-group input {
-            flex: 1;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .section {
-                padding: 20px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .multi-input-group {
-                flex-direction: column;
-            }
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .header, .button-group, .copy-btn {
-                display: none;
-            }
-            
-            .container {
-                box-shadow: none;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; margin-bottom: 40px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .progress-bar { background: rgba(255,255,255,0.2); height: 8px; border-radius: 10px; margin-top: 20px; overflow: hidden; }
+        .progress-fill { background: #4ade80; height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 10px; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 40px; padding: 30px; background: #f8fafc; border-radius: 15px; border: 2px solid #e2e8f0; }
+        .section-title { font-size: 1.8em; color: #667eea; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-subtitle { color: #64748b; margin-bottom: 25px; font-size: 1em; }
+        .form-group { margin-bottom: 25px; }
+        .form-label { display: block; font-weight: 600; color: #334155; margin-bottom: 8px; font-size: 1.1em; }
+        .form-input, .form-textarea, .form-select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1em; font-family: inherit; transition: all 0.3s ease; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .form-textarea { min-height: 120px; resize: vertical; }
+        .form-hint { font-size: 0.9em; color: #64748b; margin-top: 5px; font-style: italic; }
+        .button-group { display: flex; gap: 15px; margin-top: 40px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 18px 40px; font-size: 1.1em; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: #e2e8f0; color: #334155; }
+        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-add { background: #10b981; color: white; padding: 12px 24px; font-size: 1em; }
+        .btn-add:hover { background: #059669; }
+        .btn-remove { background: #ef4444; color: white; padding: 8px 16px; font-size: 0.9em; margin-top: 10px; }
+        .btn-remove:hover { background: #dc2626; }
+        .summary-container { display: none; margin-top: 40px; padding: 30px; background: #f8fafc; border-radius: 15px; border: 2px solid #667eea; }
+        .summary-title { font-size: 2em; color: #667eea; margin-bottom: 20px; text-align: center; }
+        .summary-content { background: white; padding: 30px; border-radius: 10px; border: 1px solid #e2e8f0; max-height: 600px; overflow-y: auto; white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6; }
+        .copy-btn { background: #10b981; color: white; }
+        .copy-btn:hover { background: #059669; }
+        .success-message { display: none; background: #10b981; color: white; padding: 15px; border-radius: 10px; text-align: center; margin-top: 15px; font-weight: 600; }
+        .required { color: #ef4444; }
+        .info-box { background: #dbeafe; border-right: 4px solid #3b82f6; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .info-box p { color: #1e40af; margin: 0; }
+        .service-item { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+        .service-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .service-item-title { font-weight: 600; color: #667eea; }
+        .service-fields { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+        .service-description { grid-column: 1 / -1; margin-top: 10px; }
+        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .content { padding: 20px; } .section { padding: 20px; } .button-group { flex-direction: column; } .btn { width: 100%; } .service-fields { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="header">
         <h1>🤖 שאלון בניית הבוט</h1>
         <p>מלא את הפרטים ותקבל סיכום מושלם למאגר הידע</p>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressBar"></div>
-        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
     </div>
-
     <div class="content">
         <form id="botForm">
-            
-            <!-- Section 1: Basic Info -->
             <div class="section">
-                <div class="section-title">
-                    <span>1️⃣</span>
-                    <span>מידע בסיסי על העסק</span>
-                </div>
+                <div class="section-title"><span>1️⃣</span><span>מידע בסיסי על העסק</span></div>
                 <p class="section-subtitle">בואו נכיר את העסק שלך</p>
-
-                <div class="form-group">
-                    <label class="form-label">שם העסק <span class="required">*</span></label>
-                    <input type="text" class="form-input" name="businessName" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">תחום העיסוק <span class="required">*</span></label>
-                    <input type="text" class="form-input" name="businessType" placeholder="לדוגמה: בר, מסעדה, מספרה, סטודיו..." required>
-                    <p class="form-hint">מה סוג העסק? (ברים, מסעדות, מספרות, חדרי כושר...)</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">תיאור העסק (2-3 משפטים) <span class="required">*</span></label>
-                    <textarea class="form-textarea" name="businessDescription" rows="4" required></textarea>
-                    <p class="form-hint">ספר בקצרה - מה אתה מציע? מה מיוחד בעסק שלך?</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה ייחודי בעסק שלך?</label>
-                    <textarea class="form-textarea" name="uniqueValue" rows="3" placeholder="למה לקוח צריך לבחור בכם?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">קהל יעד</label>
-                    <input type="text" class="form-input" name="targetAudience" placeholder="לדוגמה: צעירים 25-35, משפחות, מקצועיים...">
-                </div>
+                <div class="form-group"><label class="form-label">שם העסק <span class="required">*</span></label><input type="text" class="form-input" name="businessName" required></div>
+                <div class="form-group"><label class="form-label">תחום העיסוק <span class="required">*</span></label><input type="text" class="form-input" name="businessType" placeholder="לדוגמה: בר, מסעדה, מספרה, סטודיו..." required><p class="form-hint">מה סוג העסק?</p></div>
+                <div class="form-group"><label class="form-label">תיאור העסק (2-3 משפטים) <span class="required">*</span></label><textarea class="form-textarea" name="businessDescription" rows="4" required></textarea></div>
+                <div class="form-group"><label class="form-label">מה ייחודי בעסק שלך?</label><textarea class="form-textarea" name="uniqueValue" rows="3" placeholder="למה לקוח צריך לבחור בכם?"></textarea></div>
+                <div class="form-group"><label class="form-label">קהל יעד</label><input type="text" class="form-input" name="targetAudience" placeholder="לדוגמה: צעירים 25-35, משפחות..."></div>
             </div>
-
-            <!-- Section 2: Pricing -->
             <div class="section">
-                <div class="section-title">
-                    <span>2️⃣</span>
-                    <span>מחירים ותשלומים</span>
-                </div>
-                <p class="section-subtitle">כמה עולה? מה כלול?</p>
-
-                <div class="info-box">
-                    <p>💡 רשום 3-5 שירותים עיקריים עם מחירים</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">שירות 1 <span class="required">*</span></label>
-                    <div class="multi-input-group">
-                        <input type="text" class="form-input" name="service1Name" placeholder="שם השירות" required>
-                        <input type="text" class="form-input" name="service1Price" placeholder="מחיר" required>
-                        <input type="text" class="form-input" name="service1Duration" placeholder="משך זמן">
+                <div class="section-title"><span>2️⃣</span><span>שירותים/חבילות ומחירים</span></div>
+                <p class="section-subtitle">פרט את השירותים או החבילות שאתה מציע</p>
+                <div class="info-box"><p>💡 הוסף את כל השירותים/החבילות שלך עם מחירים ותיאורים</p></div>
+                <div id="servicesContainer">
+                    <div class="service-item" data-service-index="1">
+                        <div class="service-item-header"><span class="service-item-title">שירות/חבילה 1 <span class="required">*</span></span></div>
+                        <div class="service-fields">
+                            <input type="text" class="form-input" name="service1Name" placeholder="שם השירות/חבילה" required>
+                            <input type="text" class="form-input" name="service1Price" placeholder="מחיר" required>
+                            <input type="text" class="form-input" name="service1Duration" placeholder="משך זמן">
+                        </div>
+                        <div class="service-description"><textarea class="form-textarea" name="service1Description" rows="3" placeholder="תיאור מפורט - מה כלול? למי מתאים?"></textarea></div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">שירות 2</label>
-                    <div class="multi-input-group">
-                        <input type="text" class="form-input" name="service2Name" placeholder="שם השירות">
-                        <input type="text" class="form-input" name="service2Price" placeholder="מחיר">
-                        <input type="text" class="form-input" name="service2Duration" placeholder="משך זמן">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">שירות 3</label>
-                    <div class="multi-input-group">
-                        <input type="text" class="form-input" name="service3Name" placeholder="שם השירות">
-                        <input type="text" class="form-input" name="service3Price" placeholder="מחיר">
-                        <input type="text" class="form-input" name="service3Duration" placeholder="משך זמן">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">האם יש מבצעים או הנחות קבועים?</label>
-                    <textarea class="form-textarea" name="discounts" rows="3" placeholder="לדוגמה: 15% הנחה בימי חול, הנחה לקבוצות..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה כלול במחיר?</label>
-                    <textarea class="form-textarea" name="included" rows="3" placeholder="לדוגמה: חניה, ציוד, רענון..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה לא כלול במחיר?</label>
-                    <textarea class="form-textarea" name="notIncluded" rows="2" placeholder="תוספות תשלום..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">האם צריך מקדמה? כמה?</label>
-                    <input type="text" class="form-input" name="deposit" placeholder="לדוגמה: 30% בהזמנה">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">דרכי תשלום</label>
-                    <input type="text" class="form-input" name="paymentMethods" placeholder="מזומן, אשראי, ביט, PayBox...">
-                </div>
+                <button type="button" class="btn btn-add" onclick="addService()"><span>➕</span><span>הוסף שירות/חבילה</span></button>
+                <div class="form-group" style="margin-top: 30px;"><label class="form-label">האם יש מבצעים או הנחות?</label><textarea class="form-textarea" name="discounts" rows="3" placeholder="לדוגמה: 15% הנחה בימי חול..."></textarea></div>
+                <div class="form-group"><label class="form-label">מה כלול במחיר?</label><textarea class="form-textarea" name="included" rows="3" placeholder="לדוגמה: חניה, ציוד..."></textarea></div>
+                <div class="form-group"><label class="form-label">מה לא כלול במחיר?</label><textarea class="form-textarea" name="notIncluded" rows="2" placeholder="תוספות תשלום..."></textarea></div>
+                <div class="form-group"><label class="form-label">האם צריך מקדמה?</label><input type="text" class="form-input" name="deposit" placeholder="לדוגמה: 30% בהזמנה, פרטי אשראי לביטחון..."></div>
+                <div class="form-group"><label class="form-label">דרכי תשלום</label><input type="text" class="form-input" name="paymentMethods" placeholder="מזומן, אשראי, ביט..."></div>
             </div>
-
-            <!-- Section 3: Availability -->
             <div class="section">
-                <div class="section-title">
-                    <span>3️⃣</span>
-                    <span>זמינות ושעות פעילות</span>
-                </div>
-                <p class="section-subtitle">מתי אתה פתוח?</p>
-
-                <div class="form-group">
-                    <label class="form-label">שעות פעילות <span class="required">*</span></label>
-                    <textarea class="form-textarea" name="openingHours" rows="7" required placeholder="לדוגמה:
-ראשון-חמישי: 08:00-20:00
-שישי: 08:00-15:00
-שבת: סגור"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">ימים/תקופות שבהם סגורים</label>
-                    <input type="text" class="form-input" name="closedDays" placeholder="חגים, חורף...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">כמה זמן מראש צריך לקבוע?</label>
-                    <input type="text" class="form-input" name="advanceBooking" placeholder="לדוגמה: 24 שעות מראש, 3-7 ימים מראש...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מדיניות ביטולים</label>
-                    <textarea class="form-textarea" name="cancellationPolicy" rows="4" placeholder="לדוגמה:
-- עד 7 ימים לפני: החזר מלא
-- 3-7 ימים: 50% החזר
-- פחות מ-3 ימים: ללא החזר"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">אפשר להזמין באותו יום?</label>
-                    <select class="form-select" name="sameDayBooking">
-                        <option value="">בחר תשובה</option>
-                        <option value="כן">כן, בכפוף לזמינות</option>
-                        <option value="לא">לא, צריך לקבוע מראש</option>
-                        <option value="תלוי">תלוי בעונה/יום</option>
-                    </select>
-                </div>
+                <div class="section-title"><span>3️⃣</span><span>זמינות ושעות פעילות</span></div>
+                <div class="form-group"><label class="form-label">שעות פעילות <span class="required">*</span></label><textarea class="form-textarea" name="openingHours" rows="7" required placeholder="ראשון-חמישי: 08:00-20:00&#10;שישי: 08:00-15:00&#10;שבת: סגור"></textarea></div>
+                <div class="form-group"><label class="form-label">ימים סגורים</label><input type="text" class="form-input" name="closedDays" placeholder="חגים, חורף..."></div>
+                <div class="form-group"><label class="form-label">כמה זמן מראש צריך לקבוע?</label><input type="text" class="form-input" name="advanceBooking" placeholder="24 שעות, 3-7 ימים..."></div>
+                <div class="form-group"><label class="form-label">מדיניות ביטולים</label><textarea class="form-textarea" name="cancellationPolicy" rows="4" placeholder="עד 7 ימים: החזר מלא..."></textarea></div>
+                <div class="form-group"><label class="form-label">אפשר להזמין באותו יום?</label><select class="form-select" name="sameDayBooking"><option value="">בחר</option><option value="כן, בכפוף לזמינות">כן</option><option value="לא">לא</option><option value="תלוי">תלוי</option></select></div>
             </div>
-
-            <!-- Section 4: Location -->
             <div class="section">
-                <div class="section-title">
-                    <span>4️⃣</span>
-                    <span>מיקום והגעה</span>
-                </div>
-                <p class="section-subtitle">איפה אתם ואיך מגיעים?</p>
-
-                <div class="form-group">
-                    <label class="form-label">כתובת מדויקת <span class="required">*</span></label>
-                    <input type="text" class="form-input" name="address" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">עיר</label>
-                    <input type="text" class="form-input" name="city">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">קישור Waze</label>
-                    <input type="url" class="form-input" name="wazeLink" placeholder="https://waze.com/ul/...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">קישור Google Maps</label>
-                    <input type="url" class="form-input" name="mapsLink" placeholder="https://goo.gl/maps/...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">הוראות הגעה</label>
-                    <textarea class="form-textarea" name="directions" rows="3" placeholder="איך מגיעים? יש נקודות ציון מיוחדות?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">חניה - איפה ובכמה?</label>
-                    <input type="text" class="form-input" name="parking" placeholder="לדוגמה: חניון מרינה - 10 ₪/שעה">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">נגישות לנכים?</label>
-                    <select class="form-select" name="accessibility">
-                        <option value="">בחר תשובה</option>
-                        <option value="כן">כן, נגיש לחלוטין</option>
-                        <option value="חלקי">נגיש חלקית</option>
-                        <option value="לא">לא נגיש</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">תחבורה ציבורית קרובה</label>
-                    <input type="text" class="form-input" name="publicTransport" placeholder="קווי אוטובוס, רכבת...">
-                </div>
+                <div class="section-title"><span>4️⃣</span><span>מיקום והגעה</span></div>
+                <div class="form-group"><label class="form-label">כתובת מדויקת <span class="required">*</span></label><input type="text" class="form-input" name="address" required></div>
+                <div class="form-group"><label class="form-label">עיר</label><input type="text" class="form-input" name="city"></div>
+                <div class="form-group"><label class="form-label">קישור Waze</label><input type="url" class="form-input" name="wazeLink"></div>
+                <div class="form-group"><label class="form-label">קישור Google Maps</label><input type="url" class="form-input" name="mapsLink"></div>
+                <div class="form-group"><label class="form-label">הוראות הגעה</label><textarea class="form-textarea" name="directions" rows="3"></textarea></div>
+                <div class="form-group"><label class="form-label">חניה</label><input type="text" class="form-input" name="parking"></div>
+                <div class="form-group"><label class="form-label">נגישות</label><select class="form-select" name="accessibility"><option value="">בחר</option><option value="כן">נגיש</option><option value="חלקי">חלקית</option><option value="לא">לא נגיש</option></select></div>
+                <div class="form-group"><label class="form-label">תחבורה ציבורית</label><input type="text" class="form-input" name="publicTransport"></div>
             </div>
-
-            <!-- Section 5: Contact -->
             <div class="section">
-                <div class="section-title">
-                    <span>5️⃣</span>
-                    <span>יצירת קשר</span>
-                </div>
-                <p class="section-subtitle">איך ליצור איתך קשר?</p>
-
-                <div class="form-group">
-                    <label class="form-label">טלפון ראשי <span class="required">*</span></label>
-                    <input type="tel" class="form-input" name="phone" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">WhatsApp עסקי</label>
-                    <input type="tel" class="form-input" name="whatsapp">
-                    <p class="form-hint">אם זהה לטלפון, אפשר להשאיר ריק</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">אימייל</label>
-                    <input type="email" class="form-input" name="email">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">אינסטגרם</label>
-                    <input type="text" class="form-input" name="instagram" placeholder="@username">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">פייסבוק</label>
-                    <input type="text" class="form-input" name="facebook">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">אתר אינטרנט</label>
-                    <input type="url" class="form-input" name="website" placeholder="https://...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">שעות מענה טלפוני</label>
-                    <input type="text" class="form-input" name="phoneHours" placeholder="08:00-20:00">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">דרך מומלצת להזמנה</label>
-                    <select class="form-select" name="preferredContact">
-                        <option value="">בחר</option>
-                        <option value="WhatsApp">WhatsApp (הכי מהיר)</option>
-                        <option value="טלפון">טלפון</option>
-                        <option value="אתר">דרך האתר</option>
-                        <option value="אימייל">אימייל</option>
-                    </select>
-                </div>
+                <div class="section-title"><span>5️⃣</span><span>יצירת קשר</span></div>
+                <div class="form-group"><label class="form-label">טלפון ראשי <span class="required">*</span></label><input type="tel" class="form-input" name="phone" required></div>
+                <div class="form-group"><label class="form-label">WhatsApp</label><input type="tel" class="form-input" name="whatsapp"></div>
+                <div class="form-group"><label class="form-label">אימייל</label><input type="email" class="form-input" name="email"></div>
+                <div class="form-group"><label class="form-label">אינסטגרם</label><input type="text" class="form-input" name="instagram" placeholder="@username"></div>
+                <div class="form-group"><label class="form-label">פייסבוק</label><input type="text" class="form-input" name="facebook"></div>
+                <div class="form-group"><label class="form-label">אתר</label><input type="url" class="form-input" name="website"></div>
+                <div class="form-group"><label class="form-label">שעות מענה טלפוני</label><input type="text" class="form-input" name="phoneHours" placeholder="08:00-20:00"></div>
+                <div class="form-group"><label class="form-label">דרך מומלצת להזמנה</label><select class="form-select" name="preferredContact"><option value="">בחר</option><option value="WhatsApp">WhatsApp</option><option value="טלפון">טלפון</option><option value="אתר">אתר</option></select></div>
             </div>
-
-            <!-- Section 6: Services Detail -->
             <div class="section">
-                <div class="section-title">
-                    <span>6️⃣</span>
-                    <span>השירותים בפירוט</span>
-                </div>
-                <p class="section-subtitle">מה בדיוק הלקוח מקבל?</p>
-
-                <div class="form-group">
-                    <label class="form-label">תיאור מפורט של השירות העיקרי</label>
-                    <textarea class="form-textarea" name="mainServiceDetail" rows="5" placeholder="תאר בפירוט - מה כלול? למי זה מתאים? כמה זמן זה לוקח?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">תוספות אופציונליות</label>
-                    <textarea class="form-textarea" name="addons" rows="4" placeholder="לדוגמה:
-🌹 זר ורדים: 300 ₪
-📸 צלם: 800 ₪"></textarea>
-                </div>
+                <div class="section-title"><span>6️⃣</span><span>תוספות אופציונליות</span></div>
+                <div class="form-group"><label class="form-label">תוספות בתשלום נוסף</label><textarea class="form-textarea" name="addons" rows="4" placeholder="זר ורדים: 300 ש״ח&#10;צלם: 800 ש״ח"></textarea></div>
             </div>
-
-            <!-- Section 7: FAQ -->
             <div class="section">
-                <div class="section-title">
-                    <span>7️⃣</span>
-                    <span>שאלות נפוצות</span>
-                </div>
-                <p class="section-subtitle">מה הלקוחות תמיד שואלים?</p>
-
-                <div class="info-box">
-                    <p>💡 רשום 5-10 השאלות הכי נפוצות והתשובות שלהן</p>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">שאלות ותשובות נפוצות <span class="required">*</span></label>
-                    <textarea class="form-textarea" name="faq" rows="12" required placeholder="לדוגמה:
-
-שאלה: מה קורה אם מזג האוויר גרוע?
-תשובה: אנחנו עוקבים אחרי התחזית 48 שעות לפני.
-
-שאלה: אפשר להביא אוכל?
-תשובה: כן! אפשר להביא מה שאתם רוצים.
-
-[המשך...]"></textarea>
-                </div>
+                <div class="section-title"><span>7️⃣</span><span>שאלות נפוצות</span></div>
+                <div class="info-box"><p>💡 רשום 5-10 שאלות נפוצות</p></div>
+                <div class="form-group"><label class="form-label">שאלות ותשובות <span class="required">*</span></label><textarea class="form-textarea" name="faq" rows="12" required placeholder="שאלה: מה קורה אם מזג אוויר גרוע?&#10;תשובה: אנחנו עוקבים 48 שעות לפני.&#10;&#10;שאלה: אפשר להביא אוכל?&#10;תשובה: כן!"></textarea></div>
             </div>
-
-            <!-- Section 8: Policies -->
             <div class="section">
-                <div class="section-title">
-                    <span>8️⃣</span>
-                    <span>מדיניות ותנאים</span>
-                </div>
-                <p class="section-subtitle">מה חשוב שהלקוח ידע?</p>
-
-                <div class="form-group">
-                    <label class="form-label">מה קורה במקרה של איחור?</label>
-                    <textarea class="form-textarea" name="latePolicy" rows="3" placeholder="לדוגמה: עד 15 דקות - בסדר, מעל 30 דקות - השירות מתקצר"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מגבלות גיל</label>
-                    <input type="text" class="form-input" name="ageRestrictions" placeholder="לדוגמה: ילדים מגיל 3+...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה אסור להביא/לעשות?</label>
-                    <textarea class="form-textarea" name="prohibited" rows="3" placeholder="לדוגמה: כלי נשק, סמים, חיות מחמד..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">דרישות מיוחדות</label>
-                    <textarea class="form-textarea" name="requirements" rows="2" placeholder="הצהרת בריאות, ביטוח..."></textarea>
-                </div>
+                <div class="section-title"><span>8️⃣</span><span>מדיניות ותנאים</span></div>
+                <div class="form-group"><label class="form-label">מדיניות איחור</label><textarea class="form-textarea" name="latePolicy" rows="3"></textarea></div>
+                <div class="form-group"><label class="form-label">מגבלות גיל</label><input type="text" class="form-input" name="ageRestrictions"></div>
+                <div class="form-group"><label class="form-label">מה אסור?</label><textarea class="form-textarea" name="prohibited" rows="3"></textarea></div>
+                <div class="form-group"><label class="form-label">דרישות מיוחדות</label><textarea class="form-textarea" name="requirements" rows="2"></textarea></div>
             </div>
-
-            <!-- Section 9: About -->
             <div class="section">
-                <div class="section-title">
-                    <span>9️⃣</span>
-                    <span>מי אנחנו?</span>
-                </div>
-                <p class="section-subtitle">הסיפור שלך</p>
-
-                <div class="form-group">
-                    <label class="form-label">מי ייסד את העסק? מתי?</label>
-                    <input type="text" class="form-input" name="founder">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">הסיפור מאחורי העסק</label>
-                    <textarea class="form-textarea" name="story" rows="4" placeholder="איך התחלת? מה הייתה המוטיבציה?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">כמה ניסיון יש לכם?</label>
-                    <input type="text" class="form-input" name="experience" placeholder="מספר שנים, ניסיון קודם...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">הצוות שלכם</label>
-                    <textarea class="form-textarea" name="team" rows="3" placeholder="מי עובד אצלכם? תפקידים?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">תעודות/הסמכות</label>
-                    <input type="text" class="form-input" name="certifications">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">פרסים/הוקרה</label>
-                    <input type="text" class="form-input" name="awards">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">הערכים שלכם כעסק</label>
-                    <textarea class="form-textarea" name="values" rows="3" placeholder="לדוגמה: בטיחות, שירות אישי, גמישות..."></textarea>
-                </div>
+                <div class="section-title"><span>9️⃣</span><span>מי אנחנו?</span></div>
+                <div class="form-group"><label class="form-label">מייסד</label><input type="text" class="form-input" name="founder"></div>
+                <div class="form-group"><label class="form-label">הסיפור שלנו</label><textarea class="form-textarea" name="story" rows="4"></textarea></div>
+                <div class="form-group"><label class="form-label">ניסיון</label><input type="text" class="form-input" name="experience"></div>
+                <div class="form-group"><label class="form-label">הצוות</label><textarea class="form-textarea" name="team" rows="3"></textarea></div>
+                <div class="form-group"><label class="form-label">הסמכות</label><input type="text" class="form-input" name="certifications"></div>
+                <div class="form-group"><label class="form-label">פרסים</label><input type="text" class="form-input" name="awards"></div>
+                <div class="form-group"><label class="form-label">ערכים</label><textarea class="form-textarea" name="values" rows="3"></textarea></div>
             </div>
-
-            <!-- Section 10: Visual Content -->
             <div class="section">
-                <div class="section-title">
-                    <span>🔟</span>
-                    <span>תוכן ויזואלי</span>
-                </div>
-                <p class="section-subtitle">איפה אפשר לראות?</p>
-
-                <div class="form-group">
-                    <label class="form-label">גלריית תמונות באתר</label>
-                    <input type="url" class="form-input" name="gallery">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">אינסטגרם (תמונות)</label>
-                    <input type="text" class="form-input" name="instagramVisual" placeholder="@username">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">סרטונים (YouTube/TikTok)</label>
-                    <input type="text" class="form-input" name="videos">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">קישור לביקורות לקוחות</label>
-                    <input type="url" class="form-input" name="reviews" placeholder="Google Reviews, Facebook...">
-                </div>
+                <div class="section-title"><span>🔟</span><span>תוכן ויזואלי</span></div>
+                <div class="form-group"><label class="form-label">גלריה</label><input type="url" class="form-input" name="gallery"></div>
+                <div class="form-group"><label class="form-label">אינסטגרם תמונות</label><input type="text" class="form-input" name="instagramVisual"></div>
+                <div class="form-group"><label class="form-label">סרטונים</label><input type="text" class="form-input" name="videos"></div>
+                <div class="form-group"><label class="form-label">ביקורות</label><input type="url" class="form-input" name="reviews"></div>
             </div>
-
-            <!-- Section 11: Conversion -->
             <div class="section">
-                <div class="section-title">
-                    <span>1️⃣1️⃣</span>
-                    <span>תהליך הזמנה</span>
-                </div>
-                <p class="section-subtitle">איך לקוח מזמין?</p>
-
-                <div class="form-group">
-                    <label class="form-label">תהליך ההזמנה שלב אחר שלב</label>
-                    <textarea class="form-textarea" name="bookingProcess" rows="6" placeholder="לדוגמה:
-1. לקוח מתקשר/שולח הודעה
-2. אנחנו בודקים זמינות
-3. שולחים הצעת מחיר
-..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה הלקוח צריך לספק?</label>
-                    <input type="text" class="form-input" name="bookingRequirements" placeholder="שם, טלפון, תאריך מועדף...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה קורה אחרי ההזמנה?</label>
-                    <textarea class="form-textarea" name="afterBooking" rows="3" placeholder="מייל אישור, תזכורות, הודעות..."></textarea>
-                </div>
+                <div class="section-title"><span>1️⃣1️⃣</span><span>תהליך הזמנה</span></div>
+                <p class="section-subtitle">איך לקוח מזמין אצלכם היום?</p>
+                <div class="form-group"><label class="form-label">תאר את תהליך ההזמנה הנוכחי <span class="required">*</span></label><textarea class="form-textarea" name="bookingProcess" rows="8" required placeholder="תאר בדיוק מה קורה היום:&#10;1. לקוח שולח הודעה&#10;2. אני שואל איזה שירות&#10;3. בודק זמינות&#10;4. שולח הצעת מחיר&#10;5. לקוח מאשר&#10;..."></textarea><p class="form-hint">זה יעזור לנו לבנות את הבוט</p></div>
+                <div class="form-group"><label class="form-label">מה הלקוח צריך לספק?</label><input type="text" class="form-input" name="bookingRequirements" placeholder="שם, טלפון, תאריך..."></div>
+                <div class="form-group"><label class="form-label">מה קורה אחרי ההזמנה?</label><textarea class="form-textarea" name="afterBooking" rows="3"></textarea></div>
             </div>
-
-            <!-- Section 12: Additional -->
             <div class="section">
-                <div class="section-title">
-                    <span>1️⃣2️⃣</span>
-                    <span>מידע נוסף</span>
-                </div>
-                <p class="section-subtitle">עוד משהו חשוב?</p>
-
-                <div class="form-group">
-                    <label class="form-label">האם יש עונות שונות?</label>
-                    <input type="text" class="form-input" name="seasons" placeholder="עמוס/שקט">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">ההמלצה הכי טובה ללקוח חדש</label>
-                    <textarea class="form-textarea" name="topRecommendation" rows="2"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">מה חשוב שכל לקוח ידע לפני?</label>
-                    <textarea class="form-textarea" name="importantToKnow" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">שותפויות עם עסקים אחרים</label>
-                    <input type="text" class="form-input" name="partnerships">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">האם יש גיפט קארד?</label>
-                    <select class="form-select" name="giftCard">
-                        <option value="">בחר תשובה</option>
-                        <option value="כן">כן</option>
-                        <option value="לא">לא</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">עוד משהו שחשוב?</label>
-                    <textarea class="form-textarea" name="additionalInfo" rows="4"></textarea>
-                </div>
+                <div class="section-title"><span>1️⃣2️⃣</span><span>מידע נוסף</span></div>
+                <p class="section-subtitle">כל מה שלא ציינת עד עכשיו</p>
+                <div class="form-group"><label class="form-label">עונות שונות?</label><input type="text" class="form-input" name="seasons"></div>
+                <div class="form-group"><label class="form-label">המלצה ללקוח חדש</label><textarea class="form-textarea" name="topRecommendation" rows="2"></textarea></div>
+                <div class="form-group"><label class="form-label">חשוב לדעת לפני</label><textarea class="form-textarea" name="importantToKnow" rows="3"></textarea></div>
+                <div class="form-group"><label class="form-label">שותפויות</label><input type="text" class="form-input" name="partnerships"></div>
+                <div class="form-group"><label class="form-label">גיפט קארד?</label><select class="form-select" name="giftCard"><option value="">בחר</option><option value="כן">כן</option><option value="לא">לא</option></select></div>
+                <div class="form-group"><label class="form-label">מידע נוסף שחשוב לך שהבוט ידע <span class="required">*</span></label><textarea class="form-textarea" name="additionalInfo" rows="6" required placeholder="כאן המקום לציין כל דבר שלא שאלנו עליו אבל חשוב לך שהבוט ידע.&#10;&#10;לדוגמה:&#10;- כשרות מיוחדת&#10;- מדיניות ילדים/בעלי חיים&#10;- הגבלות מיוחדות&#10;- כל דבר אחר..."></textarea><p class="form-hint">שדה חובה - וודא שציינת הכל!</p></div>
             </div>
-
-            <div class="button-group">
-                <button type="submit" class="btn btn-primary">
-                    <span>🚀</span>
-                    <span>צור סיכום למאגר הידע</span>
-                </button>
-            </div>
-
+            <div class="button-group"><button type="submit" class="btn btn-primary"><span>🚀</span><span>צור סיכום</span></button></div>
         </form>
-
         <div class="summary-container" id="summaryContainer">
-            <h2 class="summary-title">✅ הסיכום שלך מוכן!</h2>
-            <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
-                העתק את הטקסט למטה והדבק אותו במאגר הידע של הבוט
-            </p>
+            <h2 class="summary-title">✅ הסיכום מוכן!</h2>
+            <p style="text-align: center; color: #64748b; margin-bottom: 20px;">העתק ושלח לאריאל</p>
             <div class="summary-content" id="summaryContent"></div>
-            <div class="button-group">
-                <button type="button" class="btn copy-btn" onclick="copySummary()">
-                    <span>📋</span>
-                    <span>העתק סיכום</span>
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="window.print()">
-                    <span>🖨️</span>
-                    <span>הדפס</span>
-                </button>
-            </div>
-            <div class="success-message" id="successMessage">✅ הועתק ללוח!</div>
+            <div class="button-group"><button type="button" class="btn copy-btn" onclick="copySummary()"><span>📋</span><span>העתק</span></button></div>
+            <div class="success-message" id="successMessage">✅ הועתק!</div>
         </div>
-
     </div>
 </div>
-
 <script>
-    const form = document.getElementById('botForm');
-    const summaryContainer = document.getElementById('summaryContainer');
-    const summaryContent = document.getElementById('summaryContent');
-    const successMessage = document.getElementById('successMessage');
-    const progressBar = document.getElementById('progressBar');
-
-    const formInputs = form.querySelectorAll('input, textarea, select');
-    formInputs.forEach(input => {
-        input.addEventListener('input', updateProgress);
-        
-        const saved = localStorage.getItem('botForm_' + input.name);
-        if (saved) {
-            input.value = saved;
-        }
-        
-        input.addEventListener('change', () => {
-            localStorage.setItem('botForm_' + input.name, input.value);
-        });
-    });
-
-    function updateProgress() {
-        const totalFields = formInputs.length;
-        let filledFields = 0;
-        
-        formInputs.forEach(input => {
-            if (input.value.trim() !== '') {
-                filledFields++;
-            }
-        });
-        
-        const progress = (filledFields / totalFields) * 100;
-        progressBar.style.width = progress + '%';
-    }
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
-        const data = {};
-        
-        for (let [key, value] of formData.entries()) {
-            data[key] = value;
-        }
-        
-        const summary = generateSummary(data);
-        summaryContent.textContent = summary;
-        summaryContainer.style.display = 'block';
-        summaryContainer.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    function generateSummary(data) {
-        return `═══════════════════════════════════════════════════════════════
-                    📋 מאגר ידע - ${data.businessName}
-═══════════════════════════════════════════════════════════════
-
-🏢 מידע בסיסי על העסק
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-שם העסק: ${data.businessName}
-תחום: ${data.businessType}
-
-תיאור:
-${data.businessDescription}
-
-${data.uniqueValue ? `מה ייחודי בנו:
-${data.uniqueValue}` : ''}
-
-${data.targetAudience ? `קהל יעד: ${data.targetAudience}` : ''}
-
-
-💰 מחירים ושירותים
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.service1Name ? `📌 ${data.service1Name}
-   מחיר: ${data.service1Price}
-   ${data.service1Duration ? `משך זמן: ${data.service1Duration}` : ''}
-` : ''}${data.service2Name ? `📌 ${data.service2Name}
-   מחיר: ${data.service2Price}
-   ${data.service2Duration ? `משך זמן: ${data.service2Duration}` : ''}
-` : ''}${data.service3Name ? `📌 ${data.service3Name}
-   מחיר: ${data.service3Price}
-   ${data.service3Duration ? `משך זמן: ${data.service3Duration}` : ''}
-` : ''}
-${data.discounts ? `מבצעים והנחות:
-${data.discounts}` : ''}
-
-${data.included ? `✅ כלול במחיר:
-${data.included}` : ''}
-
-${data.notIncluded ? `❌ לא כלול במחיר:
-${data.notIncluded}` : ''}
-
-${data.deposit ? `💳 מקדמה: ${data.deposit}` : ''}
-${data.paymentMethods ? `💵 דרכי תשלום: ${data.paymentMethods}` : ''}
-
-
-📅 זמינות ושעות
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-שעות פעילות:
-${data.openingHours}
-
-${data.closedDays ? `ימים סגורים: ${data.closedDays}` : ''}
-${data.advanceBooking ? `הזמנה מראש: ${data.advanceBooking}` : ''}
-${data.sameDayBooking ? `הזמנה באותו יום: ${data.sameDayBooking}` : ''}
-
-${data.cancellationPolicy ? `מדיניות ביטולים:
-${data.cancellationPolicy}` : ''}
-
-
-📍 מיקום והגעה
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-כתובת: ${data.address}${data.city ? ', ' + data.city : ''}
-
-${data.wazeLink ? `🚗 Waze: ${data.wazeLink}` : ''}
-${data.mapsLink ? `📍 Google Maps: ${data.mapsLink}` : ''}
-
-${data.directions ? `איך מגיעים:
-${data.directions}` : ''}
-
-${data.parking ? `🅿️ חניה: ${data.parking}` : ''}
-${data.accessibility ? `♿ נגישות: ${data.accessibility}` : ''}
-${data.publicTransport ? `🚌 תחבורה ציבורית: ${data.publicTransport}` : ''}
-
-
-📞 יצירת קשר
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📱 טלפון: ${data.phone}
-${data.whatsapp ? `💬 WhatsApp: ${data.whatsapp}` : ''}
-${data.email ? `📧 אימייל: ${data.email}` : ''}
-${data.instagram ? `📸 אינסטגרם: ${data.instagram}` : ''}
-${data.facebook ? `👥 פייסבוק: ${data.facebook}` : ''}
-${data.website ? `🌐 אתר: ${data.website}` : ''}
-
-${data.phoneHours ? `שעות מענה: ${data.phoneHours}` : ''}
-${data.preferredContact ? `דרך מומלצת להזמנה: ${data.preferredContact}` : ''}
-
-
-🎯 פרטי השירותים
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.mainServiceDetail ? `השירות העיקרי:
-${data.mainServiceDetail}` : ''}
-
-${data.addons ? `תוספות אופציונליות:
-${data.addons}` : ''}
-
-
-❓ שאלות נפוצות
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.faq}
-
-
-📜 מדיניות ותנאים
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.latePolicy ? `איחור לקוח:
-${data.latePolicy}` : ''}
-
-${data.ageRestrictions ? `מגבלות גיל: ${data.ageRestrictions}` : ''}
-
-${data.prohibited ? `אסור להביא/לעשות:
-${data.prohibited}` : ''}
-
-${data.requirements ? `דרישות מיוחדות:
-${data.requirements}` : ''}
-
-
-👥 עלינו
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.founder ? `מייסד: ${data.founder}` : ''}
-
-${data.story ? `הסיפור שלנו:
-${data.story}` : ''}
-
-${data.experience ? `ניסיון: ${data.experience}` : ''}
-${data.team ? `הצוות:
-${data.team}` : ''}
-${data.certifications ? `הסמכות: ${data.certifications}` : ''}
-${data.awards ? `פרסים: ${data.awards}` : ''}
-
-${data.values ? `הערכים שלנו:
-${data.values}` : ''}
-
-
-📸 תוכן ויזואלי
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.gallery ? `גלריה: ${data.gallery}` : ''}
-${data.instagramVisual ? `אינסטגרם: ${data.instagramVisual}` : ''}
-${data.videos ? `סרטונים: ${data.videos}` : ''}
-${data.reviews ? `ביקורות: ${data.reviews}` : ''}
-
-
-🎫 תהליך הזמנה
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.bookingProcess ? `תהליך ההזמנה:
-${data.bookingProcess}` : ''}
-
-${data.bookingRequirements ? `מה צריך לספק: ${data.bookingRequirements}` : ''}
-
-${data.afterBooking ? `אחרי ההזמנה:
-${data.afterBooking}` : ''}
-
-
-💡 מידע נוסף
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.seasons ? `עונות: ${data.seasons}` : ''}
-
-${data.topRecommendation ? `ההמלצה שלנו:
-${data.topRecommendation}` : ''}
-
-${data.importantToKnow ? `חשוב לדעת:
-${data.importantToKnow}` : ''}
-
-${data.partnerships ? `שותפויות: ${data.partnerships}` : ''}
-${data.giftCard ? `שובר מתנה: ${data.giftCard}` : ''}
-
-${data.additionalInfo ? `מידע נוסף:
-${data.additionalInfo}` : ''}
-
-
-═══════════════════════════════════════════════════════════════
-             ✅ סיכום זה מוכן להעתקה למאגר הידע!
-═══════════════════════════════════════════════════════════════
-`;
-    }
-
-    function copySummary() {
-        const text = summaryContent.textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            successMessage.style.display = 'block';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000);
-        });
-    }
-
+let serviceCount = 1;
+const maxServices = 10;
+function addService() {
+    if (serviceCount >= maxServices) { alert('עד ' + maxServices + ' שירותים'); return; }
+    serviceCount++;
+    document.getElementById('servicesContainer').insertAdjacentHTML('beforeend', 
+        '<div class="service-item" data-service-index="'+serviceCount+'"><div class="service-item-header"><span class="service-item-title">שירות/חבילה '+serviceCount+'</span><button type="button" class="btn btn-remove" onclick="removeService(this)">🗑️</button></div><div class="service-fields"><input type="text" class="form-input" name="service'+serviceCount+'Name" placeholder="שם"><input type="text" class="form-input" name="service'+serviceCount+'Price" placeholder="מחיר"><input type="text" class="form-input" name="service'+serviceCount+'Duration" placeholder="משך"></div><div class="service-description"><textarea class="form-textarea" name="service'+serviceCount+'Description" rows="3" placeholder="תיאור..."></textarea></div></div>'
+    );
     updateProgress();
+}
+function removeService(btn) { btn.closest('.service-item').remove(); updateProgress(); }
+const form = document.getElementById('botForm');
+const summaryContainer = document.getElementById('summaryContainer');
+const summaryContent = document.getElementById('summaryContent');
+const successMessage = document.getElementById('successMessage');
+const progressBar = document.getElementById('progressBar');
+function updateProgress() {
+    const inputs = form.querySelectorAll('input, textarea, select');
+    let filled = 0;
+    inputs.forEach(i => { if (i.value.trim()) filled++; });
+    progressBar.style.width = (filled / inputs.length * 100) + '%';
+}
+updateProgress();
+form.addEventListener('input', updateProgress);
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = {};
+    for (let [k, v] of formData.entries()) data[k] = v;
+    summaryContent.textContent = generateSummary(data);
+    summaryContainer.style.display = 'block';
+    summaryContainer.scrollIntoView({ behavior: 'smooth' });
+});
+function generateSummary(d) {
+    let services = '';
+    for (let i = 1; i <= maxServices; i++) {
+        if (d['service'+i+'Name']) {
+            services += 'שירות/חבילה: ' + d['service'+i+'Name'] + '\n';
+            if (d['service'+i+'Price']) services += 'מחיר: ' + d['service'+i+'Price'] + '\n';
+            if (d['service'+i+'Duration']) services += 'משך: ' + d['service'+i+'Duration'] + '\n';
+            if (d['service'+i+'Description']) services += 'תיאור: ' + d['service'+i+'Description'] + '\n';
+            services += '\n';
+        }
+    }
+    return '===============================================\nמאגר ידע - ' + d.businessName + '\n===============================================\n\n===============================================\nמידע בסיסי\n===============================================\nשם: ' + d.businessName + '\nתחום: ' + d.businessType + '\n\nתיאור:\n' + d.businessDescription + '\n\n' + (d.uniqueValue ? 'ייחודי:\n' + d.uniqueValue + '\n\n' : '') + (d.targetAudience ? 'קהל יעד: ' + d.targetAudience + '\n\n' : '') + '===============================================\nשירותים ומחירים\n===============================================\n' + services + (d.discounts ? 'הנחות:\n' + d.discounts + '\n\n' : '') + (d.included ? 'כלול:\n' + d.included + '\n\n' : '') + (d.notIncluded ? 'לא כלול:\n' + d.notIncluded + '\n\n' : '') + (d.deposit ? 'מקדמה: ' + d.deposit + '\n' : '') + (d.paymentMethods ? 'תשלום: ' + d.paymentMethods + '\n\n' : '') + '===============================================\nשעות פעילות\n===============================================\n' + d.openingHours + '\n\n' + (d.closedDays ? 'סגור: ' + d.closedDays + '\n' : '') + (d.advanceBooking ? 'הזמנה מראש: ' + d.advanceBooking + '\n' : '') + (d.sameDayBooking ? 'באותו יום: ' + d.sameDayBooking + '\n' : '') + (d.cancellationPolicy ? '\nמדיניות ביטולים:\n' + d.cancellationPolicy + '\n' : '') + '\n===============================================\nמיקום\n===============================================\nכתובת: ' + d.address + (d.city ? ', ' + d.city : '') + '\n\n' + (d.wazeLink ? 'Waze: ' + d.wazeLink + '\n' : '') + (d.mapsLink ? 'Maps: ' + d.mapsLink + '\n' : '') + (d.directions ? '\nהגעה:\n' + d.directions + '\n' : '') + (d.parking ? 'חניה: ' + d.parking + '\n' : '') + (d.accessibility ? 'נגישות: ' + d.accessibility + '\n' : '') + (d.publicTransport ? 'תחבורה: ' + d.publicTransport + '\n' : '') + '\n===============================================\nיצירת קשר\n===============================================\nטלפון: ' + d.phone + '\n' + (d.whatsapp ? 'WhatsApp: ' + d.whatsapp + '\n' : '') + (d.email ? 'אימייל: ' + d.email + '\n' : '') + (d.instagram ? 'אינסטגרם: ' + d.instagram + '\n' : '') + (d.facebook ? 'פייסבוק: ' + d.facebook + '\n' : '') + (d.website ? 'אתר: ' + d.website + '\n' : '') + (d.phoneHours ? 'שעות מענה: ' + d.phoneHours + '\n' : '') + (d.preferredContact ? 'דרך מומלצת: ' + d.preferredContact + '\n' : '') + '\n===============================================\nתוספות\n===============================================\n' + (d.addons || 'לא צוינו') + '\n\n===============================================\nשאלות נפוצות\n===============================================\n' + d.faq + '\n\n===============================================\nמדיניות\n===============================================\n' + (d.latePolicy ? 'איחור:\n' + d.latePolicy + '\n\n' : '') + (d.ageRestrictions ? 'גיל: ' + d.ageRestrictions + '\n' : '') + (d.prohibited ? 'אסור:\n' + d.prohibited + '\n\n' : '') + (d.requirements ? 'דרישות:\n' + d.requirements + '\n' : '') + '\n===============================================\nעלינו\n===============================================\n' + (d.founder ? 'מייסד: ' + d.founder + '\n\n' : '') + (d.story ? 'סיפור:\n' + d.story + '\n\n' : '') + (d.experience ? 'ניסיון: ' + d.experience + '\n' : '') + (d.team ? 'צוות:\n' + d.team + '\n' : '') + (d.certifications ? 'הסמכות: ' + d.certifications + '\n' : '') + (d.awards ? 'פרסים: ' + d.awards + '\n' : '') + (d.values ? 'ערכים:\n' + d.values + '\n' : '') + '\n===============================================\nתוכן ויזואלי\n===============================================\n' + (d.gallery ? 'גלריה: ' + d.gallery + '\n' : '') + (d.instagramVisual ? 'אינסטגרם: ' + d.instagramVisual + '\n' : '') + (d.videos ? 'סרטונים: ' + d.videos + '\n' : '') + (d.reviews ? 'ביקורות: ' + d.reviews + '\n' : '') + '\n===============================================\nתהליך הזמנה\n===============================================\n' + (d.bookingProcess || 'לא צוין') + '\n\n' + (d.bookingRequirements ? 'צריך לספק: ' + d.bookingRequirements + '\n' : '') + (d.afterBooking ? 'אחרי הזמנה:\n' + d.afterBooking + '\n' : '') + '\n===============================================\nמידע נוסף\n===============================================\n' + (d.seasons ? 'עונות: ' + d.seasons + '\n' : '') + (d.topRecommendation ? 'המלצה:\n' + d.topRecommendation + '\n\n' : '') + (d.importantToKnow ? 'חשוב לדעת:\n' + d.importantToKnow + '\n\n' : '') + (d.partnerships ? 'שותפויות: ' + d.partnerships + '\n' : '') + (d.giftCard ? 'גיפט קארד: ' + d.giftCard + '\n' : '') + (d.additionalInfo ? '\nמידע נוסף חשוב:\n' + d.additionalInfo + '\n' : '') + '\n===============================================\nסוף המסמך\n===============================================';
+}
+function copySummary() {
+    navigator.clipboard.writeText(summaryContent.textContent).then(() => {
+        successMessage.style.display = 'block';
+        setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
+    });
+}
 </script>
-
 </body>
 </html>
