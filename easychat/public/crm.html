@@ -209,6 +209,8 @@
         .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; z-index: 600; }
         @media (max-width: 1024px) { .sidebar { width: 72px; padding: 16px 8px; } .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info, .nav-submenu { display: none; } .nav-item { justify-content: center; padding: 12px; } .main-content { margin-right: 72px; } .lead-panel { width: 100%; } }
         @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-right: 0; padding: 16px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .kanban-container { flex-direction: column; } .kanban-column { min-width: 100%; max-width: 100%; } }
+        .logout-btn { background: rgba(255,255,255,0.1); border: none; cursor: pointer; font-size: 16px; padding: 8px 10px; border-radius: 6px; transition: all 0.2s; }
+.logout-btn:hover { background: rgba(239,68,68,0.3); }
     </style>
 </head>
 <body>
@@ -221,7 +223,26 @@
         const SUPABASE_URL = 'https://tqxrahpbidlctyttpffc.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxeHJhaHBiaWRsY3R5dHRwZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTk3MzQsImV4cCI6MjA4MzQzNTczNH0.tmh9_GzWJhIcRoS3L6gpCX95_eZrkIR7hy3gOl9Qd2s';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// === AUTH CHECK - START ===
+const checkAuth = () => {
+    const user = localStorage.getItem('crm_user');
+    if (!user) {
+        window.location.href = 'login.html';
+        return null;
+    }
+    return JSON.parse(user);
+};
 
+const logout = () => {
+    localStorage.removeItem('crm_user');
+    window.location.href = 'login.html';
+};
+
+const currentUser = checkAuth();
+if (!currentUser) {
+    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Heebo;font-size:18px;">מעביר להתחברות...</div>';
+}
+// === AUTH CHECK - END ===
         const STATUS_CONFIG = {
             new: { label: 'חדש', color: '#8B5CF6', icon: '✨' },
             followup_initial: { label: 'פולואפ ראשוני', color: '#F59E0B', icon: '📞' },
@@ -367,16 +388,16 @@
                         ))}
                     </nav>
                     <div className="sidebar-user">
-                        <div className="user-avatar">א</div>
-                        <div className="user-info">
-                            <div className="user-name">אריאל</div>
-                            <div className="user-role">מנהל</div>
-                        </div>
-                    </div>
+    <div className="user-avatar">{currentUser && currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'א'}</div>
+    <div className="user-info">
+        <div className="user-name">{currentUser ? currentUser.username : 'משתמש'}</div>
+        <div className="user-role">מנהל</div>
+    </div>
+    <button onClick={() => logout()} style={{background:'none',border:'none',cursor:'pointer',fontSize:'18px',padding:'8px'}} title="התנתק">🚪</button>
+</div>
                 </aside>
             );
         };
-
         const StatsCards = ({ leads }) => {
             const stats = [
                 { label: 'סה״כ לידים', value: leads.length, icon: '👥', color: 'blue' },
