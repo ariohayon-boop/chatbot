@@ -47,7 +47,17 @@
         .service-item-title { font-weight: 600; color: #667eea; }
         .service-fields { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
         .service-description { grid-column: 1 / -1; margin-top: 10px; }
-        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .content { padding: 20px; } .section { padding: 20px; } .button-group { flex-direction: column; } .btn { width: 100%; } .service-fields { grid-template-columns: 1fr; } }
+        /* Checkbox styles for multiple choice */
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; background: white; padding: 12px 18px; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s ease; }
+        .checkbox-item:hover { border-color: #667eea; background: #f8fafc; }
+        .checkbox-item.selected { border-color: #667eea; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); }
+        .checkbox-item.disabled { opacity: 0.5; cursor: not-allowed; }
+        .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #667eea; }
+        .checkbox-item label { cursor: pointer; font-weight: 500; color: #334155; }
+        .checkbox-item.disabled label { cursor: not-allowed; }
+        .selection-hint { font-size: 0.85em; color: #667eea; margin-top: 8px; font-weight: 500; }
+        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .content { padding: 20px; } .section { padding: 20px; } .button-group { flex-direction: column; } .btn { width: 100%; } .service-fields { grid-template-columns: 1fr; } .checkbox-group { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -68,6 +78,62 @@
                 <div class="form-group"><label class="form-label">מה ייחודי בעסק שלך?</label><textarea class="form-textarea" name="uniqueValue" rows="3" placeholder="למה לקוח צריך לבחור בכם?"></textarea></div>
                 <div class="form-group"><label class="form-label">קהל יעד</label><input type="text" class="form-input" name="targetAudience" placeholder="לדוגמה: צעירים 25-35, משפחות..."></div>
             </div>
+
+            <!-- NEW SECTION: Bot Purpose and Tone -->
+            <div class="section">
+                <div class="section-title"><span>🎯</span><span>מטרת הבוט וטונציה</span></div>
+                <p class="section-subtitle">מה הבוט צריך לעשות ואיך הוא צריך לדבר</p>
+                
+                <div class="form-group">
+                    <label class="form-label">מטרת הבוט <span class="required">*</span></label>
+                    <p class="form-hint">בחר עד 2 מטרות עיקריות</p>
+                    <div class="checkbox-group" id="botPurposeGroup" data-max="2">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="purpose_leads" name="botPurpose" value="רלוונטיות לידים">
+                            <label for="purpose_leads">🎯 רלוונטיות לידים</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="purpose_appointment" name="botPurpose" value="קביעת פגישה">
+                            <label for="purpose_appointment">📅 קביעת פגישה</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="purpose_payment" name="botPurpose" value="סליקה של מוצר אינטרנטי">
+                            <label for="purpose_payment">💳 סליקה של מוצר אינטרנטי</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="purpose_support" name="botPurpose" value="שירות לקוחות">
+                            <label for="purpose_support">🛎️ שירות לקוחות</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="purpose_outbound" name="botPurpose" value="שליחת הודעות יזומה">
+                            <label for="purpose_outbound">📤 שליחת הודעות יזומה</label>
+                        </div>
+                    </div>
+                    <p class="selection-hint" id="purposeHint">נבחרו: 0/2</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">טונציה <span class="required">*</span></label>
+                    <p class="form-hint">בחר עד 2 סגנונות תקשורת</p>
+                    <div class="checkbox-group" id="botToneGroup" data-max="2">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tone_professional" name="botTone" value="מקצועי">
+                            <label for="tone_professional">👔 מקצועי</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tone_sales" name="botTone" value="מכירתי">
+                            <label for="tone_sales">💼 מכירתי</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tone_friendly" name="botTone" value="ידידותי">
+                            <label for="tone_friendly">😊 ידידותי</label>
+                        </div>
+                    </div>
+                    <p class="selection-hint" id="toneHint">נבחרו: 0/2</p>
+                </div>
+            </div>
+            <!-- END NEW SECTION -->
+
             <div class="section">
                 <div class="section-title"><span>2️⃣</span><span>שירותים/חבילות ומחירים</span></div>
                 <p class="section-subtitle">פרט את השירותים או החבילות שאתה מציע</p>
@@ -184,6 +250,55 @@
 <script>
 let serviceCount = 1;
 const maxServices = 10;
+
+// Checkbox group management - limit to max selections
+function setupCheckboxGroup(groupId, hintId, maxSelections) {
+    const group = document.getElementById(groupId);
+    const hint = document.getElementById(hintId);
+    const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checked = group.querySelectorAll('input[type="checkbox"]:checked');
+            const checkedCount = checked.length;
+            
+            // Update hint text
+            hint.textContent = 'נבחרו: ' + checkedCount + '/' + maxSelections;
+            
+            // Update visual state
+            checkboxes.forEach(cb => {
+                const item = cb.closest('.checkbox-item');
+                if (cb.checked) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            // Disable/enable unchecked boxes based on max
+            if (checkedCount >= maxSelections) {
+                checkboxes.forEach(cb => {
+                    if (!cb.checked) {
+                        cb.disabled = true;
+                        cb.closest('.checkbox-item').classList.add('disabled');
+                    }
+                });
+            } else {
+                checkboxes.forEach(cb => {
+                    cb.disabled = false;
+                    cb.closest('.checkbox-item').classList.remove('disabled');
+                });
+            }
+            
+            updateProgress();
+        });
+    });
+}
+
+// Initialize checkbox groups
+setupCheckboxGroup('botPurposeGroup', 'purposeHint', 2);
+setupCheckboxGroup('botToneGroup', 'toneHint', 2);
+
 function addService() {
     if (serviceCount >= maxServices) { alert('עד ' + maxServices + ' שירותים'); return; }
     serviceCount++;
@@ -198,23 +313,59 @@ const summaryContainer = document.getElementById('summaryContainer');
 const summaryContent = document.getElementById('summaryContent');
 const successMessage = document.getElementById('successMessage');
 const progressBar = document.getElementById('progressBar');
+
 function updateProgress() {
-    const inputs = form.querySelectorAll('input, textarea, select');
+    const inputs = form.querySelectorAll('input:not([type="checkbox"]), textarea, select');
+    const checkboxGroups = [
+        document.querySelectorAll('#botPurposeGroup input[type="checkbox"]:checked'),
+        document.querySelectorAll('#botToneGroup input[type="checkbox"]:checked')
+    ];
     let filled = 0;
+    let total = inputs.length + 2; // +2 for the two checkbox groups
+    
     inputs.forEach(i => { if (i.value.trim()) filled++; });
-    progressBar.style.width = (filled / inputs.length * 100) + '%';
+    checkboxGroups.forEach(group => { if (group.length > 0) filled++; });
+    
+    progressBar.style.width = (filled / total * 100) + '%';
 }
 updateProgress();
 form.addEventListener('input', updateProgress);
+
+// Get selected checkbox values
+function getSelectedValues(groupId) {
+    const checkboxes = document.querySelectorAll('#' + groupId + ' input[type="checkbox"]:checked');
+    return Array.from(checkboxes).map(cb => cb.value);
+}
+
 form.addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Validate at least one selection in each checkbox group
+    const purposes = getSelectedValues('botPurposeGroup');
+    const tones = getSelectedValues('botToneGroup');
+    
+    if (purposes.length === 0) {
+        alert('יש לבחור לפחות מטרה אחת לבוט');
+        return;
+    }
+    if (tones.length === 0) {
+        alert('יש לבחור לפחות טונציה אחת');
+        return;
+    }
+    
     const formData = new FormData(form);
     const data = {};
     for (let [k, v] of formData.entries()) data[k] = v;
+    
+    // Add checkbox selections
+    data.botPurposes = purposes;
+    data.botTones = tones;
+    
     summaryContent.textContent = generateSummary(data);
     summaryContainer.style.display = 'block';
     summaryContainer.scrollIntoView({ behavior: 'smooth' });
 });
+
 function generateSummary(d) {
     let services = '';
     for (let i = 1; i <= maxServices; i++) {
@@ -226,7 +377,12 @@ function generateSummary(d) {
             services += '\n';
         }
     }
-    return '===============================================\nמאגר ידע - ' + d.businessName + '\n===============================================\n\n===============================================\nמידע בסיסי\n===============================================\nשם: ' + d.businessName + '\nתחום: ' + d.businessType + '\n\nתיאור:\n' + d.businessDescription + '\n\n' + (d.uniqueValue ? 'ייחודי:\n' + d.uniqueValue + '\n\n' : '') + (d.targetAudience ? 'קהל יעד: ' + d.targetAudience + '\n\n' : '') + '===============================================\nשירותים ומחירים\n===============================================\n' + services + (d.discounts ? 'הנחות:\n' + d.discounts + '\n\n' : '') + (d.included ? 'כלול:\n' + d.included + '\n\n' : '') + (d.notIncluded ? 'לא כלול:\n' + d.notIncluded + '\n\n' : '') + (d.deposit ? 'מקדמה: ' + d.deposit + '\n' : '') + (d.paymentMethods ? 'תשלום: ' + d.paymentMethods + '\n\n' : '') + '===============================================\nשעות פעילות\n===============================================\n' + d.openingHours + '\n\n' + (d.closedDays ? 'סגור: ' + d.closedDays + '\n' : '') + (d.advanceBooking ? 'הזמנה מראש: ' + d.advanceBooking + '\n' : '') + (d.sameDayBooking ? 'באותו יום: ' + d.sameDayBooking + '\n' : '') + (d.cancellationPolicy ? '\nמדיניות ביטולים:\n' + d.cancellationPolicy + '\n' : '') + '\n===============================================\nמיקום\n===============================================\nכתובת: ' + d.address + (d.city ? ', ' + d.city : '') + '\n\n' + (d.wazeLink ? 'Waze: ' + d.wazeLink + '\n' : '') + (d.mapsLink ? 'Maps: ' + d.mapsLink + '\n' : '') + (d.directions ? '\nהגעה:\n' + d.directions + '\n' : '') + (d.parking ? 'חניה: ' + d.parking + '\n' : '') + (d.accessibility ? 'נגישות: ' + d.accessibility + '\n' : '') + (d.publicTransport ? 'תחבורה: ' + d.publicTransport + '\n' : '') + '\n===============================================\nיצירת קשר\n===============================================\nטלפון: ' + d.phone + '\n' + (d.whatsapp ? 'WhatsApp: ' + d.whatsapp + '\n' : '') + (d.email ? 'אימייל: ' + d.email + '\n' : '') + (d.instagram ? 'אינסטגרם: ' + d.instagram + '\n' : '') + (d.facebook ? 'פייסבוק: ' + d.facebook + '\n' : '') + (d.website ? 'אתר: ' + d.website + '\n' : '') + (d.phoneHours ? 'שעות מענה: ' + d.phoneHours + '\n' : '') + (d.preferredContact ? 'דרך מומלצת: ' + d.preferredContact + '\n' : '') + '\n===============================================\nתוספות\n===============================================\n' + (d.addons || 'לא צוינו') + '\n\n===============================================\nשאלות נפוצות\n===============================================\n' + d.faq + '\n\n===============================================\nמדיניות\n===============================================\n' + (d.latePolicy ? 'איחור:\n' + d.latePolicy + '\n\n' : '') + (d.ageRestrictions ? 'גיל: ' + d.ageRestrictions + '\n' : '') + (d.prohibited ? 'אסור:\n' + d.prohibited + '\n\n' : '') + (d.requirements ? 'דרישות:\n' + d.requirements + '\n' : '') + '\n===============================================\nעלינו\n===============================================\n' + (d.founder ? 'מייסד: ' + d.founder + '\n\n' : '') + (d.story ? 'סיפור:\n' + d.story + '\n\n' : '') + (d.experience ? 'ניסיון: ' + d.experience + '\n' : '') + (d.team ? 'צוות:\n' + d.team + '\n' : '') + (d.certifications ? 'הסמכות: ' + d.certifications + '\n' : '') + (d.awards ? 'פרסים: ' + d.awards + '\n' : '') + (d.values ? 'ערכים:\n' + d.values + '\n' : '') + '\n===============================================\nתוכן ויזואלי\n===============================================\n' + (d.gallery ? 'גלריה: ' + d.gallery + '\n' : '') + (d.instagramVisual ? 'אינסטגרם: ' + d.instagramVisual + '\n' : '') + (d.videos ? 'סרטונים: ' + d.videos + '\n' : '') + (d.reviews ? 'ביקורות: ' + d.reviews + '\n' : '') + '\n===============================================\nתהליך הזמנה\n===============================================\n' + (d.bookingProcess || 'לא צוין') + '\n\n' + (d.bookingRequirements ? 'צריך לספק: ' + d.bookingRequirements + '\n' : '') + (d.afterBooking ? 'אחרי הזמנה:\n' + d.afterBooking + '\n' : '') + '\n===============================================\nמידע נוסף\n===============================================\n' + (d.seasons ? 'עונות: ' + d.seasons + '\n' : '') + (d.topRecommendation ? 'המלצה:\n' + d.topRecommendation + '\n\n' : '') + (d.importantToKnow ? 'חשוב לדעת:\n' + d.importantToKnow + '\n\n' : '') + (d.partnerships ? 'שותפויות: ' + d.partnerships + '\n' : '') + (d.giftCard ? 'גיפט קארד: ' + d.giftCard + '\n' : '') + (d.additionalInfo ? '\nמידע נוסף חשוב:\n' + d.additionalInfo + '\n' : '') + '\n===============================================\nסוף המסמך\n===============================================';
+    
+    // Format checkbox selections
+    const purposesText = d.botPurposes ? d.botPurposes.join(', ') : 'לא נבחר';
+    const tonesText = d.botTones ? d.botTones.join(', ') : 'לא נבחר';
+    
+    return '===============================================\nמאגר ידע - ' + d.businessName + '\n===============================================\n\n===============================================\nמידע בסיסי\n===============================================\nשם: ' + d.businessName + '\nתחום: ' + d.businessType + '\n\nתיאור:\n' + d.businessDescription + '\n\n' + (d.uniqueValue ? 'ייחודי:\n' + d.uniqueValue + '\n\n' : '') + (d.targetAudience ? 'קהל יעד: ' + d.targetAudience + '\n\n' : '') + '===============================================\nמטרת הבוט וטונציה\n===============================================\nמטרות הבוט: ' + purposesText + '\nטונציה: ' + tonesText + '\n\n===============================================\nשירותים ומחירים\n===============================================\n' + services + (d.discounts ? 'הנחות:\n' + d.discounts + '\n\n' : '') + (d.included ? 'כלול:\n' + d.included + '\n\n' : '') + (d.notIncluded ? 'לא כלול:\n' + d.notIncluded + '\n\n' : '') + (d.deposit ? 'מקדמה: ' + d.deposit + '\n' : '') + (d.paymentMethods ? 'תשלום: ' + d.paymentMethods + '\n\n' : '') + '===============================================\nשעות פעילות\n===============================================\n' + d.openingHours + '\n\n' + (d.closedDays ? 'סגור: ' + d.closedDays + '\n' : '') + (d.advanceBooking ? 'הזמנה מראש: ' + d.advanceBooking + '\n' : '') + (d.sameDayBooking ? 'באותו יום: ' + d.sameDayBooking + '\n' : '') + (d.cancellationPolicy ? '\nמדיניות ביטולים:\n' + d.cancellationPolicy + '\n' : '') + '\n===============================================\nמיקום\n===============================================\nכתובת: ' + d.address + (d.city ? ', ' + d.city : '') + '\n\n' + (d.wazeLink ? 'Waze: ' + d.wazeLink + '\n' : '') + (d.mapsLink ? 'Maps: ' + d.mapsLink + '\n' : '') + (d.directions ? '\nהגעה:\n' + d.directions + '\n' : '') + (d.parking ? 'חניה: ' + d.parking + '\n' : '') + (d.accessibility ? 'נגישות: ' + d.accessibility + '\n' : '') + (d.publicTransport ? 'תחבורה: ' + d.publicTransport + '\n' : '') + '\n===============================================\nיצירת קשר\n===============================================\nטלפון: ' + d.phone + '\n' + (d.whatsapp ? 'WhatsApp: ' + d.whatsapp + '\n' : '') + (d.email ? 'אימייל: ' + d.email + '\n' : '') + (d.instagram ? 'אינסטגרם: ' + d.instagram + '\n' : '') + (d.facebook ? 'פייסבוק: ' + d.facebook + '\n' : '') + (d.website ? 'אתר: ' + d.website + '\n' : '') + (d.phoneHours ? 'שעות מענה: ' + d.phoneHours + '\n' : '') + (d.preferredContact ? 'דרך מומלצת: ' + d.preferredContact + '\n' : '') + '\n===============================================\nתוספות\n===============================================\n' + (d.addons || 'לא צוינו') + '\n\n===============================================\nשאלות נפוצות\n===============================================\n' + d.faq + '\n\n===============================================\nמדיניות\n===============================================\n' + (d.latePolicy ? 'איחור:\n' + d.latePolicy + '\n\n' : '') + (d.ageRestrictions ? 'גיל: ' + d.ageRestrictions + '\n' : '') + (d.prohibited ? 'אסור:\n' + d.prohibited + '\n\n' : '') + (d.requirements ? 'דרישות:\n' + d.requirements + '\n' : '') + '\n===============================================\nעלינו\n===============================================\n' + (d.founder ? 'מייסד: ' + d.founder + '\n\n' : '') + (d.story ? 'סיפור:\n' + d.story + '\n\n' : '') + (d.experience ? 'ניסיון: ' + d.experience + '\n' : '') + (d.team ? 'צוות:\n' + d.team + '\n' : '') + (d.certifications ? 'הסמכות: ' + d.certifications + '\n' : '') + (d.awards ? 'פרסים: ' + d.awards + '\n' : '') + (d.values ? 'ערכים:\n' + d.values + '\n' : '') + '\n===============================================\nתוכן ויזואלי\n===============================================\n' + (d.gallery ? 'גלריה: ' + d.gallery + '\n' : '') + (d.instagramVisual ? 'אינסטגרם: ' + d.instagramVisual + '\n' : '') + (d.videos ? 'סרטונים: ' + d.videos + '\n' : '') + (d.reviews ? 'ביקורות: ' + d.reviews + '\n' : '') + '\n===============================================\nתהליך הזמנה\n===============================================\n' + (d.bookingProcess || 'לא צוין') + '\n\n' + (d.bookingRequirements ? 'צריך לספק: ' + d.bookingRequirements + '\n' : '') + (d.afterBooking ? 'אחרי הזמנה:\n' + d.afterBooking + '\n' : '') + '\n===============================================\nמידע נוסף\n===============================================\n' + (d.seasons ? 'עונות: ' + d.seasons + '\n' : '') + (d.topRecommendation ? 'המלצה:\n' + d.topRecommendation + '\n\n' : '') + (d.importantToKnow ? 'חשוב לדעת:\n' + d.importantToKnow + '\n\n' : '') + (d.partnerships ? 'שותפויות: ' + d.partnerships + '\n' : '') + (d.giftCard ? 'גיפט קארד: ' + d.giftCard + '\n' : '') + (d.additionalInfo ? '\nמידע נוסף חשוב:\n' + d.additionalInfo + '\n' : '') + '\n===============================================\nסוף המסמך\n===============================================';
 }
 function copySummary() {
     navigator.clipboard.writeText(summaryContent.textContent).then(() => {
