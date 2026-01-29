@@ -52,6 +52,8 @@
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
         .btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: var(--bg); border-color: var(--text-light); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #DC2626; }
         .btn-sm { padding: 6px 12px; font-size: 13px; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: white; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: all 0.2s; }
@@ -207,42 +209,94 @@
         .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; z-index: 600; }
-        @media (max-width: 1024px) { .sidebar { width: 72px; padding: 16px 8px; } .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info, .nav-submenu { display: none; } .nav-item { justify-content: center; padding: 12px; } .main-content { margin-right: 72px; } .lead-panel { width: 100%; } }
+        
+        /* Notification Bell Styles */
+        .notification-bell { position: relative; cursor: pointer; padding: 8px; border-radius: var(--radius-md); transition: all 0.2s; }
+        .notification-bell:hover { background: rgba(255,255,255,0.1); }
+        .notification-bell-icon { font-size: 22px; }
+        .notification-badge { position: absolute; top: 2px; right: 2px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .notification-dropdown { position: absolute; top: calc(100% + 8px); left: 0; width: 360px; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid var(--border); z-index: 300; max-height: 480px; overflow: hidden; display: flex; flex-direction: column; }
+        .notification-dropdown-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .notification-dropdown-title { font-weight: 600; font-size: 16px; color: var(--text); }
+        .notification-tabs { display: flex; border-bottom: 1px solid var(--border); }
+        .notification-tab { flex: 1; padding: 12px; text-align: center; font-size: 13px; font-weight: 500; color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .notification-tab:hover { color: var(--text); background: var(--bg); }
+        .notification-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .notification-list { flex: 1; overflow-y: auto; }
+        .notification-item { padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: all 0.2s; display: flex; gap: 12px; align-items: flex-start; }
+        .notification-item:hover { background: var(--bg); }
+        .notification-item.unread { background: rgba(6,214,160,0.05); }
+        .notification-item-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .notification-item-icon.task { background: rgba(245,158,11,0.15); }
+        .notification-item-icon.mention { background: rgba(59,130,246,0.15); }
+        .notification-item-icon.lead { background: rgba(139,92,246,0.15); }
+        .notification-item-content { flex: 1; min-width: 0; }
+        .notification-item-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+        .notification-item-message { font-size: 12px; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .notification-item-time { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+        .notification-empty { padding: 40px 20px; text-align: center; color: var(--text-light); }
+        .notification-empty-icon { font-size: 40px; margin-bottom: 12px; }
+        .mark-all-read { font-size: 12px; color: var(--primary); cursor: pointer; }
+        .mark-all-read:hover { text-decoration: underline; }
+        
+        /* Mention tag style */
+        .mention-tag { background: rgba(59,130,246,0.15); color: #2563EB; padding: 2px 6px; border-radius: 4px; font-weight: 500; }
+        
+        /* Delete zone */
+        .delete-zone { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+        .delete-btn { width: 100%; background: rgba(239,68,68,0.1); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+        .delete-btn:hover { background: var(--danger); color: white; }
+        
+        /* Confirm Modal */
+        .confirm-modal-body { text-align: center; padding: 20px; }
+        .confirm-modal-icon { font-size: 48px; margin-bottom: 16px; }
+        .confirm-modal-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .confirm-modal-text { color: var(--text-light); font-size: 14px; }
+        
+        @media (max-width: 1024px) { .sidebar { width: 72px; padding: 16px 8px; } .sidebar-logo, .sidebar-subtitle, .nav-item span:not(.nav-item-icon), .user-info, .nav-submenu { display: none; } .nav-item { justify-content: center; padding: 12px; } .main-content { margin-right: 72px; } .lead-panel { width: 100%; } .notification-dropdown { width: 300px; } }
         @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-right: 0; padding: 16px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .kanban-container { flex-direction: column; } .kanban-column { min-width: 100%; max-width: 100%; } }
         .logout-btn { background: rgba(255,255,255,0.1); border: none; cursor: pointer; font-size: 16px; padding: 8px 10px; border-radius: 6px; transition: all 0.2s; }
-.logout-btn:hover { background: rgba(239,68,68,0.3); }
+        .logout-btn:hover { background: rgba(239,68,68,0.3); }
     </style>
 </head>
 <body>
     <div id="root"></div>
     <script type="text/babel">
 
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
         const { motion, AnimatePresence } = Motion;
 
         const SUPABASE_URL = 'https://tqxrahpbidlctyttpffc.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxeHJhaHBiaWRsY3R5dHRwZmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTk3MzQsImV4cCI6MjA4MzQzNTczNH0.tmh9_GzWJhIcRoS3L6gpCX95_eZrkIR7hy3gOl9Qd2s';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-// === AUTH CHECK - START ===
-const checkAuth = () => {
-    const user = localStorage.getItem('crm_user');
-    if (!user) {
-        window.location.href = 'login.html';
-        return null;
-    }
-    return JSON.parse(user);
-};
 
-const logout = () => {
-    localStorage.removeItem('crm_user');
-    window.location.href = 'login.html';
-};
+        // === AUTH CHECK - START ===
+        const checkAuth = () => {
+            const user = localStorage.getItem('crm_user');
+            if (!user) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return JSON.parse(user);
+        };
 
-const currentUser = checkAuth();
-if (!currentUser) {
-    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Heebo;font-size:18px;">מעביר להתחברות...</div>';
-}
-// === AUTH CHECK - END ===
+        const logout = () => {
+            localStorage.removeItem('crm_user');
+            window.location.href = 'login.html';
+        };
+
+        const currentUser = checkAuth();
+        if (!currentUser) {
+            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Heebo;font-size:18px;">מעביר להתחברות...</div>';
+        }
+        // === AUTH CHECK - END ===
+
+        // Team members for mentions
+        const TEAM_MEMBERS = [
+            { id: 'aebd4b85-2a22-4d22-af8b-b9bc4be5dab8', username: 'ariel', displayName: 'אריאל' },
+            { id: '54be9442-260f-42e6-b566-6c17b9f93d49', username: 'arbel', displayName: 'ארבל' }
+        ];
+
         const STATUS_CONFIG = {
             new: { label: 'חדש', color: '#8B5CF6', icon: '✨' },
             followup_initial: { label: 'פולואפ ראשוני', color: '#F59E0B', icon: '📞' },
@@ -300,20 +354,149 @@ if (!currentUser) {
             return Math.floor((Date.now() - new Date(lead.call_logs[lead.call_logs.length - 1].created_at)) / 86400000);
         };
 
-        const generateMockLeads = () => [
-            { id: '1', name: 'דני כהן', phone: '054-1234567', business_type: 'יועץ עסקי', status: 'new', source: 'facebook', created_at: new Date().toISOString(), notes: [], call_logs: [] },
-            { id: '2', name: 'מיכל לוי', phone: '052-9876543', business_type: 'מאמנת אישית', status: 'followup_initial', source: 'instagram', created_at: new Date(Date.now() - 86400000).toISOString(), notes: [], call_logs: [] },
-            { id: '3', name: 'יוסי אברהם', phone: '050-5555555', business_type: 'צלם אירועים', status: 'followup_qualified', source: 'referral', created_at: new Date(Date.now() - 172800000).toISOString(), notes: [], call_logs: [] },
-            { id: '4', name: 'שרה גולד', phone: '053-1111111', business_type: 'מעצבת פנים', status: 'interested', source: 'google', created_at: new Date(Date.now() - 259200000).toISOString(), notes: [], call_logs: [] },
-            { id: '5', name: 'אבי רוזן', phone: '058-2222222', business_type: 'עורך דין', status: 'not_interested', source: 'website', rejection_reason: 'expensive', created_at: new Date(Date.now() - 345600000).toISOString(), notes: [], call_logs: [] }
-        ];
+        const formatTimeAgo = (date) => {
+            const now = new Date();
+            const past = new Date(date);
+            const diffMs = now - past;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'עכשיו';
+            if (diffMins < 60) return `לפני ${diffMins} דקות`;
+            if (diffHours < 24) return `לפני ${diffHours} שעות`;
+            if (diffDays === 1) return 'אתמול';
+            if (diffDays < 7) return `לפני ${diffDays} ימים`;
+            return past.toLocaleDateString('he-IL');
+        };
 
-        const generateMockTasks = () => [
-            { id: '1', title: 'להתקשר לדני כהן', lead_id: '1', lead_name: 'דני כהן', due_date: new Date().toISOString().split('T')[0], due_time: '10:00', priority: 'high', completed: false },
-            { id: '2', title: 'לשלוח הצעת מחיר למיכל', lead_id: '2', lead_name: 'מיכל לוי', due_date: new Date().toISOString().split('T')[0], due_time: '14:00', priority: 'medium', completed: false }
-        ];
+        const getUserDisplayName = (username) => {
+            const member = TEAM_MEMBERS.find(m => m.username === username);
+            return member ? member.displayName : username;
+        };
 
-        const Sidebar = ({ activeView, setActiveView, notifications, leads, statusFilter, setStatusFilter }) => {
+        // Notification Bell Component
+        const NotificationBell = ({ notifications, onMarkAsRead, onMarkAllAsRead, tasks }) => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [activeTab, setActiveTab] = useState('all');
+            const dropdownRef = useRef(null);
+            
+            const unreadCount = notifications.filter(n => !n.is_read).length;
+            
+            // Get upcoming tasks (due today or overdue)
+            const upcomingTasks = tasks.filter(t => {
+                if (t.completed) return false;
+                const dueDate = new Date(t.due_date);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                dueDate.setHours(0, 0, 0, 0);
+                return dueDate <= today;
+            });
+            
+            const filteredItems = activeTab === 'tasks' 
+                ? upcomingTasks.map(t => ({ ...t, itemType: 'task' }))
+                : activeTab === 'mentions'
+                ? notifications.filter(n => n.type === 'mention' || n.type === 'task_assigned')
+                : [...notifications, ...upcomingTasks.map(t => ({ ...t, itemType: 'task', type: 'task_reminder' }))].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            
+            useEffect(() => {
+                const handleClickOutside = (e) => {
+                    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                        setIsOpen(false);
+                    }
+                };
+                document.addEventListener('mousedown', handleClickOutside);
+                return () => document.removeEventListener('mousedown', handleClickOutside);
+            }, []);
+            
+            return (
+                <div className="notification-bell" ref={dropdownRef}>
+                    <div onClick={() => setIsOpen(!isOpen)}>
+                        <span className="notification-bell-icon">🔔</span>
+                        {(unreadCount + upcomingTasks.length) > 0 && (
+                            <span className="notification-badge">{unreadCount + upcomingTasks.length}</span>
+                        )}
+                    </div>
+                    
+                    {isOpen && (
+                        <motion.div 
+                            className="notification-dropdown"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            <div className="notification-dropdown-header">
+                                <span className="notification-dropdown-title">התראות</span>
+                                {unreadCount > 0 && (
+                                    <span className="mark-all-read" onClick={onMarkAllAsRead}>סמן הכל כנקרא</span>
+                                )}
+                            </div>
+                            
+                            <div className="notification-tabs">
+                                <div 
+                                    className={`notification-tab ${activeTab === 'all' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('all')}
+                                >
+                                    הכל
+                                </div>
+                                <div 
+                                    className={`notification-tab ${activeTab === 'tasks' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('tasks')}
+                                >
+                                    משימות ({upcomingTasks.length})
+                                </div>
+                                <div 
+                                    className={`notification-tab ${activeTab === 'mentions' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('mentions')}
+                                >
+                                    אזכורים
+                                </div>
+                            </div>
+                            
+                            <div className="notification-list">
+                                {filteredItems.length === 0 ? (
+                                    <div className="notification-empty">
+                                        <div className="notification-empty-icon">🎉</div>
+                                        <div>אין התראות חדשות</div>
+                                    </div>
+                                ) : (
+                                    filteredItems.slice(0, 10).map((item, index) => (
+                                        <div 
+                                            key={item.id || index}
+                                            className={`notification-item ${item.itemType !== 'task' && !item.is_read ? 'unread' : ''}`}
+                                            onClick={() => {
+                                                if (item.itemType !== 'task' && !item.is_read) {
+                                                    onMarkAsRead(item.id);
+                                                }
+                                            }}
+                                        >
+                                            <div className={`notification-item-icon ${item.type === 'task_reminder' || item.itemType === 'task' ? 'task' : item.type === 'mention' || item.type === 'task_assigned' ? 'mention' : 'lead'}`}>
+                                                {item.type === 'task_reminder' || item.itemType === 'task' ? '⏰' : item.type === 'mention' || item.type === 'task_assigned' ? '💬' : '✨'}
+                                            </div>
+                                            <div className="notification-item-content">
+                                                <div className="notification-item-title">
+                                                    {item.itemType === 'task' ? item.title : item.title}
+                                                </div>
+                                                <div className="notification-item-message">
+                                                    {item.itemType === 'task' 
+                                                        ? (item.lead_name ? `👤 ${item.lead_name}` : 'משימה כללית')
+                                                        : item.message
+                                                    }
+                                                </div>
+                                                <div className="notification-item-time">
+                                                    {formatTimeAgo(item.created_at || item.due_date)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </motion.div>
+                    )}
+                </div>
+            );
+        };
+
+        const Sidebar = ({ activeView, setActiveView, leads, statusFilter, setStatusFilter, notifications, tasks, onMarkAsRead, onMarkAllAsRead }) => {
             const [leadsExpanded, setLeadsExpanded] = useState(true);
             const statusCounts = useMemo(() => {
                 const counts = {};
@@ -331,7 +514,15 @@ if (!currentUser) {
 
             return (
                 <aside className="sidebar">
-                    <div className="sidebar-logo">EasyChat</div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <div className="sidebar-logo">EasyChat</div>
+                        <NotificationBell 
+                            notifications={notifications} 
+                            tasks={tasks}
+                            onMarkAsRead={onMarkAsRead}
+                            onMarkAllAsRead={onMarkAllAsRead}
+                        />
+                    </div>
                     <div className="sidebar-subtitle">מערכת ניהול לידים</div>
                     <nav className="sidebar-nav">
                         {navItems.map(item => (
@@ -388,15 +579,17 @@ if (!currentUser) {
                         ))}
                     </nav>
                     <div className="sidebar-user">
-    <div className="user-avatar">{currentUser && currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'א'}</div>
-    <div className="user-info">
-        <div className="user-name">{currentUser ? currentUser.username : 'משתמש'}</div>
-        <div className="user-role">מנהל</div>
-    </div>
-<button className="logout-btn" onClick={logout} title="התנתק">🚪</button></div>
+                        <div className="user-avatar">{currentUser && currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'א'}</div>
+                        <div className="user-info">
+                            <div className="user-name">{currentUser ? getUserDisplayName(currentUser.username) : 'משתמש'}</div>
+                            <div className="user-role">מנהל</div>
+                        </div>
+                        <button className="logout-btn" onClick={logout} title="התנתק">🚪</button>
+                    </div>
                 </aside>
             );
         };
+
         const StatsCards = ({ leads }) => {
             const stats = [
                 { label: 'סה״כ לידים', value: leads.length, icon: '👥', color: 'blue' },
@@ -454,21 +647,42 @@ if (!currentUser) {
             );
         };
 
-        const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote, onLogCall, onAddTask, tasks }) => {
+        const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, confirmText, confirmType }) => {
+            if (!isOpen) return null;
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <motion.div className="modal" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} onClick={e => e.stopPropagation()} style={{ maxWidth: 400 }}>
+                        <div className="modal-body confirm-modal-body">
+                            <div className="confirm-modal-icon">⚠️</div>
+                            <div className="confirm-modal-title">{title}</div>
+                            <div className="confirm-modal-text">{message}</div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" onClick={onClose}>ביטול</button>
+                            <button className={`btn ${confirmType === 'danger' ? 'btn-danger' : 'btn-primary'}`} onClick={onConfirm}>{confirmText}</button>
+                        </div>
+                    </motion.div>
+                </div>
+            );
+        };
+
+        const LeadPanel = ({ lead, onClose, onUpdateLead, onAddNote, onLogCall, onAddTask, onDeleteLead, tasks, teamMembers }) => {
             const [activeTab, setActiveTab] = useState('details');
             const [newNote, setNewNote] = useState('');
             const [selectedStatus, setSelectedStatus] = useState(lead ? lead.status : 'new');
             const [selectedTemplate, setSelectedTemplate] = useState(null);
             const [showRejection, setShowRejection] = useState(false);
             const [showAddTask, setShowAddTask] = useState(false);
-            const [newTask, setNewTask] = useState({ title: '', date: '', time: '', priority: 'medium' });
+            const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+            const [newTask, setNewTask] = useState({ title: '', date: '', time: '', priority: 'medium', assigned_to: '' });
 
             useEffect(() => { 
                 if (lead) { 
                     setSelectedStatus(lead.status); 
                     setActiveTab('details'); 
-                    setShowAddTask(false); 
-                    setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium' }); 
+                    setShowAddTask(false);
+                    setShowDeleteConfirm(false);
+                    setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium', assigned_to: '' }); 
                 } 
             }, [lead]);
 
@@ -502,10 +716,17 @@ if (!currentUser) {
                     lead_name: lead.name,
                     due_date: newTask.date,
                     due_time: newTask.time,
-                    priority: newTask.priority
+                    priority: newTask.priority,
+                    assigned_to: newTask.assigned_to || null
                 });
-                setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium' });
+                setNewTask({ title: '', date: new Date().toISOString().split('T')[0], time: '10:00', priority: 'medium', assigned_to: '' });
                 setShowAddTask(false);
+            };
+
+            const handleDelete = () => {
+                onDeleteLead(lead.id);
+                setShowDeleteConfirm(false);
+                onClose();
             };
 
             if (!lead) return null;
@@ -571,13 +792,24 @@ if (!currentUser) {
                                                     <input type="time" className="form-input" value={newTask.time} onChange={e => setNewTask({...newTask, time: e.target.value})} />
                                                 </div>
                                             </div>
-                                            <div className="form-group">
-                                                <label className="form-label">עדיפות</label>
-                                                <select className="form-input" value={newTask.priority} onChange={e => setNewTask({...newTask, priority: e.target.value})}>
-                                                    <option value="high">🔴 גבוהה</option>
-                                                    <option value="medium">🟡 בינונית</option>
-                                                    <option value="low">⚪ נמוכה</option>
-                                                </select>
+                                            <div className="form-row">
+                                                <div className="form-group">
+                                                    <label className="form-label">עדיפות</label>
+                                                    <select className="form-input" value={newTask.priority} onChange={e => setNewTask({...newTask, priority: e.target.value})}>
+                                                        <option value="high">🔴 גבוהה</option>
+                                                        <option value="medium">🟡 בינונית</option>
+                                                        <option value="low">⚪ נמוכה</option>
+                                                    </select>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="form-label">הקצה ל</label>
+                                                    <select className="form-input" value={newTask.assigned_to} onChange={e => setNewTask({...newTask, assigned_to: e.target.value})}>
+                                                        <option value="">בחר חבר צוות</option>
+                                                        {TEAM_MEMBERS.map(m => (
+                                                            <option key={m.id} value={m.id}>{m.displayName}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
                                             </div>
                                             <button className="btn btn-primary" style={{width: '100%'}} onClick={handleAddTask}>➕ הוסף משימה</button>
                                         </div>
@@ -586,14 +818,18 @@ if (!currentUser) {
                                     {leadTasks.length > 0 && (
                                         <div className="panel-section" style={{ marginTop: 16 }}>
                                             <div className="panel-section-title">משימות לליד זה ({leadTasks.length})</div>
-                                            {leadTasks.map(task => (
-                                                <div key={task.id} style={{ background: 'var(--bg)', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px', borderRight: '3px solid ' + (task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#6B7280') }}>
-                                                    <div style={{ fontWeight: 500, fontSize: '14px' }}>{task.title}</div>
-                                                    <div style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px' }}>
-                                                        📅 {new Date(task.due_date).toLocaleDateString('he-IL')} {task.due_time && ('⏰ ' + task.due_time)}
+                                            {leadTasks.map(task => {
+                                                const assignedMember = TEAM_MEMBERS.find(m => m.id === task.assigned_to);
+                                                return (
+                                                    <div key={task.id} style={{ background: 'var(--bg)', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px', borderRight: '3px solid ' + (task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#6B7280') }}>
+                                                        <div style={{ fontWeight: 500, fontSize: '14px' }}>{task.title}</div>
+                                                        <div style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px' }}>
+                                                            📅 {new Date(task.due_date).toLocaleDateString('he-IL')} {task.due_time && ('⏰ ' + task.due_time)}
+                                                            {assignedMember && <span className="mention-tag" style={{ marginRight: 8 }}>@{assignedMember.displayName}</span>}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                     )}
 
@@ -632,7 +868,7 @@ if (!currentUser) {
                                             {lead.notes && lead.notes.length > 0 ? lead.notes.map(n => (
                                                 <div key={n.id} className="note-item">
                                                     <div className="note-header">
-                                                        <span className="note-author">{n.author}</span>
+                                                        <span className="note-author">{getUserDisplayName(n.author)}</span>
                                                         <span className="note-date">{new Date(n.created_at).toLocaleDateString('he-IL')}</span>
                                                     </div>
                                                     <div className="note-text">{n.text}</div>
@@ -643,6 +879,13 @@ if (!currentUser) {
                                             <textarea className="note-input" placeholder="הוסף הערה..." rows={2} value={newNote} onChange={e => setNewNote(e.target.value)} />
                                             <button className="btn btn-primary" onClick={() => { if (newNote.trim()) { onAddNote(lead.id, newNote); setNewNote(''); } }} disabled={!newNote.trim()}>הוסף</button>
                                         </div>
+                                    </div>
+                                    
+                                    {/* Delete Zone */}
+                                    <div className="delete-zone">
+                                        <button className="btn delete-btn" onClick={() => setShowDeleteConfirm(true)}>
+                                            🗑️ מחק ליד
+                                        </button>
                                     </div>
                                 </React.Fragment>
                             )}
@@ -677,6 +920,16 @@ if (!currentUser) {
                             )}
                         </div>
                     </motion.aside>
+                    
+                    <ConfirmModal
+                        isOpen={showDeleteConfirm}
+                        onClose={() => setShowDeleteConfirm(false)}
+                        onConfirm={handleDelete}
+                        title="מחיקת ליד"
+                        message={`האם אתה בטוח שברצונך למחוק את הליד "${lead.name}"? פעולה זו אינה הפיכה.`}
+                        confirmText="מחק"
+                        confirmType="danger"
+                    />
                 </React.Fragment>
             );
         };
@@ -717,21 +970,29 @@ if (!currentUser) {
             );
         };
 
-        const TasksView = ({ tasks, setTasks, leads }) => {
+        const TasksView = ({ tasks, setTasks, leads, onAddTask, onToggleTask }) => {
             const [newTitle, setNewTitle] = useState('');
             const [newLeadId, setNewLeadId] = useState('');
             const [newPriority, setNewPriority] = useState('medium');
             const [newDate, setNewDate] = useState(new Date().toISOString().split('T')[0]);
             const [newTime, setNewTime] = useState('10:00');
-            
-            const toggle = (id) => setTasks(p => p.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+            const [newAssignedTo, setNewAssignedTo] = useState('');
             
             const add = () => { 
                 if (!newTitle.trim()) return; 
                 const lead = leads.find(l => l.id === newLeadId); 
-                setTasks(p => [{ id: Date.now().toString(), title: newTitle, lead_id: newLeadId, lead_name: lead ? lead.name : null, due_date: newDate, due_time: newTime, priority: newPriority, completed: false }, ...p]); 
+                onAddTask({
+                    title: newTitle,
+                    lead_id: newLeadId || null,
+                    lead_name: lead ? lead.name : null,
+                    due_date: newDate,
+                    due_time: newTime,
+                    priority: newPriority,
+                    assigned_to: newAssignedTo || null
+                });
                 setNewTitle(''); 
-                setNewLeadId(''); 
+                setNewLeadId('');
+                setNewAssignedTo('');
             };
             
             const today = tasks.filter(t => new Date(t.due_date).toDateString() === new Date().toDateString());
@@ -748,6 +1009,10 @@ if (!currentUser) {
                                 <option value="">ללא ליד</option>
                                 {leads.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
                             </select>
+                            <select className="filter-select" value={newAssignedTo} onChange={e => setNewAssignedTo(e.target.value)}>
+                                <option value="">הקצה ל...</option>
+                                {TEAM_MEMBERS.map(m => <option key={m.id} value={m.id}>@{m.displayName}</option>)}
+                            </select>
                             <input type="date" className="form-input" value={newDate} onChange={e => setNewDate(e.target.value)} style={{ width: 150 }} />
                             <input type="time" className="form-input" value={newTime} onChange={e => setNewTime(e.target.value)} style={{ width: 120 }} />
                             <select className="filter-select" value={newPriority} onChange={e => setNewPriority(e.target.value)}>
@@ -760,30 +1025,44 @@ if (!currentUser) {
                     </div>
                     <div className="table-container" style={{ padding: 20, marginBottom: 24 }}>
                         <h3 style={{ marginBottom: 16 }}>📅 היום ({today.filter(t => !t.completed).length})</h3>
-                        {today.length ? today.map(t => (
-                            <div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}>
-                                <div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div>
-                                <div className="task-content">
-                                    <div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>
-                                    <div className="task-meta">{t.lead_name && ('👤 ' + t.lead_name + ' • ')}{t.due_time && ('⏰ ' + t.due_time)}</div>
+                        {today.length ? today.map(t => {
+                            const assignedMember = TEAM_MEMBERS.find(m => m.id === t.assigned_to);
+                            return (
+                                <div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}>
+                                    <div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => onToggleTask(t.id)}>{t.completed && '✓'}</div>
+                                    <div className="task-content">
+                                        <div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>
+                                        <div className="task-meta">
+                                            {t.lead_name && ('👤 ' + t.lead_name + ' • ')}
+                                            {t.due_time && ('⏰ ' + t.due_time)}
+                                            {assignedMember && <span className="mention-tag" style={{ marginRight: 8 }}>@{assignedMember.displayName}</span>}
+                                        </div>
+                                    </div>
+                                    <span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span>
                                 </div>
-                                <span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span>
-                            </div>
-                        )) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}
+                            );
+                        }) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות להיום 🎉</div>}
                     </div>
                     {upcoming.length > 0 && (
                         <div className="table-container" style={{ padding: 20 }}>
                             <h3 style={{ marginBottom: 16 }}>🗓️ קרובות ({upcoming.length})</h3>
-                            {upcoming.slice(0, 5).map(t => (
-                                <div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}>
-                                    <div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => toggle(t.id)}>{t.completed && '✓'}</div>
-                                    <div className="task-content">
-                                        <div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>
-                                        <div className="task-meta">{t.lead_name && ('👤 ' + t.lead_name + ' • ')}📅 {new Date(t.due_date).toLocaleDateString('he-IL')} {t.due_time && ('⏰ ' + t.due_time)}</div>
+                            {upcoming.slice(0, 5).map(t => {
+                                const assignedMember = TEAM_MEMBERS.find(m => m.id === t.assigned_to);
+                                return (
+                                    <div key={t.id} className={`task-item ${t.completed ? 'completed' : ''}`}>
+                                        <div className={`task-checkbox ${t.completed ? 'checked' : ''}`} onClick={() => onToggleTask(t.id)}>{t.completed && '✓'}</div>
+                                        <div className="task-content">
+                                            <div className={`task-title ${t.completed ? 'completed' : ''}`}>{t.title}</div>
+                                            <div className="task-meta">
+                                                {t.lead_name && ('👤 ' + t.lead_name + ' • ')}
+                                                📅 {new Date(t.due_date).toLocaleDateString('he-IL')} {t.due_time && ('⏰ ' + t.due_time)}
+                                                {assignedMember && <span className="mention-tag" style={{ marginRight: 8 }}>@{assignedMember.displayName}</span>}
+                                            </div>
+                                        </div>
+                                        <span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span>
                                     </div>
-                                    <span className={`task-priority ${t.priority}`}>{t.priority === 'high' ? 'גבוהה' : t.priority === 'medium' ? 'בינונית' : 'נמוכה'}</span>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     )}
                 </div>
@@ -861,12 +1140,18 @@ if (!currentUser) {
                         </div>
                         <div className="table-container" style={{ padding: 20 }}>
                             <h3 style={{ marginBottom: 16 }}>📋 משימות להיום ({todayTasks.length})</h3>
-                            {todayTasks.length ? todayTasks.map(t => (
-                                <div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
-                                    <div style={{ fontWeight: 500 }}>{t.title}</div>
-                                    <div style={{ fontSize: 12, color: 'var(--text-light)' }}>{t.lead_name && ('👤 ' + t.lead_name)} {t.due_time && ('⏰ ' + t.due_time)}</div>
-                                </div>
-                            )) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}
+                            {todayTasks.length ? todayTasks.map(t => {
+                                const assignedMember = TEAM_MEMBERS.find(m => m.id === t.assigned_to);
+                                return (
+                                    <div key={t.id} style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
+                                        <div style={{ fontWeight: 500 }}>{t.title}</div>
+                                        <div style={{ fontSize: 12, color: 'var(--text-light)' }}>
+                                            {t.lead_name && ('👤 ' + t.lead_name)} {t.due_time && ('⏰ ' + t.due_time)}
+                                            {assignedMember && <span className="mention-tag" style={{ marginRight: 8 }}>@{assignedMember.displayName}</span>}
+                                        </div>
+                                    </div>
+                                );
+                            }) : <div style={{ textAlign: 'center', padding: 20, color: 'var(--text-light)' }}>אין משימות 🎉</div>}
                         </div>
                     </div>
                 </div>
@@ -942,58 +1227,137 @@ if (!currentUser) {
 
         const App = () => {
             const [view, setView] = useState('dashboard');
-            const [leads, setLeads] = useState(generateMockLeads());
-            const [tasks, setTasks] = useState(generateMockTasks());
+            const [leads, setLeads] = useState([]);
+            const [tasks, setTasks] = useState([]);
+            const [notifications, setNotifications] = useState([]);
             const [selectedLead, setSelectedLead] = useState(null);
             const [showAdd, setShowAdd] = useState(false);
             const [statusFilter, setStatusFilter] = useState('all');
-            const [notifications, setNotifications] = useState([{ title: 'ליד חדש: דני כהן', time: 'לפני 5 דקות', read: false }]);
             const [toasts, setToasts] = useState([]);
             const [loading, setLoading] = useState(false);
 
             const toast = (msg, type) => setToasts(p => [...p, { id: Date.now(), message: msg, type: type || 'success' }]);
 
+            // Load data from Supabase
             useEffect(() => {
                 (async () => {
                     setLoading(true);
                     try { 
-                        const { data, error } = await supabase.from('help_leads').select('*').order('created_at', { ascending: false }); 
-                        if (error) {
-                            console.error('Supabase error loading leads:', error);
-                            toast('שגיאה בטעינת לידים: ' + error.message, 'error');
-                        } else if (data && data.length) {
-                            setLeads(data);
-                            console.log('Loaded', data.length, 'leads from Supabase');
-                        } else {
-                            console.log('No leads found in database, using mock data');
+                        // Load leads
+                        const { data: leadsData, error: leadsError } = await supabase.from('help_leads').select('*').order('created_at', { ascending: false }); 
+                        if (leadsError) {
+                            console.error('Supabase error loading leads:', leadsError);
+                            toast('שגיאה בטעינת לידים: ' + leadsError.message, 'error');
+                        } else if (leadsData) {
+                            setLeads(leadsData);
+                            console.log('Loaded', leadsData.length, 'leads from Supabase');
+                        }
+
+                        // Load tasks
+                        const { data: tasksData, error: tasksError } = await supabase.from('crm_tasks').select('*').order('due_date', { ascending: true });
+                        if (tasksError) {
+                            console.error('Supabase error loading tasks:', tasksError);
+                        } else if (tasksData) {
+                            setTasks(tasksData);
+                            console.log('Loaded', tasksData.length, 'tasks from Supabase');
+                        }
+
+                        // Load notifications for current user
+                        if (currentUser && currentUser.id) {
+                            const { data: notifData, error: notifError } = await supabase
+                                .from('crm_notifications')
+                                .select('*')
+                                .eq('user_id', currentUser.id)
+                                .order('created_at', { ascending: false })
+                                .limit(50);
+                            if (notifError) {
+                                console.error('Supabase error loading notifications:', notifError);
+                            } else if (notifData) {
+                                setNotifications(notifData);
+                                console.log('Loaded', notifData.length, 'notifications');
+                            }
                         }
                     } catch (e) { 
-                        console.error('Error loading leads:', e); 
-                        toast('שגיאה בטעינת לידים', 'error');
+                        console.error('Error loading data:', e); 
+                        toast('שגיאה בטעינת נתונים', 'error');
                     }
                     setLoading(false);
                 })();
-                const sub = supabase.channel('leads').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'help_leads' }, p => { 
-                    setLeads(prev => [p.new, ...prev]); 
-                    setNotifications(prev => [{ title: 'ליד חדש: ' + p.new.name, time: 'עכשיו', read: false }, ...prev]); 
-                    toast('ליד חדש: ' + p.new.name); 
-                }).subscribe();
-                return () => sub.unsubscribe();
+
+                // Realtime subscriptions
+                const leadsChannel = supabase.channel('leads-changes')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'help_leads' }, p => { 
+                        setLeads(prev => [p.new, ...prev]); 
+                        toast('ליד חדש: ' + p.new.name); 
+                    })
+                    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'help_leads' }, p => {
+                        setLeads(prev => prev.filter(l => l.id !== p.old.id));
+                    })
+                    .subscribe();
+
+                const tasksChannel = supabase.channel('tasks-changes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'crm_tasks' }, p => {
+                        if (p.eventType === 'INSERT') {
+                            setTasks(prev => [p.new, ...prev]);
+                        } else if (p.eventType === 'UPDATE') {
+                            setTasks(prev => prev.map(t => t.id === p.new.id ? p.new : t));
+                        } else if (p.eventType === 'DELETE') {
+                            setTasks(prev => prev.filter(t => t.id !== p.old.id));
+                        }
+                    })
+                    .subscribe();
+
+                const notifChannel = supabase.channel('notif-changes')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'crm_notifications', filter: `user_id=eq.${currentUser?.id}` }, p => {
+                        setNotifications(prev => [p.new, ...prev]);
+                        // Show toast for new notification
+                        if (p.new.type === 'task_assigned') {
+                            toast('📋 משימה חדשה הוקצתה לך!');
+                        } else if (p.new.type === 'mention') {
+                            toast('💬 מישהו תייג אותך!');
+                        }
+                    })
+                    .subscribe();
+
+                return () => {
+                    leadsChannel.unsubscribe();
+                    tasksChannel.unsubscribe();
+                    notifChannel.unsubscribe();
+                };
             }, []);
 
             const updateLead = async (id, updates) => { 
                 setLeads(p => p.map(l => l.id === id ? { ...l, ...updates } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, ...updates })); 
-                try { await supabase.from('help_leads').update(updates).eq('id', id); toast('עודכן'); } catch (e) { toast('שגיאה', 'error'); } 
+                try { 
+                    const { error } = await supabase.from('help_leads').update(updates).eq('id', id); 
+                    if (error) throw error;
+                    toast('עודכן'); 
+                } catch (e) { 
+                    console.error('Error updating lead:', e);
+                    toast('שגיאה בעדכון', 'error'); 
+                } 
             };
             
             const addNote = async (id, text) => { 
-                const note = { id: Date.now().toString(), text: text, author: 'אריאל', created_at: new Date().toISOString() }; 
+                const note = { 
+                    id: Date.now().toString(), 
+                    text: text, 
+                    author: currentUser ? currentUser.username : 'unknown',
+                    created_at: new Date().toISOString() 
+                }; 
                 const lead = leads.find(l => l.id === id); 
                 const notes = [...(lead.notes || []), note]; 
                 setLeads(p => p.map(l => l.id === id ? { ...l, notes: notes } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, notes: notes })); 
-                try { await supabase.from('help_leads').update({ notes: notes }).eq('id', id); toast('הערה נוספה'); } catch (e) { toast('שגיאה', 'error'); } 
+                try { 
+                    const { error } = await supabase.from('help_leads').update({ notes: notes }).eq('id', id); 
+                    if (error) throw error;
+                    toast('הערה נוספה'); 
+                } catch (e) { 
+                    console.error('Error adding note:', e);
+                    toast('שגיאה בהוספת הערה', 'error'); 
+                } 
             };
             
             const logCall = async (id, type) => { 
@@ -1002,7 +1366,11 @@ if (!currentUser) {
                 const logs = [...(lead.call_logs || []), log]; 
                 setLeads(p => p.map(l => l.id === id ? { ...l, call_logs: logs } : l)); 
                 if (selectedLead && selectedLead.id === id) setSelectedLead(p => ({ ...p, call_logs: logs })); 
-                try { await supabase.from('help_leads').update({ call_logs: logs }).eq('id', id); } catch (e) { } 
+                try { 
+                    await supabase.from('help_leads').update({ call_logs: logs }).eq('id', id); 
+                } catch (e) { 
+                    console.error('Error logging call:', e);
+                } 
             };
             
             const addLead = async (data) => { 
@@ -1013,36 +1381,131 @@ if (!currentUser) {
                     call_logs: [], 
                     created_at: new Date().toISOString() 
                 };
-                const tempId = Date.now().toString();
-                const tempLead = { id: tempId, ...leadData };
-                setLeads(p => [tempLead, ...p]); 
                 try { 
-                    const { error } = await supabase.from('help_leads').insert([leadData]);
+                    const { data: newLead, error } = await supabase.from('help_leads').insert([leadData]).select().single();
                     if (error) throw error;
+                    setLeads(p => [newLead, ...p]);
                     toast('ליד נוסף בהצלחה ✅'); 
                 } catch (e) { 
                     console.error('Error adding lead:', e);
-                    toast('שגיאה בשמירה ל-Supabase', 'error'); 
+                    toast('שגיאה בשמירה', 'error'); 
                 } 
             };
+
+            const deleteLead = async (id) => {
+                try {
+                    const { error } = await supabase.from('help_leads').delete().eq('id', id);
+                    if (error) throw error;
+                    setLeads(p => p.filter(l => l.id !== id));
+                    toast('הליד נמחק');
+                } catch (e) {
+                    console.error('Error deleting lead:', e);
+                    toast('שגיאה במחיקה', 'error');
+                }
+            };
             
-            const addTask = (taskData) => { 
-                const task = { id: Date.now().toString(), ...taskData, completed: false }; 
-                setTasks(p => [task, ...p]); 
-                toast('משימה נוספה'); 
+            const addTask = async (taskData) => { 
+                const task = { 
+                    ...taskData, 
+                    created_by: currentUser ? currentUser.id : null,
+                    completed: false,
+                    created_at: new Date().toISOString()
+                };
+                
+                try {
+                    const { data: newTask, error } = await supabase.from('crm_tasks').insert([task]).select().single();
+                    if (error) throw error;
+                    setTasks(p => [newTask, ...p]);
+                    
+                    // Create notification if task is assigned to someone else
+                    if (taskData.assigned_to && taskData.assigned_to !== currentUser?.id) {
+                        const assignedMember = TEAM_MEMBERS.find(m => m.id === taskData.assigned_to);
+                        const creatorName = getUserDisplayName(currentUser?.username);
+                        
+                        await supabase.from('crm_notifications').insert([{
+                            user_id: taskData.assigned_to,
+                            type: 'task_assigned',
+                            title: `${creatorName} הקצה לך משימה`,
+                            message: taskData.title,
+                            related_task_id: newTask.id,
+                            related_lead_id: taskData.lead_id || null
+                        }]);
+                    }
+                    
+                    toast('משימה נוספה'); 
+                } catch (e) {
+                    console.error('Error adding task:', e);
+                    toast('שגיאה בהוספת משימה', 'error');
+                }
+            };
+
+            const toggleTask = async (id) => {
+                const task = tasks.find(t => t.id === id);
+                if (!task) return;
+                
+                const newCompleted = !task.completed;
+                setTasks(p => p.map(t => t.id === id ? { ...t, completed: newCompleted } : t));
+                
+                try {
+                    const { error } = await supabase.from('crm_tasks').update({ completed: newCompleted }).eq('id', id);
+                    if (error) throw error;
+                } catch (e) {
+                    console.error('Error toggling task:', e);
+                    // Revert on error
+                    setTasks(p => p.map(t => t.id === id ? { ...t, completed: !newCompleted } : t));
+                }
+            };
+
+            const markNotificationAsRead = async (id) => {
+                setNotifications(p => p.map(n => n.id === id ? { ...n, is_read: true } : n));
+                try {
+                    await supabase.from('crm_notifications').update({ is_read: true }).eq('id', id);
+                } catch (e) {
+                    console.error('Error marking notification as read:', e);
+                }
+            };
+
+            const markAllNotificationsAsRead = async () => {
+                const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
+                setNotifications(p => p.map(n => ({ ...n, is_read: true })));
+                try {
+                    await supabase.from('crm_notifications').update({ is_read: true }).in('id', unreadIds);
+                } catch (e) {
+                    console.error('Error marking all notifications as read:', e);
+                }
             };
 
             return (
                 <div className="app-container">
-                    <Sidebar activeView={view} setActiveView={setView} notifications={notifications} leads={leads} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
+                    <Sidebar 
+                        activeView={view} 
+                        setActiveView={setView} 
+                        leads={leads} 
+                        statusFilter={statusFilter} 
+                        setStatusFilter={setStatusFilter}
+                        notifications={notifications}
+                        tasks={tasks}
+                        onMarkAsRead={markNotificationAsRead}
+                        onMarkAllAsRead={markAllNotificationsAsRead}
+                    />
                     <main className="main-content">
                         {view === 'dashboard' && <DashboardView leads={leads} tasks={tasks} />}
                         {view === 'leads' && <LeadsView leads={leads} onSelectLead={setSelectedLead} onAddLead={() => setShowAdd(true)} statusFilter={statusFilter} setStatusFilter={setStatusFilter} />}
                         {view === 'pipeline' && <PipelineView leads={leads} onSelectLead={setSelectedLead} />}
-                        {view === 'tasks' && <TasksView tasks={tasks} setTasks={setTasks} leads={leads} />}
+                        {view === 'tasks' && <TasksView tasks={tasks} setTasks={setTasks} leads={leads} onAddTask={addTask} onToggleTask={toggleTask} />}
                         {view === 'reports' && <ReportsView leads={leads} />}
                     </main>
-                    <LeadPanel lead={selectedLead} onClose={() => setSelectedLead(null)} onUpdateLead={updateLead} onAddNote={addNote} onLogCall={logCall} onAddTask={addTask} tasks={tasks} />
+                    <LeadPanel 
+                        lead={selectedLead} 
+                        onClose={() => setSelectedLead(null)} 
+                        onUpdateLead={updateLead} 
+                        onAddNote={addNote} 
+                        onLogCall={logCall} 
+                        onAddTask={addTask}
+                        onDeleteLead={deleteLead}
+                        tasks={tasks}
+                        teamMembers={TEAM_MEMBERS}
+                    />
                     <AddLeadModal isOpen={showAdd} onClose={() => setShowAdd(false)} onAdd={addLead} />
                     <div className="toast-container">
                         <AnimatePresence>
